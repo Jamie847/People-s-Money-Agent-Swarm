@@ -72,7 +72,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
     out.push(packet('INDEPENDENT_RECOMPUTE_DISAGREES', `${r.agent}|${r.quarter}`, {
       severity: 'urgent',
       title: `Independent recompute by ${r.author} disagrees for ${r.quarter}`,
-      what_happened: `${r.name} reported gap ${r.gap_lp} and path growth ${r.allowance_pct}%; the swarm published gap ${r.swarm_gap_lp} and ${r.swarm_allowance_pct}%.`,
+      what_happened: `${r.name} reported gap ${r.gap_lp} and path growth ${r.allowance_pct}%; The People's Watch published gap ${r.swarm_gap_lp} and ${r.swarm_allowance_pct}%.`,
       what_the_rule_says: 'A figure that does not match the published inputs can be caught by anyone who recomputes it (Ch. 7).',
       who_decides: 'Jamie and the agent author: find which implementation is wrong, on the record',
       evidence: r,

@@ -141,7 +141,7 @@ const agents = [
 
 const latest = {
   schema: 1,
-  title: "The People's Money — Agent Swarm Shadow Run",
+  title: "The People's Watch — shadow run of The People's Money rule",
   disclaimer: "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   run: { date: today, started_at: startedAt, finished_at: new Date().toISOString(), mode: offline ? 'offline' : 'live', ledger_seq: ledgerEntry.seq, ledger_hash: ledgerEntry.hash },
   rule: { version: rule.design_paper_version, parameters: { feedback_strength: rule.feedback_strength, floor_pct: rule.path_growth_floor_pct, ceiling_pct: rule.path_growth_ceiling_pct, trend_years: rule.trend_growth_years, brake_trigger_lp: rule.brake_trigger_log_points, brake_release_lp: rule.brake_release_log_points }, interpretations_pending_review: rule.interpretations_pending_review },

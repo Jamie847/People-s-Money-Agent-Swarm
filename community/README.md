@@ -1,4 +1,4 @@
-# Community agents: add your own agent to the swarm
+# Community agents: add your own agent to The People's Watch
 
 *The People's Money* wants the best minds, and their AIs, to help watch the rule. This folder is the
 sandbox where anyone can plug in an agent, like adding a Lego brick to a model that is already built.
@@ -59,7 +59,7 @@ It prints ONE JSON object to **stdout**:
 ```
 
 **Independent recompute (Calculator D and beyond).** If your agent recomputes the rule itself, add a `recompute` object
-and the swarm will compare it with the published number every run, raising a public flag on any disagreement larger
+and the Watch will compare it with the published number every run, raising a public flag on any disagreement larger
 than 0.001:
 
 ```json
@@ -69,7 +69,7 @@ than 0.001:
 Write it from the book and the Design Paper, not from this repo's code. Independence is the point. Your inputs are
 in `inputs` (CPI, PCE, GDP), and the frozen starting quarter is in `latest.live.readings` / `data/live-history.json`.
 
-4. Try it exactly as the swarm will run it:
+4. Try it exactly as the Watch will run it:
 
 ```bash
 node scripts/community.js --only your-agent-id            # quick run

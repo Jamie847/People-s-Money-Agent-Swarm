@@ -38,7 +38,7 @@ function prepare() {
   const ledgerText = readFileSync(P('data', 'ledger.jsonl'), 'utf8');
   const rel = `data/checkpoints/${String(last.seq).padStart(6, '0')}-${last.run_date}.json`;
   const checkpoint = {
-    what: "Checkpoint of The People's Money agent-swarm ledger",
+    what: "Checkpoint of The People's Watch ledger (The People's Money)",
     repository: `https://github.com/${REPO}`,
     ledger_file: 'data/ledger.jsonl',
     ledger_entries: entries.length,

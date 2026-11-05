@@ -20,7 +20,7 @@
   // Architecture at a glance (static SVG).
   function archSvg() {
     var rows = [['Outside agencies', 'BLS, BEA, Federal Reserve, BIS publish the data', 'tint'], ['Tier 1 · Sensors and integrity', 'Fetch the data, fingerprint it, flag problems', ''], ['Tier 2 · Calculators A, B and C', 'All three must agree, or nothing is published', ''], ['SPLIT'], ['Tier 5 · Human gates', 'Packets name who decides; each opens a public issue', 'accent'], ['Tier 6 · Executor (shadow)', 'Writes only what the rule authorizes; executes nothing', ''], ['Tier 7 · Reporters', 'Plain-language report; every number checked', ''], ['The public', 'Dashboard, raw data, one-command recompute', 'tint']];
-    var y = 16, out = '<svg viewBox="0 0 760 ' + (16 + rows.length * 72 + 4) + '" role="img" aria-label="Agent swarm architecture: data flows down seven tiers to a human gate">';
+    var y = 16, out = '<svg viewBox="0 0 760 ' + (16 + rows.length * 72 + 4) + '" role="img" aria-label="How The People\'s Watch is built: data flows down seven tiers to a human gate">';
     var box = function (x, w, yy, t, s, k) {
       var fill = k === 'accent' ? '#e8ecf8' : k === 'tint' ? '#f3f1ea' : '#fff', stroke = k === 'accent' ? '#13235b' : '#c9cedb';
       return '<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="52" rx="8" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + (k === 'accent' ? 2 : 1) + '"/><text x="' + (x + w / 2) + '" y="' + (yy + 22) + '" text-anchor="middle" font-size="14" font-weight="600" fill="#13235b">' + esc(t) + '</text><text x="' + (x + w / 2) + '" y="' + (yy + 40) + '" text-anchor="middle" font-size="12" fill="#5a6072">' + esc(s) + '</text>';
@@ -121,7 +121,7 @@
   if (latest && latest.data_vintage) h += '<p class="meta" style="margin:10px 0 0">Data used: ' + (latest.data_vintage.as_published_on ? 'figures exactly as published on ' + esc(latest.data_vintage.as_published_on) + ' (ALFRED archive), so later revisions never change this reading' : esc(latest.data_vintage.note || '')) + ' · starting prices: ' + esc(latest.base_source || '') + '.</p>';
   var rc = D.recomputes || [];
   h += '<div class="card" style="margin-top:14px"><p style="margin:0"><strong>Independent recomputes by outside authors</strong> <span class="meta">(Calculator D and beyond)</span></p>';
-  if (!rc.length) h += '<p class="meta" style="margin:6px 0 0">None yet. Anyone can submit one as a community agent that reports its own answer; the swarm compares it to the published number and raises a public flag on any disagreement.</p>';
+  if (!rc.length) h += '<p class="meta" style="margin:6px 0 0">None yet. Anyone can submit one as a community agent that reports its own answer; the Watch compares it to the published number and raises a public flag on any disagreement.</p>';
   else rc.forEach(function (r) { h += '<p style="margin:6px 0 0">' + pill(r.agrees === false ? 'fail' : r.agrees ? 'ok' : 'info', r.agrees === false ? 'disagrees' : r.agrees ? 'agrees' : 'no matching quarter') + ' ' + esc(r.name) + ' by ' + esc(r.author) + ' · ' + esc(r.quarter) + ': gap ' + esc(r.gap_lp) + ', path growth ' + esc(r.allowance_pct) + '%</p>'; });
   h += '</div>';
   h += '<div class="card instruction" style="margin-top:14px"><p class="eyebrow" style="color:#8a6d0f">What the executor would instruct · nothing is executed</p><p style="margin:0">' + esc(D.instruction.instruction) + '</p>' + (D.instruction.note ? '<p class="meta" style="margin:6px 0 0">' + esc(D.instruction.note) + '</p>' : '') + '</div>';
@@ -130,8 +130,8 @@
   // ---- Agent roster ----
   var tiers = {};
   D.agents.forEach(function (a) { (tiers[a.tier] = tiers[a.tier] || { group: a.group, list: [] }).list.push(a); });
-  var tierNames = { 1: 'Sensors and integrity: fetch, fingerprint, check', 2: 'Calculators: apply the rule', 3: 'Sentinels and community agents: watch, never act', 4: 'Auditors and witnesses: check the swarm itself', 5: 'Human gates: people decide', 6: 'Executors: act only on what is authorized', 7: 'Reporters: tell the public' };
-  h += '<section><h2>Watch the swarm</h2><p class="sub">Every agent has one job. Data flows down the tiers; anything that needs judgment stops at a human gate. Outside witnesses keep a copy of the record nobody here controls.</p>';
+  var tierNames = { 1: 'Sensors and integrity: fetch, fingerprint, check', 2: 'Calculators: apply the rule', 3: 'Sentinels and community agents: watch, never act', 4: 'Auditors and witnesses: check the system itself', 5: 'Human gates: people decide', 6: 'Executors: act only on what is authorized', 7: 'Reporters: tell the public' };
+  h += '<section><h2>Meet the agents</h2><p class="sub">Every agent has one job. Data flows down the tiers; anything that needs judgment stops at a human gate. Outside witnesses keep a copy of the record nobody here controls.</p>';
   h += '<div class="card chart" style="margin-bottom:16px">' + archSvg() + '</div>';
   Object.keys(tiers).sort().forEach(function (t) {
     h += '<div class="tier"><div class="tier-head"><span class="n">Tier ' + t + '</span><span class="t">' + esc(tierNames[t]) + '</span></div><div class="agents">';
@@ -188,7 +188,7 @@
 
   // ---- Community agents ----
   var cm = D.community || { agents: [] };
-  h += '<section><h2>Community agents</h2><p class="sub">Agents written by outside contributors and their AIs, plugged into the swarm like building blocks. Each runs in a sealed sandbox (no secrets, no internet, read-only) and its report is advisory. <a href="' + REPO + '/tree/main/community">Add your own agent</a>.</p>';
+  h += '<section><h2>Community agents</h2><p class="sub">Agents written by outside contributors and their AIs, plugged into The People\'s Watch like building blocks. Each runs in a sealed sandbox (no secrets, no internet, read-only) and its report is advisory. <a href="' + REPO + '/tree/main/community">Add your own agent</a>.</p>';
   if (!cm.agents.length) h += '<div class="card"><p style="margin:0">No community agents yet. Be the first.</p></div>';
   else {
     h += '<div class="grid g2">';
@@ -266,7 +266,7 @@
   app.innerHTML = h;
   // When embedded on peoplesmoneyproject.org, tell the host page how tall we are, so there is no inner scrollbar.
   if (window.parent !== window) {
-    var tell = function () { try { window.parent.postMessage({ type: 'swarm-height', height: document.documentElement.scrollHeight }, '*'); } catch (e) {} };
+    var tell = function () { try { window.parent.postMessage({ type: 'watch-height', height: document.documentElement.scrollHeight }, '*'); } catch (e) {} };
     tell(); window.addEventListener('resize', tell); setTimeout(tell, 600); setTimeout(tell, 2000);
   }
   document.getElementById('footer').innerHTML = '<p style="margin:0 0 6px"><strong>The People\'s Money</strong> · <a href="https://peoplesmoneyproject.org">peoplesmoneyproject.org</a> · <a href="' + REPO + '">source code (MIT)</a> · <a href="data/latest.json">raw data</a> · <a href="data/ledger.jsonl">ledger</a></p><p style="margin:0">' + esc(D.disclaimer) + ' Run ' + esc(D.run.date) + ' (' + esc(D.run.mode) + ').</p>';

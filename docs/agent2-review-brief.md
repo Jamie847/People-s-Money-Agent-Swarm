@@ -1,6 +1,6 @@
-# Review brief for Agent 2: the agent-swarm shadow run
+# Review brief for Agent 2: The People's Watch shadow run
 
-Jamie asks you to review the swarm the way you reviewed the Design Paper: attack it, accept nothing on trust, and say plainly
+Jamie asks you to review The People's Watch the way you reviewed the Design Paper: attack it, accept nothing on trust, and say plainly
 what you accept, what you reject, and why. Four jobs, in order of importance.
 
 **Repo:** https://github.com/Jamie847/People-s-Money-Agent-Swarm · **Dashboard:** https://jamie847.github.io/People-s-Money-Agent-Swarm/
@@ -8,7 +8,7 @@ what you accept, what you reject, and why. Four jobs, in order of importance.
 
 ## 1. Rule on the seven interpretations
 
-The book leaves these open; the swarm had to choose. For each: **accept**, **change** (give the exact rule), or **send to
+The book leaves these open; the Watch had to choose. For each: **accept**, **change** (give the exact rule), or **send to
 Jamie** as a policy decision. They are listed in `config/rule.json` → `interpretations_pending_review`.
 
 1. CPI-U and PCE have different base years, so each is a log gap from its own epoch level, and the two gaps are averaged.
@@ -30,7 +30,7 @@ dollar index ~1-month +3% / +5%; SOFR over IORB +0.10 / +0.25 points; 5y5y expec
 ## 3. Write Calculator D, independently
 
 Write a recompute of the rule **from the book and Design Paper, without reading this repo's calculator code**, as a
-community agent (`community/<id>/`, see `community/README.md`) that returns a `recompute` object. The swarm compares it
+community agent (`community/<id>/`, see `community/README.md`) that returns a `recompute` object. The Watch compares it
 every run and raises a public flag on any difference larger than 0.001. Disagreement is a finding, not a failure: report
 which implementation is wrong.
 

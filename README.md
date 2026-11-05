@@ -1,8 +1,10 @@
-# The People's Money — Agent Swarm
+# The People's Watch
+
+*The People's Money*, run in public.
 
 An **unofficial, public shadow run** of the issuance rule in *The People's Money* (Jamie Murray, 2026).
 
-Every day, a swarm of small agents reads public data, applies the rule three independent ways, watches for trouble at home and abroad, and publishes every number to a dashboard, with a tamper-evident record anyone can check.
+Every day, a network of small AI agents reads public data, applies the rule three independent ways, watches for trouble at home and abroad, and publishes every number to a dashboard, with a tamper-evident record anyone can check.
 
 > **The law sets the rule, people make the few real decisions, and the agents do everything else.**
 > The rule's arithmetic is plain code, not AI. The agents fetch, check, watch and report around it. Nothing they do can change how much money the rule allows.
@@ -14,7 +16,7 @@ Every day, a swarm of small agents reads public data, applies the rule three ind
 - **It does not test** whether the rule would keep prices stable. That needs the economic stress tests described in Chapter 9.
 - Each live reading uses the rule's inputs **as published on its computation date** (ALFRED vintages, archived in `data/inputs/vintages/`), so later revisions never change it. The replay and the sentinels use current revised data.
 
-## The swarm, tier by tier
+## The agents, tier by tier
 
 | Tier | Agents | Job | Never |
 |---|---|---|---|
@@ -38,7 +40,7 @@ After every run, a fingerprint of the ledger (a checkpoint in `data/checkpoints/
 
 ## Community agents
 
-Anyone can plug an agent into the swarm. See [`community/README.md`](community/README.md). Agents read a copy of the public record and return a short advisory report. They run sealed: empty environment, no network, read-only, 20-second limit. A maintainer's merge is the human gate.
+Anyone can plug an agent into the Watch. See [`community/README.md`](community/README.md). Agents read a copy of the public record and return a short advisory report. They run sealed: empty environment, no network, read-only, 20-second limit. A maintainer's merge is the human gate.
 
 ## The rule (Chapter 7, Design Paper 0.7.2)
 
