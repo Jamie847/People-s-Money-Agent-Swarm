@@ -103,7 +103,7 @@
   var rep = D.report || {};
   h += '<section><div class="card report"><p class="eyebrow" style="color:#8a6d0f">Plain-language report · ' + (rep.source === 'ai' ? 'written by the AI reporter, every number checked against the engine' : 'standard template') + '</p><h3>' + esc(rep.headline) + '</h3>';
   (rep.paragraphs || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
-  if (rep.source !== 'ai' && rep.reason) h += '<p class="meta">Template used: ' + esc(rep.reason) + '</p>';
+  if (rep.source !== 'ai' && rep.reason) h += '<p class="meta">' + (/rejected/i.test(rep.reason) ? 'The AI reporter\'s text was rejected because it contained a number the engine did not produce, so the standard template is shown.' : 'The AI reporter is not running right now, so the standard template is shown.') + '</p>';
   h += '</div></section>';
 
   // ---- The calculation ----
