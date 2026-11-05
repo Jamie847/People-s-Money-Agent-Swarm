@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T17:06:33.664Z",
-    "finished_at": "2026-11-05T17:06:48.452Z",
+    "started_at": "2026-11-05T17:09:38.596Z",
+    "finished_at": "2026-11-05T17:09:53.791Z",
     "mode": "live",
-    "ledger_seq": 14,
-    "ledger_hash": "aeeb1036b0682c097fb5cab9b2e833d895664a633366b591b7e1d9145368653a"
+    "ledger_seq": 15,
+    "ledger_hash": "b331746eb1f377030ed91d371ab5dfa9de961c66e8bcae39bbb0ce1fcf5855b7"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -2178,9 +2178,8 @@
       {
         "id": "CURRENCY",
         "check": "fresh",
-        "status": "warn",
-        "last": "2025-10-01",
-        "detail": "Latest CURRCIR observation is 2025-10-01 (400 days old)"
+        "status": "ok",
+        "detail": "Latest 2026-10-28; 1244 observations; sha256 579a03174a2b…"
       },
       {
         "id": "NGDP",
@@ -5448,11 +5447,15 @@
           "status": "calm",
           "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze.",
           "calibration": {
-            "since": "2019-02-04",
-            "readings": 1935,
-            "watch_rate_pct": 2.8,
-            "stress_rate_pct": 0.6,
+            "since": "2007-01-01",
+            "readings": 4962,
+            "watch_rate_pct": 4.3,
+            "stress_rate_pct": 0.8,
             "stress_periods": [
+              "2008",
+              "2009",
+              "2010",
+              "2011",
               "2020"
             ]
           },
@@ -15036,9 +15039,9 @@
           "status": "calm",
           "note": "If markets expect inflation far above target years ahead, trust in the measuring stick is slipping.",
           "calibration": {
-            "since": "2019-01-02",
-            "readings": 1962,
-            "watch_rate_pct": 0,
+            "since": "2007-01-02",
+            "readings": 4965,
+            "watch_rate_pct": 0.1,
             "stress_rate_pct": 0,
             "stress_periods": []
           },
@@ -18990,9 +18993,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T17:06:33.437Z",
+    "ran_at": "2026-11-05T17:09:38.347Z",
     "isolated": true,
-    "context_sha256": "ffc2c334f40635b41be697712558fd782ae9e7d4bd3dc37bfe8b803d2b723117",
+    "context_sha256": "c6a856638a059c911fbe5e55df8d1a8b9826bb7d1bec910bab1874c54f0ee8dd",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -19001,7 +19004,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 39,
+        "duration_ms": 46,
         "isolated": true,
         "report": {
           "status": "info",
@@ -19031,7 +19034,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T17:06:33.612Z",
+    "ran_at": "2026-11-05T17:09:38.544Z",
     "all_caught": true,
     "attacks": [
       {
@@ -19056,7 +19059,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 10 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 11 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -19139,22 +19142,6 @@
   },
   "packets": [
     {
-      "id": "DATA_PROBLEM-0212750d0a",
-      "type": "DATA_PROBLEM",
-      "severity": "review",
-      "title": "Data problem: CURRENCY",
-      "what_happened": "Latest CURRCIR observation is 2025-10-01 (400 days old)",
-      "what_the_rule_says": "Stale inputs are disclosed; monthly payments of an allowance already fixed continue; no first issuance occurs without a verified target (Ch. 7).",
-      "who_decides": "Inspector general (inputs); money authority (disclosure)",
-      "evidence": {
-        "id": "CURRENCY",
-        "check": "fresh",
-        "status": "warn",
-        "last": "2025-10-01",
-        "detail": "Latest CURRCIR observation is 2025-10-01 (400 days old)"
-      }
-    },
-    {
       "id": "SENTINEL-32f737650c",
       "type": "SENTINEL",
       "severity": "review",
@@ -19214,7 +19201,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "15 entries; head aeeb1036b0682c09…"
+        "detail": "16 entries; head b331746eb1f37703…"
       },
       {
         "name": "input-fingerprints",
@@ -19293,7 +19280,7 @@
       "group": "Integrity",
       "name": "Freshness checker",
       "job": "Flag missing or stale inputs; disclose, never fill.",
-      "status": "warn"
+      "status": "ok"
     },
     {
       "tier": 1,
@@ -19790,15 +19777,15 @@
     },
     {
       "id": "CURRENCY",
-      "series": "CURRCIR",
+      "series": "WCURCIR",
       "agency": "Federal Reserve Board (H.4.1)",
-      "title": "Currency in circulation",
-      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CURRCIR&cosd=1999-01-01",
+      "title": "Currency in circulation (Wednesday level)",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WCURCIR&cosd=2003-01-01",
       "file": "data/inputs/CURRENCY.csv",
-      "sha256": "f12971c5cccce9ecd40f1e11dbdafecbaa2bf50763185ef47c56b5f1a194b719",
+      "sha256": "579a03174a2ba71401a987bcd9f9025ec944ece015797abce63b877d02efe940",
       "last": {
-        "date": "2025-10-01",
-        "value": 2415.653
+        "date": "2026-10-28",
+        "value": 2484501
       },
       "ok": true,
       "error": null
@@ -19884,14 +19871,14 @@
     "model": "claude-haiku-5-5",
     "verified": true,
     "usage": {
-      "input_tokens": 1860,
+      "input_tokens": 1845,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 370,
+      "output_tokens": 400,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -19899,12 +19886,12 @@
       "inference_geo": "global",
       "speed": "standard"
     },
-    "headline": "Three calculators agree this quarter: no price-gap correction, brake not needed",
+    "headline": "Shadow run for 2026-Q2: price gap zero, brake off, all three calculators agree",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed, and no real money or official figures are changed. Think of it as a practice drill that checks what the rule would have said.",
-      "For 2026-Q2, the latest quarter, all three separately written calculators agreed. The price gap was zero, so there was no gap to correct. The allowed growth path is 2.47% per year, which works out to a step of 0.611% per quarter. The brake, a safety stop that slows issuance when prices drift too far, is off because it is not needed.",
-      "Some readings need a closer look. A data problem about currency is still open for human review. One item, the change in Treasury securities held in custody for foreign official accounts, is marked as a watch item. The next computation is set for 2026-11-15 and will use the July, August and September data for 2026-Q3.",
-      "Keep in mind that the tests of whether this design keeps prices stable have not been run. These results only show what the rule would say on these numbers."
+      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed. No money is issued, and no real rule is changed. The run only shows what the rule would have done.",
+      "For the latest quarter, 2026-Q2, the price gap is zero. Think of it like a thermostat set at a target: the room is exactly where it should be, so the heater does not need to push harder. The brake is off because it is not needed. All three separate calculators reached the same answer.",
+      "The allowed growth path is 2.47% per year, or about 0.611% per quarter. Several market readings are marked as 'watch' or 'context', including one Treasury custody reading that has an open human review. The 'watch' label means someone should keep an eye on it, not that a problem has been confirmed. The next computation is set for 2026-11-15, using data for July, August, and September 2026.",
+      "The design has not been proven to keep prices stable. The tests that would show this have not been run. Past replays showed large gaps in earlier periods, so these results should be read as a record of one quarter, not as proof."
     ]
   },
   "head_to_head": {
@@ -20371,82 +20358,82 @@
       {
         "year": 2009,
         "interest_to_banks_estimate_b": 2.2,
-        "inflation_on_cash_b": 24.7
+        "inflation_on_cash_b": 25
       },
       {
         "year": 2010,
         "interest_to_banks_estimate_b": 2.7,
-        "inflation_on_cash_b": 13.3
+        "inflation_on_cash_b": 13.4
       },
       {
         "year": 2011,
         "interest_to_banks_estimate_b": 3.7,
-        "inflation_on_cash_b": 30
+        "inflation_on_cash_b": 30.1
       },
       {
         "year": 2012,
         "interest_to_banks_estimate_b": 3.8,
-        "inflation_on_cash_b": 18.8
+        "inflation_on_cash_b": 18.9
       },
       {
         "year": 2013,
         "interest_to_banks_estimate_b": 5.1,
-        "inflation_on_cash_b": 17.5
+        "inflation_on_cash_b": 17.6
       },
       {
         "year": 2014,
         "interest_to_banks_estimate_b": 6.7,
-        "inflation_on_cash_b": 8
+        "inflation_on_cash_b": 8.1
       },
       {
         "year": 2015,
         "interest_to_banks_estimate_b": 6.7,
-        "inflation_on_cash_b": 8.5
+        "inflation_on_cash_b": 8.6
       },
       {
         "year": 2016,
         "interest_to_banks_estimate_b": 11.7,
-        "inflation_on_cash_b": 29
+        "inflation_on_cash_b": 29.2
       },
       {
         "year": 2017,
         "interest_to_banks_estimate_b": 24.7,
-        "inflation_on_cash_b": 31.9
+        "inflation_on_cash_b": 32.1
       },
       {
         "year": 2018,
         "interest_to_banks_estimate_b": 36.6,
-        "inflation_on_cash_b": 32.1
+        "inflation_on_cash_b": 32.3
       },
       {
         "year": 2019,
         "interest_to_banks_estimate_b": 33.5,
-        "inflation_on_cash_b": 39.6
+        "inflation_on_cash_b": 39.7
       },
       {
         "year": 2020,
         "interest_to_banks_estimate_b": 7.6,
-        "inflation_on_cash_b": 23.7
+        "inflation_on_cash_b": 23.8
       },
       {
         "year": 2021,
         "interest_to_banks_estimate_b": 5,
-        "inflation_on_cash_b": 148.5
+        "inflation_on_cash_b": 149.3
       },
       {
         "year": 2022,
         "interest_to_banks_estimate_b": 55.2,
-        "inflation_on_cash_b": 142.4
+        "inflation_on_cash_b": 143
       },
       {
         "year": 2023,
         "interest_to_banks_estimate_b": 165.1,
-        "inflation_on_cash_b": 76.2
+        "inflation_on_cash_b": 76.4
       },
       {
         "year": 2024,
         "interest_to_banks_estimate_b": 176.2,
-        "inflation_on_cash_b": 67
+        "inflation_on_cash_b": 67.2
       },
       {
         "year": 2025,
@@ -20483,20 +20470,8 @@
       "ai_per_run_usd": 0.0004,
       "ai_per_month_usd": 0.01,
       "ai_tokens_last_run": {
-        "input_tokens": 1860,
-        "cache_creation_input_tokens": 0,
-        "cache_read_input_tokens": 0,
-        "cache_creation": {
-          "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 0
-        },
-        "output_tokens": 370,
-        "output_tokens_details": {
-          "thinking_tokens": 0
-        },
-        "service_tier": "standard",
-        "inference_geo": "global",
-        "speed": "standard"
+        "input": 1845,
+        "output": 400
       },
       "compute": "GitHub Actions runs public projects free.",
       "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."

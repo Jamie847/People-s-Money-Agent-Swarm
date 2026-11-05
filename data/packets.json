@@ -1,21 +1,5 @@
 [
   {
-    "id": "DATA_PROBLEM-0212750d0a",
-    "type": "DATA_PROBLEM",
-    "severity": "review",
-    "title": "Data problem: CURRENCY",
-    "what_happened": "Latest CURRCIR observation is 2025-10-01 (400 days old)",
-    "what_the_rule_says": "Stale inputs are disclosed; monthly payments of an allowance already fixed continue; no first issuance occurs without a verified target (Ch. 7).",
-    "who_decides": "Inspector general (inputs); money authority (disclosure)",
-    "evidence": {
-      "id": "CURRENCY",
-      "check": "fresh",
-      "status": "warn",
-      "last": "2025-10-01",
-      "detail": "Latest CURRCIR observation is 2025-10-01 (400 days old)"
-    }
-  },
-  {
     "id": "SENTINEL-32f737650c",
     "type": "SENTINEL",
     "severity": "review",
