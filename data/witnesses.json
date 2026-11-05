@@ -1,0 +1,23 @@
+{
+  "about": "Independent witnesses for each checkpoint of the ledger. See scripts/witness.js.",
+  "checkpoints": [
+    {
+      "file": "data/checkpoints/000004-2026-11-05.json",
+      "ledger_seq": 4,
+      "ledger_entry_hash": "fbeb51eef23e526b8613a7b8f649ae04b8f546db8a6986ac34dd5b1b3cf03839",
+      "run_date": "2026-11-05",
+      "bitcoin": {
+        "status": "pending",
+        "ots_file": "data/checkpoints/000004-2026-11-05.json.ots",
+        "submitted": "2026-11-05T04:48:21.064Z"
+      },
+      "sigstore": {
+        "attestation_url": "https://github.com/Jamie847/People-s-Money-Agent-Swarm/attestations/63894142",
+        "rekor_log_index": 3692577294,
+        "rekor_search": "https://search.sigstore.dev/?logIndex=3692577294",
+        "verify": "gh attestation verify data/checkpoints/000004-2026-11-05.json --repo Jamie847/People-s-Money-Agent-Swarm"
+      },
+      "wayback": null
+    }
+  ]
+}

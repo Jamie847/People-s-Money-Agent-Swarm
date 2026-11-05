@@ -1,0 +1,11 @@
+{
+  "what": "Checkpoint of The People's Money agent-swarm ledger",
+  "repository": "https://github.com/Jamie847/People-s-Money-Agent-Swarm",
+  "ledger_file": "data/ledger.jsonl",
+  "ledger_entries": 5,
+  "ledger_seq": 4,
+  "ledger_entry_hash": "fbeb51eef23e526b8613a7b8f649ae04b8f546db8a6986ac34dd5b1b3cf03839",
+  "ledger_file_sha256": "a4f952f8bc3ac125ed89c926f815c1f24d8373d6e378f6161091d3ff4bed9b7d",
+  "run_date": "2026-11-05",
+  "how_to_verify": "node scripts/witness.js verify data/checkpoints/000004-2026-11-05.json"
+}
