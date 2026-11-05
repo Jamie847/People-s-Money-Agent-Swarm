@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T15:41:16.805Z",
-    "finished_at": "2026-11-05T15:41:24.835Z",
+    "started_at": "2026-11-05T16:48:09.169Z",
+    "finished_at": "2026-11-05T16:48:16.434Z",
     "mode": "live",
-    "ledger_seq": 12,
-    "ledger_hash": "9c2cb3432db938f2bd83cd990d5825442efc55fe5ebd2bbf0039d3136b83c14b"
+    "ledger_seq": 13,
+    "ledger_hash": "2114a8349c54de41064fddc97ef3e0fac1a396450b3238df194bf8323b3d0d13"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -28,7 +28,7 @@
       "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
       "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
       "Brake release 'within 1% of target' is read as a price gap of 1 log point or less.",
-      "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Open for review.",
+      "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Decided by the author on November 5, 2026: keep the launch data, disclosed; reviewers may still challenge it.",
       "Which three months: the three months of the most recent complete calendar quarter (Jul-Sep for the Nov 15 reading), not the latest three monthly releases available on the computation date.",
       "Real GDP: annual real GDP in chained dollars (BEA via FRED series GDPCA); annual percent changes are computed from these levels, not taken from the rounded percent changes in NIPA Table 1.1.1. A year's figure is first used from May 1 of the following year.",
       "Frozen starting prices vs. later revisions: starting-quarter prices are frozen while each later reading uses its own vintage, so revisions to past months (CPI-U seasonal factors each February; PCE annual updates) can show up in later gaps. Alternatives: re-read the starting quarter from each new vintage, or use the not-seasonally-adjusted CPI-U, which is never revised.",
@@ -17319,9 +17319,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T15:41:16.526Z",
+    "ran_at": "2026-11-05T16:48:08.975Z",
     "isolated": true,
-    "context_sha256": "afd969a977e147f49442bbc2e3ee35693689de88a5dc945c13842db954fa6ade",
+    "context_sha256": "ec78334d39f560bc9020fa936c0775d130fcb7d34d57ee0db563a2d5e651625e",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17330,7 +17330,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 51,
+        "duration_ms": 34,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17360,7 +17360,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T15:41:16.743Z",
+    "ran_at": "2026-11-05T16:48:09.124Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17385,7 +17385,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 8 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 9 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17498,7 +17498,7 @@
         "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
         "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
         "Brake release 'within 1% of target' is read as a price gap of 1 log point or less.",
-        "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Open for review.",
+        "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Decided by the author on November 5, 2026: keep the launch data, disclosed; reviewers may still challenge it.",
         "Which three months: the three months of the most recent complete calendar quarter (Jul-Sep for the Nov 15 reading), not the latest three monthly releases available on the computation date.",
         "Real GDP: annual real GDP in chained dollars (BEA via FRED series GDPCA); annual percent changes are computed from these levels, not taken from the rounded percent changes in NIPA Table 1.1.1. A year's figure is first used from May 1 of the following year.",
         "Frozen starting prices vs. later revisions: starting-quarter prices are frozen while each later reading uses its own vintage, so revisions to past months (CPI-U seasonal factors each February; PCE annual updates) can show up in later gaps. Alternatives: re-read the starting quarter from each new vintage, or use the not-seasonally-adjusted CPI-U, which is never revised.",
@@ -17527,7 +17527,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "13 entries; head 9c2cb3432db938f2…"
+        "detail": "14 entries; head 2114a8349c54de41…"
       },
       {
         "name": "input-fingerprints",
@@ -18084,12 +18084,12 @@
     "source": "ai",
     "model": "claude-haiku-5-5",
     "verified": true,
-    "headline": "Quarter 2026-Q2 result: price gap is zero; no brake needed this quarter.",
+    "headline": "Quarter 2026-Q2 result: price gap is zero, and no brake was needed.",
     "paragraphs": [
-      "This is an unofficial shadow run of \"The People's Money\" issuance rule, run by The People's Watch. Nothing is executed. No money is issued, and no real rule is changed. We are only checking what the design would have done.",
-      "For the latest quarter, 2026-Q2, the price gap was zero. Think of it like a thermostat: the room is exactly at the set temperature, so the heater does not need to kick on. The brake is off, and the note says it was not needed. The allowed growth path is 2.47% per year, which works out to a step of 0.611% per quarter. Three separate calculators were run, and all three agreed.",
-      "The money-flow checks are mostly calm. The Financial Stress Index reads -0.522, where 0 means normal. One item, Treasury securities held in custody for foreign and international accounts, is marked watch with a 13-week change of -3.314%. A human reviewer packet is open for it.",
-      "The next computation is for 2026-Q3, scheduled for 2026-11-15, using price data for July, August, and September 2026. These are tests of the design, not proof that it keeps prices stable. That question has not been tested yet."
+      "This is an unofficial shadow run of The People's Money issuance rule, called The People's Watch. Nothing is executed. It is a practice run that shows what the rule would have done, and no real money is issued or changed.",
+      "For the latest quarter, 2026-Q2, the price gap was zero. Think of the gap like a thermostat reading: zero means the room is at the set temperature. The allowed growth path is 2.47 percent per year, and the step for each quarter is 0.611 percent. Three separate calculators checked the work and all three agreed. The brake, which is a safety pause, is off because it was not needed.",
+      "Some signals are being watched. One measure of foreign holdings of Treasury securities is marked 'watch,' and it has an open human review. The broader dollar measures are mostly calm. The next calculation is set for 2026-11-15, for quarter 2026-Q3, using July, August, and September data.",
+      "These results do not prove the design keeps prices stable. The tests that would show that have not been run, so no conclusion about whether it works should be drawn from this run."
     ]
   }
 }
