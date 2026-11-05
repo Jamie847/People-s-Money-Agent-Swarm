@@ -4,7 +4,7 @@
     "type": "SENTINEL",
     "severity": "review",
     "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
-    "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
+    "what_happened": "13-week change, %: -3.314 (watch -3, stress -4.5) as of 2026-10-28.",
     "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
     "who_decides": "In the design: the money authority head and the Treasury Secretary jointly (emergency clause). In this test run: logged for public review; nothing is executed.",
     "evidence": {

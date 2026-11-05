@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T14:20:24.603Z",
-    "finished_at": "2026-11-05T14:20:34.165Z",
+    "started_at": "2026-11-05T15:41:16.805Z",
+    "finished_at": "2026-11-05T15:41:24.835Z",
     "mode": "live",
-    "ledger_seq": 11,
-    "ledger_hash": "1e9bec75c52b9e8dde2d6e5bf79c71c86891201b2070ec416504961ff2703711"
+    "ledger_seq": 12,
+    "ledger_hash": "9c2cb3432db938f2bd83cd990d5825442efc55fe5ebd2bbf0039d3136b83c14b"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -603,6 +603,19 @@
           "direction": "up",
           "status": "calm",
           "note": "Peaks: about $583B (Dec 2008) and $449B (May 2020).",
+          "calibration": {
+            "since": "2007-01-03",
+            "readings": 1035,
+            "watch_rate_pct": 18.9,
+            "stress_rate_pct": 11.1,
+            "stress_periods": [
+              "2008",
+              "2009",
+              "2011",
+              "2012",
+              "2020"
+            ]
+          },
           "history": [
             [
               "2007-01-03",
@@ -1661,6 +1674,15 @@
           "direction": "up",
           "status": "calm",
           "note": "Usage above zero means foreign official holders needed dollars against their Treasuries.",
+          "calibration": {
+            "since": "2007-01-03",
+            "readings": 1035,
+            "watch_rate_pct": 2.8,
+            "stress_rate_pct": 0.5,
+            "stress_periods": [
+              "2023"
+            ]
+          },
           "history": [
             [
               "2007-01-03",
@@ -2715,10 +2737,19 @@
           "metric_label": "13-week change, %",
           "value": -3.314,
           "watch": -3,
-          "stress": -6,
+          "stress": -4.5,
           "direction": "down",
           "status": "watch",
           "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries.",
+          "calibration": {
+            "since": "2007-10-03",
+            "readings": 996,
+            "watch_rate_pct": 4.3,
+            "stress_rate_pct": 0.1,
+            "stress_periods": [
+              "2014"
+            ]
+          },
           "history": [
             [
               "2007-01-03",
@@ -3777,6 +3808,15 @@
           "direction": "up",
           "status": "calm",
           "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze.",
+          "calibration": {
+            "since": "2019-02-04",
+            "readings": 1935,
+            "watch_rate_pct": 2.8,
+            "stress_rate_pct": 0.6,
+            "stress_periods": [
+              "2020"
+            ]
+          },
           "history": [
             [
               "2019-01-02",
@@ -4779,6 +4819,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context only: the size of the offshore dollar system the transition must survive.",
+          "calibration": null,
           "history": [
             [
               "2005-01-01",
@@ -5146,6 +5187,18 @@
           "direction": "up",
           "status": "calm",
           "note": "Stand-in for the design's payment-stress index, which is not yet specified.",
+          "calibration": {
+            "since": "2007-01-05",
+            "readings": 1035,
+            "watch_rate_pct": 10.6,
+            "stress_rate_pct": 4.3,
+            "stress_periods": [
+              "2007",
+              "2008",
+              "2009",
+              "2020"
+            ]
+          },
           "history": [
             [
               "2007-01-05",
@@ -6204,6 +6257,16 @@
           "direction": "up",
           "status": "calm",
           "note": "Stand-in for the design's payment-stress index.",
+          "calibration": {
+            "since": "2007-01-05",
+            "readings": 1035,
+            "watch_rate_pct": 7.5,
+            "stress_rate_pct": 3.6,
+            "stress_periods": [
+              "2008",
+              "2009"
+            ]
+          },
           "history": [
             [
               "2007-01-05",
@@ -7262,6 +7325,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context only: the credit-standards formula (Ch. 8) has not been written yet, so no threshold is set.",
+          "calibration": null,
           "history": [
             [
               "2007-01-03",
@@ -8320,6 +8384,7 @@
           "direction": "up",
           "status": "calm",
           "note": "Context: the cost of long-term federal borrowing.",
+          "calibration": null,
           "history": [
             [
               "2019-01-02",
@@ -9327,6 +9392,15 @@
           "direction": "up",
           "status": "calm",
           "note": "Funding strain: when overnight Treasury-backed borrowing costs rise well above the rate on reserves, cash is getting scarce (as in September 2019).",
+          "calibration": {
+            "since": "2021-07-29",
+            "readings": 1315,
+            "watch_rate_pct": 1.8,
+            "stress_rate_pct": 0.1,
+            "stress_periods": [
+              "2025"
+            ]
+          },
           "history": [
             [
               "2021-07-29",
@@ -10225,6 +10299,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: the reserves that would become custody balances behind protected accounts at the switch (Ch. 8).",
+          "calibration": null,
           "history": [
             [
               "2007-01-03",
@@ -11283,6 +11358,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: the Treasury's cash balance. The design caps Treasury cash and pays out any excess as a dividend (Ch. 9).",
+          "calibration": null,
           "history": [
             [
               "2007-01-03",
@@ -12341,6 +12417,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: spare cash money funds park at the Fed overnight ($ billions).",
+          "calibration": null,
           "history": [
             [
               "2019-01-02",
@@ -13343,6 +13420,13 @@
           "direction": "up",
           "status": "calm",
           "note": "If markets expect inflation far above target years ahead, trust in the measuring stick is slipping.",
+          "calibration": {
+            "since": "2019-01-02",
+            "readings": 1962,
+            "watch_rate_pct": 0,
+            "stress_rate_pct": 0,
+            "stress_periods": []
+          },
           "history": [
             [
               "2019-01-02",
@@ -14349,6 +14433,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: what households expect prices to do over the next year.",
+          "calibration": null,
           "history": [
             [
               "2007-01-01",
@@ -15315,6 +15400,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: the middle price change across the CPI basket, a check on how broad inflation is.",
+          "calibration": null,
           "history": [
             [
               "2007-01-01",
@@ -16281,6 +16367,7 @@
           "direction": "up",
           "status": "context",
           "note": "Context: the book's goal is stable prices while supporting employment; the rule does not target jobs directly.",
+          "calibration": null,
           "history": [
             [
               "2007-01-01",
@@ -17232,9 +17319,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T14:20:24.293Z",
+    "ran_at": "2026-11-05T15:41:16.526Z",
     "isolated": true,
-    "context_sha256": "0a11bab3d9fd7d92d149c92fea02cb4cda3bf433947f1cde57bbd67a887ec5ea",
+    "context_sha256": "afd969a977e147f49442bbc2e3ee35693689de88a5dc945c13842db954fa6ade",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17243,7 +17330,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 42,
+        "duration_ms": 51,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17273,7 +17360,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T14:20:24.557Z",
+    "ran_at": "2026-11-05T15:41:16.743Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17298,7 +17385,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 7 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 8 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17385,7 +17472,7 @@
       "type": "SENTINEL",
       "severity": "review",
       "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
-      "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
+      "what_happened": "13-week change, %: -3.314 (watch -3, stress -4.5) as of 2026-10-28.",
       "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
       "who_decides": "In the design: the money authority head and the Treasury Secretary jointly (emergency clause). In this test run: logged for public review; nothing is executed.",
       "evidence": {
@@ -17440,7 +17527,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "12 entries; head 1e9bec75c52b9e8d…"
+        "detail": "13 entries; head 9c2cb3432db938f2…"
       },
       {
         "name": "input-fingerprints",
@@ -17997,12 +18084,12 @@
     "source": "ai",
     "model": "claude-haiku-5-5",
     "verified": true,
-    "headline": "This quarter's result: three calculators agree, no brake needed, prices on track.",
+    "headline": "Quarter 2026-Q2 result: price gap is zero; no brake needed this quarter.",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed. Think of it as a practice run that checks what the rule would have done, without touching any real money.",
-      "For 2026-Q2, the three calculators agreed. The price gap was 0, which means the price level sat right on its target path. The allowed growth along that path is 2.47% per year, or about 0.611% per quarter. The brake, a safety stop that would slow issuance if prices ran too hot, stayed off because it was not needed.",
-      "Some readings are marked as watch. One is a 13-week drop of 3.314% in Treasury securities held for foreign official accounts, flagged for human review. Another, the broad dollar index, rose about 0.576% over one month. Other stress and funding gauges read calm, like a thermostat reading near its set point.",
-      "The next computation is set for 2026-11-15, covering 2026-Q3 and using the July, August and September data. A replay of the rule starting in 2020-Q1 ran 23 quarters and shows how large gaps can get in a bad stretch, but this is a test, not proof. Whether the rule keeps prices stable has not been tested in the real world."
+      "This is an unofficial shadow run of \"The People's Money\" issuance rule, run by The People's Watch. Nothing is executed. No money is issued, and no real rule is changed. We are only checking what the design would have done.",
+      "For the latest quarter, 2026-Q2, the price gap was zero. Think of it like a thermostat: the room is exactly at the set temperature, so the heater does not need to kick on. The brake is off, and the note says it was not needed. The allowed growth path is 2.47% per year, which works out to a step of 0.611% per quarter. Three separate calculators were run, and all three agreed.",
+      "The money-flow checks are mostly calm. The Financial Stress Index reads -0.522, where 0 means normal. One item, Treasury securities held in custody for foreign and international accounts, is marked watch with a 13-week change of -3.314%. A human reviewer packet is open for it.",
+      "The next computation is for 2026-Q3, scheduled for 2026-11-15, using price data for July, August, and September 2026. These are tests of the design, not proof that it keeps prices stable. That question has not been tested yet."
     ]
   }
 }
