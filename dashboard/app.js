@@ -1,6 +1,11 @@
 (function () {
   var D = window.SWARM_DATA;
-  var REPO = 'https://github.com/Jamie847/People-s-Money-Agent-Swarm';
+  // Works before and after the repository is renamed: on GitHub Pages the repo name is the first path segment.
+  var REPO = (function () {
+    var m = /^([a-z0-9-]+)\.github\.io$/i.exec(location.hostname);
+    var seg = location.pathname.split('/')[1];
+    return m && seg ? 'https://github.com/' + m[1] + '/' + seg : 'https://github.com/Jamie847/People-s-Money-Agent-Swarm';
+  })();
   var app = document.getElementById('app');
   var EMBED = /[?&]embed=1/.test(location.search);
   if (EMBED) document.documentElement.className += ' embed';
@@ -246,7 +251,7 @@
   h += '<section><h2>Check it yourself</h2><p class="sub">Every run is sealed into a public, append-only ledger. Each entry is chained to the one before it, so a quiet edit would break every seal after it. The auditor re-checks everything after each run.</p><div class="grid g2"><div class="card"><table><thead><tr><th>Audit check</th><th>Result</th></tr></thead><tbody>';
   D.audit.checks.forEach(function (c) { h += '<tr><td>' + esc(c.name) + '<div class="meta">' + esc(c.detail) + '</div></td><td>' + pill(c.status === 'ok' ? 'ok' : 'fail', c.status === 'ok' ? 'pass' : 'fail') + '</td></tr>'; });
   h += '</tbody></table><p class="meta">Ledger entry #' + D.run.ledger_seq + ' · seal <span class="mono">' + esc(D.run.ledger_hash.slice(0, 24)) + '…</span></p></div>';
-  h += '<div class="card"><p style="margin-top:0"><strong>Recompute the number on your own computer</strong> (Python 3, no installs):</p><pre>git clone ' + REPO + '.git\ncd People-s-Money-Agent-Swarm\npython3 scripts/recompute.py</pre><p class="meta">It reads the same raw files the sensors downloaded and prints the same numbers shown above, with each file\'s fingerprint.</p></div></div>';
+  h += '<div class="card"><p style="margin-top:0"><strong>Recompute the number on your own computer</strong> (Python 3, no installs):</p><pre>git clone ' + REPO + '.git\ncd ' + REPO.split('/').pop() + '\npython3 scripts/recompute.py</pre><p class="meta">It reads the same raw files the sensors downloaded and prints the same numbers shown above, with each file\'s fingerprint.</p></div></div>';
   h += '<div class="card" style="margin-top:14px"><table><thead><tr><th>Input</th><th>Agency</th><th>Latest</th><th>Fingerprint (SHA-256)</th></tr></thead><tbody>';
   D.sources.forEach(function (s) { h += '<tr><td><a href="' + esc(s.url) + '">' + esc(s.id) + '</a><div class="meta">' + esc(s.title) + '</div></td><td>' + esc(s.agency) + '</td><td class="num">' + esc(s.last ? s.last.date + ' = ' + s.last.value : (s.error || '—')) + '</td><td class="num">' + esc(s.sha256 ? s.sha256.slice(0, 16) + '…' : '—') + '</td></tr>'; });
   h += '</tbody></table></div></section>';
