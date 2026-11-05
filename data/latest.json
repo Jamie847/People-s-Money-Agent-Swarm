@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T05:32:56.708Z",
-    "finished_at": "2026-11-05T05:33:03.049Z",
+    "started_at": "2026-11-05T05:36:38.110Z",
+    "finished_at": "2026-11-05T05:36:47.652Z",
     "mode": "live",
-    "ledger_seq": 6,
-    "ledger_hash": "c99c8917736da055a89c95c560cf2e596a44a3ef47fcb18097cfa75e29b03c02"
+    "ledger_seq": 7,
+    "ledger_hash": "d6227cbe661a90237fb72c7733d6adc94490ada5f51145dd992bee1cb0ae9fbb"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -17227,9 +17227,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T05:32:56.442Z",
+    "ran_at": "2026-11-05T05:36:37.824Z",
     "isolated": true,
-    "context_sha256": "7b40c840f99b0e54cd4f38dc29d900f0c9a035d78646b09f931b9b10ca9a2483",
+    "context_sha256": "eecbbaff6c763149417faa0bc64f399d14d2b2ec5e99632945896f0dc35f743a",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17238,7 +17238,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 47,
+        "duration_ms": 52,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17268,7 +17268,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T05:32:56.652Z",
+    "ran_at": "2026-11-05T05:36:38.046Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17293,7 +17293,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 2 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 3 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17430,7 +17430,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "7 entries; head c99c8917736da055…"
+        "detail": "8 entries; head d6227cbe661a9023…"
       },
       {
         "name": "input-fingerprints",
@@ -17985,8 +17985,9 @@
   ],
   "report": {
     "source": "template",
-    "reason": "Reporter error: Unexpected end of JSON input",
+    "reason": "AI reply could not be read (stop: max_tokens)",
     "model": "claude-haiku-5-5",
+    "raw_excerpt": "",
     "headline": "Rule allows 2.47% path growth for 2026-Q2; brake off",
     "paragraphs": [
       "For 2026-Q2, the rule measured prices right at its flat target (this is the starting quarter, so the gap is zero by definition) and long-run real growth of 2.47% a year. So it would let the path for public money grow at 2.47% a year. Three independent calculators agreed.",
