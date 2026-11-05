@@ -117,3 +117,17 @@ test('reporter: reads JSON, fenced JSON and plain text replies', () => {
   assert.equal(p.paragraphs.length, 2);
   assert.equal(parseReport(''), null);
 });
+
+import { runBrake } from '../src/agents/brake.js';
+test('brake: an engaged brake stays engaged when a later reading jumps back above the trigger', () => {
+  const rule = { brake_trigger_log_points: 3, brake_release_log_points: 1, brake_successive_readings: 2 };
+  const gaps = [4, 4, 2, 3.5].map((g, i) => ({ quarter: `Q${i}`, gap_lp: g }));
+  const { states } = runBrake(gaps, rule);
+  assert.deepEqual(states.map((s) => s.phase), ['armed', 'engaged', 'engaged', 'engaged']);
+});
+test('brake: release at 1 log point or less, then re-arm from zero', () => {
+  const rule = { brake_trigger_log_points: 3, brake_release_log_points: 1, brake_successive_readings: 2 };
+  const gaps = [4, 4, 0.8, 3.5, null, 3.2].map((g, i) => ({ quarter: `Q${i}`, gap_lp: g }));
+  const { states } = runBrake(gaps, rule);
+  assert.deepEqual(states.map((s) => s.phase), ['armed', 'engaged', 'released', 'armed', 'armed', 'engaged']);
+});

@@ -19,7 +19,8 @@ export function runBrake(readings, rule) {
       note = 'Reading unavailable — disclosed; count not reset; an active brake holds its bill target.';
     } else if (r.gap_lp > trigger) {
       consecutive += 1;
-      if (consecutive >= need) { active = true; phase = 'engaged'; note = `Gap above ${trigger} at ${consecutive} successive readings — Stabilization Bills must be offered.`; }
+      if (active) { phase = 'engaged'; note = `Gap above ${trigger} — brake stays on and holds its bill target.`; }
+      else if (consecutive >= need) { active = true; phase = 'engaged'; note = `Gap above ${trigger} at ${consecutive} successive readings — Stabilization Bills must be offered.`; }
       else { phase = 'armed'; note = `Gap above ${trigger} at ${consecutive} reading(s); the brake engages if it is still above at the next available reading.`; }
     } else {
       consecutive = 0;

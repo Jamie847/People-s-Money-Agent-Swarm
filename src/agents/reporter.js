@@ -42,7 +42,7 @@ export function templateReport(facts) {
   const paras = [];
   if (facts.latest_quarter) {
     const where = facts.price_gap_log_points === 0 ? 'right at its flat target (this is the starting quarter, so the gap is zero by definition)' : `${fmt(Math.abs(facts.price_gap_log_points))} log points ${facts.price_gap_log_points > 0 ? 'above' : 'below'} its flat target`;
-    paras.push(`For ${facts.latest_quarter}, the rule measured prices ${where} and long-run real growth of ${fmt(facts.trend_real_growth_pct)}% a year. So it would let the path for public money grow at ${fmt(facts.path_growth_allowed_pct_per_year)}% a year. Three independent calculators ${facts.calculators_agree ? 'agreed' : 'did not agree'}.`);
+    paras.push(`For ${facts.latest_quarter}, the rule measured prices ${where} and long-run real growth of ${fmt(facts.trend_real_growth_pct)}% a year. So it would let the path for public money grow at ${fmt(facts.path_growth_allowed_pct_per_year)}% a year. ${({ 2: 'Two', 3: 'Three', 4: 'Four' })[facts.calculators_count] || 'The'} separately written calculators ${facts.calculators_agree ? 'agreed' : 'did not agree'}.`);
   } else {
     paras.push('The live shadow run has no completed quarter yet.');
   }
@@ -103,7 +103,7 @@ Hard rules:
 - Use ONLY the facts given. Every number you write must appear in the facts exactly (you may drop trailing zeros or round to fewer decimals). Do not compute new numbers.
 - No forecasts, no investment advice, no political or partisan language, no claims that the design works — the tests of whether it stabilizes prices have not been run.
 - Say plainly that this is an unofficial shadow run and nothing is executed.
-- Lead the headline with this quarter's result in plain words. There are three independent calculators; say "three" when you mention them.
+- Lead the headline with this quarter's result in plain words. There are three separately written calculators; say "three" when you mention them.
 Return ONLY JSON: {"headline": "<= 14 words", "paragraphs": ["2 to 4 short paragraphs"]}.`;
 
 export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_KEY, model = process.env.SWARM_REPORTER_MODEL || DEFAULT_MODEL, fetchImpl = globalThis.fetch } = {}) {
@@ -122,6 +122,11 @@ export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_K
     const json = parseReport(text);
     if (!json) return { source: 'template', reason: `AI reply could not be read (stop: ${body.stop_reason || 'n/a'})`, model, raw_excerpt: text.slice(0, 400), ...template };
     const check = verifyNumbers([json.headline, ...json.paragraphs].join(' '), allowedNumbers(facts));
+    const words = { one: 1, two: 2, both: 2, three: 3, four: 4 };
+    const countClaims = [...[json.headline, ...json.paragraphs].join(' ').matchAll(/\b(one|two|both|three|four)\s+(?:independent\s+|separate\s+|separately written\s+)?calculators?\b/gi)].map((m) => words[m[1].toLowerCase()]);
+    if (facts.calculators_count && countClaims.some((c) => c !== facts.calculators_count)) {
+      return { source: 'template', reason: `AI text rejected: it gives the wrong number of calculators (facts: ${facts.calculators_count})`, model, rejected_ai_text: json, ...template };
+    }
     if (!check.ok) {
       return { source: 'template', reason: `AI text rejected: numbers not found in the facts (${check.unverified.join(', ')})`, model, rejected_ai_text: json, ...template };
     }

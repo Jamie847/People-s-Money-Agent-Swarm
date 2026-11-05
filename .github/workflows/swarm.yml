@@ -1,4 +1,4 @@
-name: Swarm run
+name: The People's Watch daily run
 
 on:
   schedule:
@@ -47,7 +47,7 @@ jobs:
           SWARM_REPORTER_MODEL: claude-haiku-5-5
         run: node scripts/redteam.js
 
-      - name: Run the swarm (all tiers)
+      - name: Run the agents (all tiers)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SWARM_REPORTER_MODEL: claude-haiku-5-5   # low-cost model; the reporter makes one short call per run
@@ -85,10 +85,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "peoples-money-swarm[bot]"
+          git config user.name "peoples-watch[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
-          git commit -m "Swarm run $(date -u +%F)" || echo "Nothing to commit"
+          git commit -m "Daily run $(date -u +%F)" || echo "Nothing to commit"
           git pull --rebase origin main
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"

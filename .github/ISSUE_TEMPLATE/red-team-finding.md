@@ -1,6 +1,6 @@
 ---
 name: Red-team finding
-about: You found a way to break, fool or corrupt the swarm
+about: You found a way to break, fool or corrupt The People's Watch
 title: "[red team] "
 labels: red-team
 ---

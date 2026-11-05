@@ -56,7 +56,7 @@
       "metric": "change_vs_epoch_pp",
       "watch": 1.5,
       "stress": 3,
-      "note": "Proxy for kill criterion 5 (Treasury yields up more than 3 points and staying there)."
+      "note": "Context: the cost of long-term federal borrowing."
     }
   },
   "plumbing": {

@@ -7,7 +7,7 @@ labels: data
 
 **Which input?** (e.g., CPI, PCE, GDP, SWAPS)
 
-**What the swarm shows** (value and date):
+**What The People's Watch shows** (value and date):
 
 **What the agency published** (link to the official release):
 

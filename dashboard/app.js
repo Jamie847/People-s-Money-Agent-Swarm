@@ -19,7 +19,7 @@
 
   // Architecture at a glance (static SVG).
   function archSvg() {
-    var rows = [['Outside agencies', 'BLS, BEA, Federal Reserve, BIS publish the data', 'tint'], ['Tier 1 · Sensors and integrity', 'Fetch the data, fingerprint it, flag problems', ''], ['Tier 2 · Calculators A, B and C', 'All three must agree, or nothing is published', ''], ['SPLIT'], ['Tier 5 · Human gates', 'Packets name who decides; each opens a public issue', 'accent'], ['Tier 6 · Executor (shadow)', 'Writes only what the rule authorizes; executes nothing', ''], ['Tier 7 · Reporters', 'Plain-language report; every number checked', ''], ['The public', 'Dashboard, raw data, one-command recompute', 'tint']];
+    var rows = [['Outside agencies', 'BLS, BEA, Federal Reserve, BIS publish the data', 'tint'], ['Tier 1 · Sensors and integrity', 'Fetch the data, fingerprint it, flag problems', ''], ['Tier 2 · Calculators A, B and C', 'Every calculator that runs must agree, or nothing is published', ''], ['SPLIT'], ['Tier 5 · Human gates', 'Packets name who decides; each opens a public issue', 'accent'], ['Tier 6 · Executor (shadow)', 'Writes only what the rule authorizes; executes nothing', ''], ['Tier 7 · Reporters', 'Plain-language report; every number checked', ''], ['The public', 'Dashboard, raw data, one-command recompute', 'tint']];
     var y = 16, out = '<svg viewBox="0 0 760 ' + (16 + rows.length * 72 + 4) + '" role="img" aria-label="How The People\'s Watch is built: data flows down seven tiers to a human gate">';
     var box = function (x, w, yy, t, s, k) {
       var fill = k === 'accent' ? '#e8ecf8' : k === 'tint' ? '#f3f1ea' : '#fff', stroke = k === 'accent' ? '#13235b' : '#c9cedb';
@@ -107,7 +107,7 @@
   h += '</div></section>';
 
   // ---- The calculation ----
-  h += '<section><h2>Three calculators, one answer</h2><p class="sub">Nothing is published unless three separately written calculators agree: two in JavaScript using different arithmetic, and one in Python that re-reads the raw files on its own. Anyone can run the Python one.</p>';
+  h += '<section><h2>Three calculators, one answer</h2><p class="sub">Nothing is published unless the calculators agree: two in JavaScript using different arithmetic, and one in Python that re-reads the raw files on its own. If one cannot run, the reading needs the other two to agree and the gap is flagged for a person. All three are written from the same specification, so they catch coding mistakes, not mistakes in the specification itself; a slot is open for an outside economist to add a calculator written from the book alone. Anyone can run the Python one.</p>';
   if (latest && latest.calculators) {
     var keys = [['trend_growth_pct', 'Trend real growth, % a year', 4], ['gap_cpi_lp', 'CPI-U gap, log points', 4], ['gap_pce_lp', 'PCE gap, log points', 4], ['gap_lp', 'Price gap (average)', 4], ['allowance_raw_pct', 'Path growth before limits, %', 4], ['allowance_pct', 'Path growth allowed, %', 4], ['quarterly_step_pct', 'Quarterly step, %', 5]];
     h += '<div class="card"><table><thead><tr><th>' + esc(latest.quarter) + '</th><th>Calculator A</th><th>Calculator B</th><th>Calculator C (Python)</th></tr></thead><tbody>';
@@ -152,8 +152,8 @@
     });
     return s + '</div>';
   }
-  h += '<section><h2>Global dollar watch ' + pill(gd.overall) + '</h2><p class="sub">Trillions of dollars are owed and created outside the United States (the "Eurodollar" system). A dollar squeeze abroad can force foreign holders to dump Treasuries. These sentinels watch for it. Their watch levels are provisional and open to review.</p>' + watchCards(gd) + '</section>';
-  h += '<section><h2>Home financial stress ' + pill(dm.overall) + '</h2><p class="sub">Stand-ins for the design\'s payment-stress index (not yet specified), plus bank credit and the 10-year Treasury yield as a proxy for kill criterion 5.</p>' + watchCards(dm) + '</section>';
+  h += '<section><h2>Global dollar watch ' + pill(gd.overall) + '</h2><p class="sub">Trillions of dollars are borrowed and lent outside the United States (the "Eurodollar" system). A dollar squeeze abroad can push foreign holders to sell Treasuries to raise dollars. These sentinels watch for it. Their watch levels are provisional, set for this test run, open to review, and not part of the book's rule. Most of these indicators describe today's Federal Reserve system; they show conditions the switch-over would start from.</p>' + watchCards(gd) + '</section>';
+  h += '<section><h2>Home financial stress ' + pill(dm.overall) + '</h2><p class="sub">Stand-ins for the design\'s payment-stress index (not yet specified), plus bank credit and the 10-year Treasury yield, for context. Watch levels are provisional.</p>' + watchCards(dm) + '</section>';
   if (pl) h += '<section><h2>Plumbing and expectations ' + pill(pl.overall) + '</h2><p class="sub">The pipes money flows through (overnight funding, bank reserves, the Treasury\'s cash) and what markets and households expect prices to do. A funding squeeze or slipping expectations are early signs of trouble.</p>' + watchCards(pl) + '</section>';
 
   // ---- Transition backstop proposal ----

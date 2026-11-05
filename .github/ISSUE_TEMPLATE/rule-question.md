@@ -1,6 +1,6 @@
 ---
 name: Question a rule reading
-about: You think the swarm implements part of the rule differently from the book or Design Paper
+about: You think The People's Watch implements part of the rule differently from the book or Design Paper
 title: "[rule] "
 labels: rule
 ---
@@ -9,6 +9,6 @@ labels: rule
 
 **What the book or Design Paper says** (chapter and page or section):
 
-**What the swarm does instead:**
+**What The People's Watch does instead:**
 
 **Why it matters** (worked example welcome):

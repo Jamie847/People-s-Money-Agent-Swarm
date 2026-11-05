@@ -1,7 +1,7 @@
 {
   "name": "peoples-money-agent-swarm",
   "version": "0.1.0",
-  "description": "An unofficial, public shadow run of The People's Money issuance rule: a swarm of small agents that fetch public data, compute the rule three independent ways, watch for stress, and publish everything for anyone to check.",
+  "description": "An unofficial, public shadow run of The People's Money issuance rule: a network of small agents that fetch public data, compute the rule three independent ways, watch for stress, and publish everything for anyone to check.",
   "type": "module",
   "license": "MIT",
   "engines": {

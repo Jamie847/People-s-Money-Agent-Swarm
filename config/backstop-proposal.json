@@ -1,15 +1,22 @@
 {
-  "_about": "PROPOSAL ONLY — not part of Design Paper 0.7.2. A 'transition dollar backstop' (Jamie's methadone idea): during the switch-over, keep a published, capped, tapering dollar backstop for foreign central banks so an offshore dollar squeeze cannot force a fire sale of Treasuries. Every number here is a placeholder awaiting review by Agent 2 and outside reviewers.",
+  "_about": "PROPOSAL ONLY \u2014 not part of Design Paper 0.7.2. A 'transition dollar backstop': during the switch-over, keep a published, capped, tapering dollar backstop for foreign central banks so an offshore dollar squeeze cannot force a fire sale of Treasuries. It would create dollars outside the rule, and whether the Exchange Stabilization Fund could fund it is an open question. Every number here is a placeholder awaiting independent review.",
   "status": "proposal-pending-review",
   "operated_by": "Treasury Exchange Stabilization Fund (successor to Fed swap lines per Ch. 8 table)",
-  "instruments": ["swap lines with central banks that already hold standing lines", "repo against U.S. Treasury securities for foreign official accounts (FIMA-style)"],
+  "instruments": [
+    "swap lines with central banks that already hold standing lines",
+    "repo against U.S. Treasury securities for foreign official accounts (FIMA-style)"
+  ],
   "cap_pct_of_foreign_official_custody": 20,
   "taper_years": 5,
   "taper_pauses_when_sentinel": "stress",
   "sunset_years": 5,
   "extension_requires": "recorded vote of Congress",
   "disclosure": "every line and every draw published within 24 hours",
-  "never": ["purchase private assets", "lend to the Treasury", "change the issuance rule"],
+  "never": [
+    "purchase private assets",
+    "lend to the Treasury",
+    "change the issuance rule"
+  ],
   "open_questions": [
     "Is a cap of 20% of foreign official custody holdings large enough? It would have covered the 2020 swap peak (about $449B) but not the 2008 peak (about $583B).",
     "Should the taper follow the calendar, the sentinel readings, or both?",

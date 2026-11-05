@@ -4,7 +4,7 @@
 
 An **unofficial, public shadow run** of the issuance rule in *The People's Money* (Jamie Murray, 2026).
 
-Every day, a network of small AI agents reads public data, applies the rule three independent ways, watches for trouble at home and abroad, and publishes every number to a dashboard, with a tamper-evident record anyone can check.
+Every day, a network of small automated agents reads public data, applies the rule with three separately written calculators (ordinary code anyone can read; AI only writes the plain-English report, and every number in it is checked), watches for trouble at home and abroad, and publishes every number to a dashboard, with a tamper-evident record anyone can check.
 
 > **The law sets the rule, people make the few real decisions, and the agents do everything else.**
 > The rule's arithmetic is plain code, not AI. The agents fetch, check, watch and report around it. Nothing they do can change how much money the rule allows.
@@ -14,14 +14,14 @@ Every day, a network of small AI agents reads public data, applies the rule thre
 - **It is** a working demonstration of how the design's replacement for the Federal Reserve could be run in the open: rule-based, recomputable, audited, with humans at the gates.
 - **It is not** the design's formal 18-month rehearsal. It executes nothing and publishes **no national dollar issuance figure**: the book withholds one until a reconciled model release supports it (Ch. 10).
 - **It does not test** whether the rule would keep prices stable. That needs the economic stress tests described in Chapter 9.
-- Each live reading uses the rule's inputs **as published on its computation date** (ALFRED vintages, archived in `data/inputs/vintages/`), so later revisions never change it. The replay and the sentinels use current revised data.
+- Each live reading after the starting quarter uses the rule's inputs **as published on its computation date** (ALFRED vintages, archived in `data/inputs/vintages/`), so later revisions never change it. The starting quarter (2026-Q2) was read from data as published at launch; see interpretation 8 in `config/rule.json`. All data come through the St. Louis Fed's FRED/ALFRED, which republish BLS, BEA and Federal Reserve figures. The replay and the sentinels use current revised data.
 
 ## The agents, tier by tier
 
 | Tier | Agents | Job | Never |
 |---|---|---|---|
 | 1 Sensors and integrity | Price sensors (BLS CPI-U, BEA PCE), growth sensor (BEA real GDP), global-dollar sensors (Fed H.4.1/H.10, BIS), domestic sensors; freshness and index-agreement checkers | Fetch, fingerprint (SHA-256) and check every input | Edit, fill or invent a number. The money authority may not produce the numbers it uses (Ch. 8) |
-| 2 Calculators | Calculator A (JS), Calculator B (JS, different arithmetic), Calculator C (Python, re-reads raw files), Calculator D slot (outside author), consensus keeper | Apply the rule; publish only if all three agree | Use judgment or forecasts |
+| 2 Calculators | Calculator A (JS), Calculator B (JS, different arithmetic), Calculator C (Python, re-reads raw files), Calculator D slot (outside author), consensus keeper | Apply the rule; publish only if every calculator that runs agrees (at least two; a missing one is flagged) | Use judgment or forecasts |
 | 3 Sentinels | Brake monitor, global-dollar sentinel, home stress sentinel, plumbing and expectations sentinel, community agents (sandboxed), transition backstop modeler (proposal) | Watch around the clock; calm / watch / stress | Act |
 | 4 Auditors and witnesses | Auditor, ledger keeper, Bitcoin witness, public attestation witness, archive witness, red team (attacks a copy of the record every run) | Re-check the hash-chained ledger, fingerprints and every frozen reading; hand checkpoints to outside witnesses | Trust their own output |
 | 5 Human gates | Decision-packet clerk | Turn anything needing a person into a packet; open a GitHub issue | Decide |

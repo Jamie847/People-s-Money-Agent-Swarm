@@ -21,10 +21,21 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
     }));
   }
 
+  if (liveLatest && consensusResult?.agreed && consensusResult.calculators_unavailable?.length) {
+    out.push(packet('CALCULATOR_UNAVAILABLE', `${liveLatest.quarter}|${consensusResult.calculators_unavailable.map((c) => c.name).join(',')}`, {
+      severity: 'review',
+      title: `Reduced check for ${liveLatest.quarter}: ${consensusResult.calculators_unavailable.length} calculator(s) could not run`,
+      what_happened: `The reading was published because the remaining calculators agreed, but not every calculator ran: ${consensusResult.calculators_unavailable.map((c) => `${c.name} (${c.error})`).join('; ')}.`,
+      what_the_rule_says: 'Anyone can recompute each quarter\'s figure from the published inputs (Ch. 7). A missing check is disclosed, not hidden.',
+      who_decides: 'The project: restore the missing calculator and re-check the reading on the record',
+      evidence: consensusResult.calculators_unavailable,
+    }));
+  }
+
   if (indexCheck?.status === 'warn') {
     out.push(packet('INDEX_DISAGREEMENT', indexCheck.month, {
       severity: 'review',
-      title: `Price indexes disagree by ${indexCheck.difference_pp} points (${indexCheck.month})`,
+      title: `Price indexes disagree by ${indexCheck.difference_pp} percentage points (${indexCheck.month})`,
       what_happened: indexCheck.detail,
       what_the_rule_says: 'The average still governs, the gap is published, and an inspector general reviews both series (Ch. 7).',
       who_decides: 'Inspector general',
@@ -62,7 +73,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
         title: `Sentinel ${r.status}: ${r.title}`,
         what_happened: `${r.metric_label}: ${r.value} (watch ${r.watch}, stress ${r.stress}) as of ${r.as_of}.`,
         what_the_rule_says: 'Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).',
-        who_decides: 'Money authority head and Treasury Secretary (emergency clause); Exchange Stabilization Fund (swap lines)',
+        who_decides: 'In the design: the money authority head and the Treasury Secretary jointly (emergency clause). In this test run: logged for public review; nothing is executed.',
         evidence: { id: r.id, value: r.value, as_of: r.as_of, note: r.note },
       }));
     }
@@ -74,7 +85,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
       title: `Independent recompute by ${r.author} disagrees for ${r.quarter}`,
       what_happened: `${r.name} reported gap ${r.gap_lp} and path growth ${r.allowance_pct}%; The People's Watch published gap ${r.swarm_gap_lp} and ${r.swarm_allowance_pct}%.`,
       what_the_rule_says: 'A figure that does not match the published inputs can be caught by anyone who recomputes it (Ch. 7).',
-      who_decides: 'Jamie and the agent author: find which implementation is wrong, on the record',
+      who_decides: 'The project and the agent author: find which implementation is wrong, on the record',
       evidence: r,
     }));
   }
@@ -85,7 +96,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
       title: `Red team: ${missed.length} attack(s) NOT caught`,
       what_happened: missed.map((a) => `${a.id}: ${a.detail}`).join(' | '),
       what_the_rule_says: 'Controls for prevention, detection and recovery have to be attacked in a published red-team exercise (Ch. 9).',
-      who_decides: 'Jamie; fix the control and keep the first result on the record',
+      who_decides: 'The project: fix the control and keep the first result on the record',
       evidence: missed,
     }));
   }
@@ -96,7 +107,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
     title: `${rule.interpretations_pending_review.length} rule interpretations awaiting a Design Paper ruling`,
     what_happened: 'The shadow run had to choose how to implement details the book leaves open.',
     what_the_rule_says: 'The working specification is the Design Paper, which lists definitions and operating rules still to be completed (Ch. 7).',
-    who_decides: 'Jamie, after Agent 2 review',
+    who_decides: 'The author, after independent review',
     evidence: rule.interpretations_pending_review,
   }));
   if (backstop) {
@@ -105,7 +116,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
       title: 'Transition dollar backstop: proposal awaiting review',
       what_happened: 'A capped, tapering, published dollar backstop for the switch-over has been proposed but is not part of the design.',
       what_the_rule_says: 'Foreign central-bank swap lines move to the Exchange Stabilization Fund: every line published, capped and time-limited (Ch. 8).',
-      who_decides: 'Jamie, after Agent 2 and outside reviewers (e.g., offshore-dollar specialists)',
+      who_decides: 'The author, after independent review (including offshore-dollar specialists)',
       evidence: backstop.open_questions,
     }));
   }
