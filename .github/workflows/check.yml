@@ -1,0 +1,19 @@
+name: Check
+
+on:
+  pull_request: {}
+  push:
+    branches-ignore: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Tests and audit of the committed record
+        run: npm run check
+      - name: Recompute the latest live quarter independently (Python)
+        run: python3 scripts/recompute.py

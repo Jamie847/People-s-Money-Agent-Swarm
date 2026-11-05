@@ -1,0 +1,17 @@
+[
+  {
+    "id": "SENTINEL-32f737650c",
+    "type": "SENTINEL",
+    "severity": "review",
+    "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
+    "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
+    "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
+    "who_decides": "Money authority head and Treasury Secretary (emergency clause); Exchange Stabilization Fund (swap lines)",
+    "evidence": {
+      "id": "FOREIGN_CUSTODY",
+      "value": -3.314,
+      "as_of": "2026-10-28",
+      "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries."
+    }
+  }
+]

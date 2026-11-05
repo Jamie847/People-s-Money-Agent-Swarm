@@ -1,0 +1,17 @@
+{
+  "name": "peoples-money-agent-swarm",
+  "version": "0.1.0",
+  "description": "An unofficial, public shadow run of The People's Money issuance rule: a swarm of small agents that fetch public data, compute the rule three independent ways, watch for stress, and publish everything for anyone to check.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "run": "node scripts/run.js",
+    "run:offline": "node scripts/run.js --offline",
+    "build": "node scripts/build-site.js",
+    "test": "node --test test/*.test.js",
+    "check": "node --test test/*.test.js && node scripts/audit.js"
+  }
+}

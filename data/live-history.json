@@ -1,0 +1,131 @@
+[
+  {
+    "quarter": "2026-Q2",
+    "epoch": "2026-Q2",
+    "computation_date": "2026-08-15",
+    "computed_at": "2026-11-05",
+    "launch_backfill": true,
+    "complete": true,
+    "missing": [],
+    "gdp_note": null,
+    "input_sha256": {
+      "CPI": "fa84504abbf87dcfd68ff1ac214c8c1ecd8af52aa01be9b924ac85a476f60434",
+      "PCE": "ef6f1e789e32d95ed84bfae195d8ce15425480e3cb92b6ddaa4cc80fb644c8bf",
+      "GDP": "eb9a798ecd2da13423fd195cb6e247b101126cfa030a763331a8c0b8f50f5244"
+    },
+    "inputs": {
+      "base_months": [
+        "2026-04-01",
+        "2026-05-01",
+        "2026-06-01"
+      ],
+      "current_months": [
+        "2026-04-01",
+        "2026-05-01",
+        "2026-06-01"
+      ],
+      "base": {
+        "cpi": [
+          332.407,
+          333.979,
+          332.568
+        ],
+        "pce": [
+          130.672,
+          131.241,
+          131.106
+        ]
+      },
+      "cur": {
+        "cpi": [
+          332.407,
+          333.979,
+          332.568
+        ],
+        "pce": [
+          130.672,
+          131.241,
+          131.106
+        ]
+      },
+      "gdp_years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gdp_levels": [
+        18799.622,
+        19141.672,
+        19612.102,
+        20193.896,
+        20715.671,
+        20284.5,
+        21556.002,
+        22079.726,
+        22724.135,
+        23394.892,
+        23943.305
+      ]
+    },
+    "calculators": {
+      "A": {
+        "trend_growth_pct": 2.465841868740683,
+        "gap_cpi_lp": 0,
+        "gap_pce_lp": 0,
+        "gap_lp": 0,
+        "allowance_raw_pct": 2.465841868740683,
+        "allowance_pct": 2.465841868740683,
+        "quarterly_step_pct": 0.610840744078267
+      },
+      "B": {
+        "trend_growth_pct": 2.46584186874068,
+        "gap_cpi_lp": 0,
+        "gap_pce_lp": 0,
+        "gap_lp": 0,
+        "allowance_raw_pct": 2.46584186874068,
+        "allowance_pct": 2.46584186874068,
+        "quarterly_step_pct": 0.6108407440782736
+      },
+      "C": {
+        "trend_growth_pct": 2.4658418687406796,
+        "gap_cpi_lp": 0,
+        "gap_pce_lp": 0,
+        "gap_lp": 0,
+        "allowance_raw_pct": 2.4658418687406796,
+        "allowance_pct": 2.4658418687406796,
+        "quarterly_step_pct": 0.6108407440782736
+      }
+    },
+    "consensus": {
+      "agreed": true,
+      "calculators_agreeing": [
+        "A",
+        "B",
+        "C"
+      ],
+      "calculators_unavailable": [],
+      "full_quorum": true,
+      "disagreements": [],
+      "tolerance": 1e-9
+    },
+    "available": true,
+    "outputs": {
+      "trend_growth_pct": 2.465841868740683,
+      "gap_cpi_lp": 0,
+      "gap_pce_lp": 0,
+      "gap_lp": 0,
+      "allowance_raw_pct": 2.465841868740683,
+      "allowance_pct": 2.465841868740683,
+      "quarterly_step_pct": 0.610840744078267
+    },
+    "frozen_sha256": "6c9335d23d7be6fb4c084f64fc04cc91601115d8a5169c3e67a4cca9184fd12c"
+  }
+]

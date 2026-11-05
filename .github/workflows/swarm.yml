@@ -1,0 +1,71 @@
+name: Swarm run
+
+on:
+  schedule:
+    - cron: '17 14 * * *'   # every day at 14:17 UTC (sentinels daily; the rule itself on its quarterly dates)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: swarm-run
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tests
+        run: npm test
+
+      - name: Run the swarm (all tiers)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/run.js || echo "SWARM_AUDIT_FAILED=1" >> "$GITHUB_ENV"
+
+      - name: Seal results into the repository
+        run: |
+          git config user.name "peoples-money-swarm[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Swarm run $(date -u +%F)" || echo "Nothing to commit"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Open GitHub issues for new human-gate packets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/open-issues.js
+
+      - name: Build dashboard
+        run: node scripts/build-site.js
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Fail the run if the auditor failed
+        if: env.SWARM_AUDIT_FAILED == '1'
+        run: |
+          echo "The auditor reported a failure. Results were still published for transparency."
+          exit 1
+
+  deploy:
+    needs: run
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

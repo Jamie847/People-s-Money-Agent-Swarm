@@ -1,0 +1,49 @@
+[
+  {
+    "id": "SENTINEL-32f737650c",
+    "type": "SENTINEL",
+    "severity": "review",
+    "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
+    "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
+    "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
+    "who_decides": "Money authority head and Treasury Secretary (emergency clause); Exchange Stabilization Fund (swap lines)",
+    "evidence": {
+      "id": "FOREIGN_CUSTODY",
+      "value": -3.314,
+      "as_of": "2026-10-28",
+      "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries."
+    }
+  },
+  {
+    "id": "REVIEW_INTERPRETATIONS-d4fa154146",
+    "type": "REVIEW_INTERPRETATIONS",
+    "severity": "info",
+    "title": "6 rule interpretations awaiting a Design Paper ruling",
+    "what_happened": "The shadow run had to choose how to implement details the book leaves open.",
+    "what_the_rule_says": "The working specification is the Design Paper, which lists definitions and operating rules still to be completed (Ch. 7).",
+    "who_decides": "Jamie, after Agent 2 review",
+    "evidence": [
+      "CPI-U and the PCE price index have different base years, so each is measured as a log gap from its own epoch level and the two gaps are averaged.",
+      "The seasonally adjusted CPI-U (CPIAUCSL) is used; the book says CPI-U without specifying seasonal adjustment.",
+      "The annual path rate is turned into a quarterly step by compounding: (1 + a)^(1/4) - 1.",
+      "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
+      "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
+      "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED)."
+    ]
+  },
+  {
+    "id": "REVIEW_BACKSTOP_PROPOSAL-8b7ec28ef0",
+    "type": "REVIEW_BACKSTOP_PROPOSAL",
+    "severity": "info",
+    "title": "Transition dollar backstop: proposal awaiting review",
+    "what_happened": "A capped, tapering, published dollar backstop for the switch-over has been proposed but is not part of the design.",
+    "what_the_rule_says": "Foreign central-bank swap lines move to the Exchange Stabilization Fund: every line published, capped and time-limited (Ch. 8).",
+    "who_decides": "Jamie, after Agent 2 and outside reviewers (e.g., offshore-dollar specialists)",
+    "evidence": [
+      "Is a cap of 20% of foreign official custody holdings large enough? It would have covered the 2020 swap peak (about $449B) but not the 2008 peak (about $583B).",
+      "Should the taper follow the calendar, the sentinel readings, or both?",
+      "Which central banks are eligible, and who decides?",
+      "Does the design need any rule about dollar deposits created by banks outside the United States, or only a backstop?"
+    ]
+  }
+]
