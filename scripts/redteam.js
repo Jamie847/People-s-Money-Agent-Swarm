@@ -152,7 +152,7 @@ async function aiIdeas() {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: process.env.SWARM_REPORTER_MODEL || 'claude-haiku-5-5', max_tokens: 500, messages: [{ role: 'user', content: `You are a red-team reviewer for an open-source system that computes a public money rule from government data, seals each run in a hash-chained ledger, anchors checkpoints in Bitcoin, Sigstore and the Internet Archive, and runs community agents in a no-network sandbox. These attacks are already tested: ${attacks.map((a) => a.id).join(', ')}. Suggest exactly 3 NEW, concrete attacks a maintainer should test next, one line each. Return JSON: {"ideas":["...","...","..."]}` }] }),
+      body: JSON.stringify({ model: process.env.SWARM_REPORTER_MODEL || 'claude-haiku-5-5', max_tokens: 800, thinking: { type: 'disabled' }, messages: [{ role: 'user', content: `You are a red-team reviewer for an open-source system that computes a public money rule from government data, seals each run in a hash-chained ledger, anchors checkpoints in Bitcoin, Sigstore and the Internet Archive, and runs community agents in a no-network sandbox. These attacks are already tested: ${attacks.map((a) => a.id).join(', ')}. Suggest exactly 3 NEW, concrete attacks a maintainer should test next, one line each. Return JSON: {"ideas":["...","...","..."]}` }] }),
     });
     if (!res.ok) return { error: `HTTP ${res.status}` };
     const b = await res.json(); const t = (b.content || []).map((c) => c.text || '').join('');

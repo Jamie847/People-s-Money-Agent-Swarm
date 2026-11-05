@@ -112,7 +112,7 @@ export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_K
     const res = await fetchImpl('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: 1000, system: SYSTEM, messages: [{ role: 'user', content: `Facts for this run:\n${JSON.stringify(facts, null, 2)}` }] }),
+      body: JSON.stringify({ model, max_tokens: 1000, thinking: { type: 'disabled' }, system: SYSTEM, messages: [{ role: 'user', content: `Facts for this run:\n${JSON.stringify(facts, null, 2)}` }] }),
     });
     if (!res.ok) throw new Error(`Anthropic API HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const body = await res.json();
