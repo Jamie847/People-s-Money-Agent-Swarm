@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T17:09:38.596Z",
-    "finished_at": "2026-11-05T17:09:53.791Z",
+    "started_at": "2026-11-05T19:08:00.595Z",
+    "finished_at": "2026-11-05T19:08:11.348Z",
     "mode": "live",
-    "ledger_seq": 15,
-    "ledger_hash": "b331746eb1f377030ed91d371ab5dfa9de961c66e8bcae39bbb0ce1fcf5855b7"
+    "ledger_seq": 16,
+    "ledger_hash": "f93e5b8a6e2891545149a3e755d52ca958c4de428d696b227b3e1dc6bfa717d3"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -2143,7 +2143,7 @@
         "id": "ON_RRP",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-11-04; 1958 observations; sha256 20385f57d7b7…"
+        "detail": "Latest 2026-11-05; 1959 observations; sha256 5de886fda380…"
       },
       {
         "id": "EXPECT_5Y5Y",
@@ -14024,12 +14024,12 @@
           "id": "ON_RRP",
           "title": "Overnight reverse repo with the Fed (cash parked by money funds)",
           "agency": "Federal Reserve Bank of New York",
-          "as_of": "2026-11-04",
-          "latest": 0.225,
+          "as_of": "2026-11-05",
+          "latest": 0.125,
           "units": "billions of dollars",
           "metric": "level",
           "metric_label": "latest level",
-          "value": 0.225,
+          "value": 0.125,
           "watch": null,
           "stress": null,
           "direction": "up",
@@ -15018,8 +15018,8 @@
               0.176
             ],
             [
-              "2026-11-04",
-              0.225
+              "2026-11-05",
+              0.125
             ]
           ]
         },
@@ -18993,9 +18993,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T17:09:38.347Z",
+    "ran_at": "2026-11-05T19:08:00.180Z",
     "isolated": true,
-    "context_sha256": "c6a856638a059c911fbe5e55df8d1a8b9826bb7d1bec910bab1874c54f0ee8dd",
+    "context_sha256": "8eafb7373d75aa5eaba59d39054d6949641e2121b6e4f760d70f66c36e00d7d5",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -19004,7 +19004,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 46,
+        "duration_ms": 53,
         "isolated": true,
         "report": {
           "status": "info",
@@ -19034,7 +19034,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T17:09:38.544Z",
+    "ran_at": "2026-11-05T19:08:00.536Z",
     "all_caught": true,
     "attacks": [
       {
@@ -19059,7 +19059,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 11 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 12 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -19201,7 +19201,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "16 entries; head b331746eb1f37703…"
+        "detail": "17 entries; head f93e5b8a6e289154…"
       },
       {
         "name": "input-fingerprints",
@@ -19692,10 +19692,10 @@
       "title": "Overnight reverse repo with the Fed (cash parked by money funds)",
       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=RRPONTSYD&cosd=2019-01-01",
       "file": "data/inputs/ON_RRP.csv",
-      "sha256": "20385f57d7b779cc93db1fb9afa5ceb3904c3e9d5645ab10e2079130746c49b7",
+      "sha256": "5de886fda3807ba628860803614ec5fbf8036785898126bee5674804501b28c7",
       "last": {
-        "date": "2026-11-04",
-        "value": 0.225
+        "date": "2026-11-05",
+        "value": 0.125
       },
       "ok": true,
       "error": null
@@ -19878,7 +19878,7 @@
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 400,
+      "output_tokens": 434,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -19886,12 +19886,12 @@
       "inference_geo": "global",
       "speed": "standard"
     },
-    "headline": "Shadow run for 2026-Q2: price gap zero, brake off, all three calculators agree",
+    "headline": "Shadow run for 2026-Q2: no price gap, brake off, three calculators agree",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed. No money is issued, and no real rule is changed. The run only shows what the rule would have done.",
-      "For the latest quarter, 2026-Q2, the price gap is zero. Think of it like a thermostat set at a target: the room is exactly where it should be, so the heater does not need to push harder. The brake is off because it is not needed. All three separate calculators reached the same answer.",
-      "The allowed growth path is 2.47% per year, or about 0.611% per quarter. Several market readings are marked as 'watch' or 'context', including one Treasury custody reading that has an open human review. The 'watch' label means someone should keep an eye on it, not that a problem has been confirmed. The next computation is set for 2026-11-15, using data for July, August, and September 2026.",
-      "The design has not been proven to keep prices stable. The tests that would show this have not been run. Past replays showed large gaps in earlier periods, so these results should be read as a record of one quarter, not as proof."
+      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed. No money is created or spent. The run only shows what the rule would have said, using the latest published facts.",
+      "For 2026-Q2, the price gap is zero. Think of it like a thermostat set to a target: the room is exactly at the set point, so the heater does not need to kick in. The brake, which is a pause on issuance, is off because it is not needed. Three separately written calculators all reached the same answer. The allowed growth path is 2.47 percent per year, which works out to a step of 0.611 percent per quarter.",
+      "Some signals are being watched. One item, the Treasury securities held in custody for foreign official and international accounts, shows a 13-week change of -3.314 percent and is marked for human review. Other stress readings are calm. The next computation is set for 2026-11-15, for quarter 2026-Q3, using July, August and September data.",
+      "The tests of whether this design keeps prices stable have not been run, so this page does not claim that it works. Past replays are listed in the facts, but they are only a record of how the rule would have behaved, not proof that it would keep prices steady in the future."
     ]
   },
   "head_to_head": {
@@ -20471,7 +20471,7 @@
       "ai_per_month_usd": 0.01,
       "ai_tokens_last_run": {
         "input": 1845,
-        "output": 400
+        "output": 434
       },
       "compute": "GitHub Actions runs public projects free.",
       "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."

@@ -1,0 +1,11 @@
+{
+  "what": "Checkpoint of The People's Watch ledger (The People's Money)",
+  "repository": "https://github.com/Jamie847/peoples-money-watch",
+  "ledger_file": "data/ledger.jsonl",
+  "ledger_entries": 17,
+  "ledger_seq": 16,
+  "ledger_entry_hash": "f93e5b8a6e2891545149a3e755d52ca958c4de428d696b227b3e1dc6bfa717d3",
+  "ledger_file_sha256": "8229e612e3fe4831f16745bdcbdf6816e2fbf7b925bedb47e77a4b48c5090ba5",
+  "run_date": "2026-11-05",
+  "how_to_verify": "node scripts/witness.js verify data/checkpoints/000016-2026-11-05.json"
+}
