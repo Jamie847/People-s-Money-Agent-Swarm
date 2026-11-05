@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "title": "The People's Money — Agent Swarm Shadow Run",
+  "title": "The People's Watch — shadow run of The People's Money rule",
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T05:08:13.083Z",
-    "finished_at": "2026-11-05T05:08:22.307Z",
+    "started_at": "2026-11-05T05:32:56.708Z",
+    "finished_at": "2026-11-05T05:33:03.049Z",
     "mode": "live",
-    "ledger_seq": 5,
-    "ledger_hash": "b8658862bb76ff15c6247c0d9123d40d03da27dfd3c935d6d57deb0106f0a246"
+    "ledger_seq": 6,
+    "ledger_hash": "c99c8917736da055a89c95c560cf2e596a44a3ef47fcb18097cfa75e29b03c02"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -17227,9 +17227,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T05:08:12.779Z",
+    "ran_at": "2026-11-05T05:32:56.442Z",
     "isolated": true,
-    "context_sha256": "4e6135b8e62f9d9f2de4a62a0b28c9466c7aa09aa15b557e0ad7d74bc04c98dc",
+    "context_sha256": "7b40c840f99b0e54cd4f38dc29d900f0c9a035d78646b09f931b9b10ca9a2483",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17238,7 +17238,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 52,
+        "duration_ms": 47,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17268,7 +17268,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T05:08:13.014Z",
+    "ran_at": "2026-11-05T05:32:56.652Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17293,7 +17293,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 1 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 2 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17430,7 +17430,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "6 entries; head b8658862bb76ff15…"
+        "detail": "7 entries; head c99c8917736da055…"
       },
       {
         "name": "input-fingerprints",
@@ -17985,7 +17985,7 @@
   ],
   "report": {
     "source": "template",
-    "reason": "Reporter error: Anthropic API HTTP 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purcha",
+    "reason": "Reporter error: Unexpected end of JSON input",
     "model": "claude-haiku-5-5",
     "headline": "Rule allows 2.47% path growth for 2026-Q2; brake off",
     "paragraphs": [
