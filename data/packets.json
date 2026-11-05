@@ -6,7 +6,7 @@
     "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
     "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
     "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
-    "who_decides": "Money authority head and Treasury Secretary (emergency clause); Exchange Stabilization Fund (swap lines)",
+    "who_decides": "In the design: the money authority head and the Treasury Secretary jointly (emergency clause). In this test run: logged for public review; nothing is executed.",
     "evidence": {
       "id": "FOREIGN_CUSTODY",
       "value": -3.314,
@@ -18,10 +18,10 @@
     "id": "REVIEW_INTERPRETATIONS-d4fa154146",
     "type": "REVIEW_INTERPRETATIONS",
     "severity": "info",
-    "title": "7 rule interpretations awaiting a Design Paper ruling",
+    "title": "12 rule interpretations awaiting a Design Paper ruling",
     "what_happened": "The shadow run had to choose how to implement details the book leaves open.",
     "what_the_rule_says": "The working specification is the Design Paper, which lists definitions and operating rules still to be completed (Ch. 7).",
-    "who_decides": "Jamie, after Agent 2 review",
+    "who_decides": "The author, after independent review",
     "evidence": [
       "CPI-U and the PCE price index have different base years, so each is measured as a log gap from its own epoch level and the two gaps are averaged.",
       "The seasonally adjusted CPI-U (CPIAUCSL) is used; the book says CPI-U without specifying seasonal adjustment.",
@@ -29,7 +29,12 @@
       "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
       "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
       "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
-      "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
+      "Brake release 'within 1% of target' is read as a price gap of 1 log point or less.",
+      "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Open for review.",
+      "Which three months: the three months of the most recent complete calendar quarter (Jul-Sep for the Nov 15 reading), not the latest three monthly releases available on the computation date.",
+      "Real GDP: annual real GDP in chained dollars (BEA via FRED series GDPCA); annual percent changes are computed from these levels, not taken from the rounded percent changes in NIPA Table 1.1.1. A year's figure is first used from May 1 of the following year.",
+      "Frozen starting prices vs. later revisions: starting-quarter prices are frozen while each later reading uses its own vintage, so revisions to past months (CPI-U seasonal factors each February; PCE annual updates) can show up in later gaps. Alternatives: re-read the starting quarter from each new vintage, or use the not-seasonally-adjusted CPI-U, which is never revised.",
+      "Data access: rule inputs and most sentinel series are fetched through the Federal Reserve Bank of St. Louis (FRED and its archive ALFRED), which republish BLS, BEA and Federal Reserve data. Fingerprints prove what FRED served on the day, not what the original agency published."
     ]
   },
   {
@@ -39,7 +44,7 @@
     "title": "Transition dollar backstop: proposal awaiting review",
     "what_happened": "A capped, tapering, published dollar backstop for the switch-over has been proposed but is not part of the design.",
     "what_the_rule_says": "Foreign central-bank swap lines move to the Exchange Stabilization Fund: every line published, capped and time-limited (Ch. 8).",
-    "who_decides": "Jamie, after Agent 2 and outside reviewers (e.g., offshore-dollar specialists)",
+    "who_decides": "The author, after independent review (including offshore-dollar specialists)",
     "evidence": [
       "Is a cap of 20% of foreign official custody holdings large enough? It would have covered the 2020 swap peak (about $449B) but not the 2008 peak (about $583B).",
       "Should the taper follow the calendar, the sentinel readings, or both?",

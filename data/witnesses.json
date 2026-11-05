@@ -7,9 +7,10 @@
       "ledger_entry_hash": "fbeb51eef23e526b8613a7b8f649ae04b8f546db8a6986ac34dd5b1b3cf03839",
       "run_date": "2026-11-05",
       "bitcoin": {
-        "status": "pending",
+        "status": "confirmed",
+        "block_height": 974627,
         "ots_file": "data/checkpoints/000004-2026-11-05.json.ots",
-        "submitted": "2026-11-05T04:48:21.064Z"
+        "explorer": "https://mempool.space/block/974627"
       },
       "sigstore": {
         "attestation_url": "https://github.com/Jamie847/People-s-Money-Agent-Swarm/attestations/63894142",
@@ -138,6 +139,24 @@
         "lookup": "https://web.archive.org/web/*/https://raw.githubusercontent.com/Jamie847/People-s-Money-Agent-Swarm/f8ea2a7642cf38670fb35cd98d1585492cf64554/data/checkpoints/000009-2026-11-05.json",
         "status": "saved"
       }
+    },
+    {
+      "file": "data/checkpoints/000010-2026-11-05.json",
+      "ledger_seq": 10,
+      "ledger_entry_hash": "7124aa3013e3a15c5e4304c4774e6e4511cfedbd43983774beb01024b67a818f",
+      "run_date": "2026-11-05",
+      "bitcoin": {
+        "status": "pending",
+        "ots_file": "data/checkpoints/000010-2026-11-05.json.ots",
+        "submitted": "2026-11-05T06:47:48.800Z"
+      },
+      "sigstore": {
+        "attestation_url": "https://github.com/Jamie847/People-s-Money-Agent-Swarm/attestations/63922647",
+        "rekor_log_index": 3692754594,
+        "rekor_search": "https://search.sigstore.dev/?logIndex=3692754594",
+        "verify": "gh attestation verify data/checkpoints/000010-2026-11-05.json --repo Jamie847/People-s-Money-Agent-Swarm"
+      },
+      "wayback": null
     }
   ]
 }

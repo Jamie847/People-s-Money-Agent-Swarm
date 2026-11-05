@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "title": "The People's Watch — shadow run of The People's Money rule",
-  "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
+  "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T06:36:57.566Z",
-    "finished_at": "2026-11-05T06:37:05.830Z",
+    "started_at": "2026-11-05T06:47:27.907Z",
+    "finished_at": "2026-11-05T06:47:36.419Z",
     "mode": "live",
-    "ledger_seq": 9,
-    "ledger_hash": "775d445535defa125d0bdefae97045f5a0c601fc9005cfa38b864f432bff8332"
+    "ledger_seq": 10,
+    "ledger_hash": "7124aa3013e3a15c5e4304c4774e6e4511cfedbd43983774beb01024b67a818f"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -27,7 +27,12 @@
       "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
       "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
       "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
-      "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
+      "Brake release 'within 1% of target' is read as a price gap of 1 log point or less.",
+      "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Open for review.",
+      "Which three months: the three months of the most recent complete calendar quarter (Jul-Sep for the Nov 15 reading), not the latest three monthly releases available on the computation date.",
+      "Real GDP: annual real GDP in chained dollars (BEA via FRED series GDPCA); annual percent changes are computed from these levels, not taken from the rounded percent changes in NIPA Table 1.1.1. A year's figure is first used from May 1 of the following year.",
+      "Frozen starting prices vs. later revisions: starting-quarter prices are frozen while each later reading uses its own vintage, so revisions to past months (CPI-U seasonal factors each February; PCE annual updates) can show up in later gaps. Alternatives: re-read the starting quarter from each new vintage, or use the not-seasonally-adjusted CPI-U, which is never revised.",
+      "Data access: rule inputs and most sentinel series are fetched through the Federal Reserve Bank of St. Louis (FRED and its archive ALFRED), which republish BLS, BEA and Federal Reserve data. Fingerprints prove what FRED served on the day, not what the original agency published."
     ]
   },
   "live": {
@@ -8314,7 +8319,7 @@
           "stress": 3,
           "direction": "up",
           "status": "calm",
-          "note": "Proxy for kill criterion 5 (Treasury yields up more than 3 points and staying there).",
+          "note": "Context: the cost of long-term federal borrowing.",
           "history": [
             [
               "2019-01-02",
@@ -17227,9 +17232,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T06:36:57.356Z",
+    "ran_at": "2026-11-05T06:47:27.630Z",
     "isolated": true,
-    "context_sha256": "6acfa48c1b6fde1bcfdfec36ec5c8a6a16f86540e03ff6ac3dfbb5a0a687b9da",
+    "context_sha256": "21ed31b8c12961be66d6e366250c4cbd6a8e8f79c803ffb422af00f1ffc8ef79",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17238,7 +17243,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 37,
+        "duration_ms": 50,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17268,7 +17273,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T06:36:57.518Z",
+    "ran_at": "2026-11-05T06:47:27.844Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17293,7 +17298,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 5 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 6 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17382,7 +17387,7 @@
       "title": "Sentinel watch: Marketable Treasury securities held in custody for foreign official and international accounts",
       "what_happened": "13-week change, %: -3.314 (watch -3, stress -6) as of 2026-10-28.",
       "what_the_rule_says": "Sentinels only report. Emergency powers need joint certification by the money authority head and the Treasury Secretary (Ch. 8).",
-      "who_decides": "Money authority head and Treasury Secretary (emergency clause); Exchange Stabilization Fund (swap lines)",
+      "who_decides": "In the design: the money authority head and the Treasury Secretary jointly (emergency clause). In this test run: logged for public review; nothing is executed.",
       "evidence": {
         "id": "FOREIGN_CUSTODY",
         "value": -3.314,
@@ -17394,10 +17399,10 @@
       "id": "REVIEW_INTERPRETATIONS-d4fa154146",
       "type": "REVIEW_INTERPRETATIONS",
       "severity": "info",
-      "title": "7 rule interpretations awaiting a Design Paper ruling",
+      "title": "12 rule interpretations awaiting a Design Paper ruling",
       "what_happened": "The shadow run had to choose how to implement details the book leaves open.",
       "what_the_rule_says": "The working specification is the Design Paper, which lists definitions and operating rules still to be completed (Ch. 7).",
-      "who_decides": "Jamie, after Agent 2 review",
+      "who_decides": "The author, after independent review",
       "evidence": [
         "CPI-U and the PCE price index have different base years, so each is measured as a log gap from its own epoch level and the two gaps are averaged.",
         "The seasonally adjusted CPI-U (CPIAUCSL) is used; the book says CPI-U without specifying seasonal adjustment.",
@@ -17405,7 +17410,12 @@
         "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
         "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
         "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
-        "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
+        "Brake release 'within 1% of target' is read as a price gap of 1 log point or less.",
+        "Starting quarter (2026-Q2): its prices were read from data as published at launch (Nov 5, 2026), not the Aug 15, 2026 vintage. CPI-U is identical in both; PCE for Apr-Jun 2026 was revised down about 0.2% in BEA's September 2026 annual update. Anchoring to the Aug 15 vintage would build that statistical revision into the target permanently (about 0.1 log point on the overall gap). Open for review.",
+        "Which three months: the three months of the most recent complete calendar quarter (Jul-Sep for the Nov 15 reading), not the latest three monthly releases available on the computation date.",
+        "Real GDP: annual real GDP in chained dollars (BEA via FRED series GDPCA); annual percent changes are computed from these levels, not taken from the rounded percent changes in NIPA Table 1.1.1. A year's figure is first used from May 1 of the following year.",
+        "Frozen starting prices vs. later revisions: starting-quarter prices are frozen while each later reading uses its own vintage, so revisions to past months (CPI-U seasonal factors each February; PCE annual updates) can show up in later gaps. Alternatives: re-read the starting quarter from each new vintage, or use the not-seasonally-adjusted CPI-U, which is never revised.",
+        "Data access: rule inputs and most sentinel series are fetched through the Federal Reserve Bank of St. Louis (FRED and its archive ALFRED), which republish BLS, BEA and Federal Reserve data. Fingerprints prove what FRED served on the day, not what the original agency published."
       ]
     },
     {
@@ -17415,7 +17425,7 @@
       "title": "Transition dollar backstop: proposal awaiting review",
       "what_happened": "A capped, tapering, published dollar backstop for the switch-over has been proposed but is not part of the design.",
       "what_the_rule_says": "Foreign central-bank swap lines move to the Exchange Stabilization Fund: every line published, capped and time-limited (Ch. 8).",
-      "who_decides": "Jamie, after Agent 2 and outside reviewers (e.g., offshore-dollar specialists)",
+      "who_decides": "The author, after independent review (including offshore-dollar specialists)",
       "evidence": [
         "Is a cap of 20% of foreign official custody holdings large enough? It would have covered the 2020 swap peak (about $449B) but not the 2008 peak (about $583B).",
         "Should the taper follow the calendar, the sentinel readings, or both?",
@@ -17430,7 +17440,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "10 entries; head 775d445535defa12…"
+        "detail": "11 entries; head 7124aa3013e3a15c…"
       },
       {
         "name": "input-fingerprints",
@@ -17550,7 +17560,7 @@
       "tier": 2,
       "group": "Calculators",
       "name": "Consensus keeper",
-      "job": "Publish only if every calculator agrees.",
+      "job": "Publish only if every calculator that runs agrees (at least two); flag any that could not run.",
       "status": "ok"
     },
     {
@@ -17987,12 +17997,12 @@
     "source": "ai",
     "model": "claude-haiku-5-5",
     "verified": true,
-    "headline": "This quarter: no price gap, no brake needed, three calculators agree on the path",
+    "headline": "This quarter the three calculators agree, and no price-gap brake is needed.",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, called The People's Watch. Nothing is executed. It is a test of how the rule would have behaved, with no real money or policy changed.",
-      "For 2026-Q2, the price gap is zero. Think of it like a thermostat set to a target: the room is exactly at the setpoint right now. The rule would allow growth of 2.47% per year along its path, which works out to a step of 0.611% per quarter. Three separate calculators all reached the same answer, and the brake is off because it is not needed.",
-      "Some readings need watching. One measure of Treasury securities held in custody for foreign official accounts fell 3.314% over 13 weeks, and it is flagged as a watch item with an open human review. Other stress and financial-conditions readings are calm. The next computation is set for 2026-11-15 and will use the July, August and September data.",
-      "These results are a test run only. The tests of whether this design keeps prices stable have not been run, so nothing here shows that it works."
+      "This is an unofficial shadow run of The People's Money issuance rule, called The People's Watch. Nothing is executed. No money is issued, and no real system is changed. We are only checking how the rule would have behaved on paper.",
+      "For the latest quarter, 2026-Q2, all three separately written calculators agree. The price gap is zero, so the price brake is off. Think of the brake like a thermostat: it only switches on when prices run too far from the path. Right now the room is at the set temperature, so it stays off. The allowed growth path is 2.47% per year, which is about 0.611% each quarter.",
+      "The next check is for 2026-Q3, computed on 2026-11-15, using the July, August and September data from CPI and PCE. Some market readings are flagged as 'watch', mainly a 13-week drop of 3.314% in Treasury securities held for foreign official accounts. An open human review packet covers that item. Financial stress and financial conditions readings are calm.",
+      "These results describe a shadow run only. The tests of whether this design keeps prices stable have not been run, so this report does not show that it works."
     ]
   }
 }
