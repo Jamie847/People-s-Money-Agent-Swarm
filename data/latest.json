@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T05:36:38.110Z",
-    "finished_at": "2026-11-05T05:36:47.652Z",
+    "started_at": "2026-11-05T05:39:34.779Z",
+    "finished_at": "2026-11-05T05:39:45.022Z",
     "mode": "live",
-    "ledger_seq": 7,
-    "ledger_hash": "d6227cbe661a90237fb72c7733d6adc94490ada5f51145dd992bee1cb0ae9fbb"
+    "ledger_seq": 8,
+    "ledger_hash": "fc06ea275c5e69febde9145ea45429195408e7333423bd484ddd466e5190d1cb"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -17227,9 +17227,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T05:36:37.824Z",
+    "ran_at": "2026-11-05T05:39:34.574Z",
     "isolated": true,
-    "context_sha256": "eecbbaff6c763149417faa0bc64f399d14d2b2ec5e99632945896f0dc35f743a",
+    "context_sha256": "f443b7b34d2435b20135a76b0701e08b461b26cfddf24ace0d6849bf86a4a21b",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17238,7 +17238,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 52,
+        "duration_ms": 34,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17268,7 +17268,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T05:36:38.046Z",
+    "ran_at": "2026-11-05T05:39:34.734Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17293,7 +17293,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 3 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 4 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17430,7 +17430,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "8 entries; head d6227cbe661a9023…"
+        "detail": "9 entries; head fc06ea275c5e69fe…"
       },
       {
         "name": "input-fingerprints",
@@ -17656,7 +17656,7 @@
       "group": "Reporters",
       "name": "Reporter (AI)",
       "job": "Explain the run in plain words; every number checked.",
-      "status": "warn"
+      "status": "ok"
     },
     {
       "tier": 7,
@@ -17984,15 +17984,14 @@
     }
   ],
   "report": {
-    "source": "template",
-    "reason": "AI reply could not be read (stop: max_tokens)",
+    "source": "ai",
     "model": "claude-haiku-5-5",
-    "raw_excerpt": "",
-    "headline": "Rule allows 2.47% path growth for 2026-Q2; brake off",
+    "verified": true,
+    "headline": "Unofficial shadow run of the issuance rule: no money is created, nothing executed",
     "paragraphs": [
-      "For 2026-Q2, the rule measured prices right at its flat target (this is the starting quarter, so the gap is zero by definition) and long-run real growth of 2.47% a year. So it would let the path for public money grow at 2.47% a year. Three independent calculators agreed.",
-      "The brake is off. Brake not needed. The next computation, for 2026-Q3, is due on 2026-11-15.",
-      "Global dollar watch: watch. Home financial stress: calm. This is an unofficial shadow run: nothing is executed, and no dollar issuance figure is published."
+      "This is an unofficial shadow run of the \"The People's Money\" issuance rule. It is a practice test on paper. Nothing is executed, and no money is issued. The run date is 2026-11-05, starting from 2026-Q2.",
+      "The rule sets a steady growth path of 2.47% per year, which works out to a step of 0.611% per quarter. Think of it like a thermostat set to one fixed temperature. The price gap is 0 log points, and both calculators agree. The brake is off, and the brake note says it is not needed. Domestic financial stress readings are calm. One Treasury holdings reading for foreign accounts is marked as a watch item and has an open human review packet.",
+      "The next computation is set for 2026-11-15, for quarter 2026-Q3, using monthly data for July, August, and September 2026. In a past replay starting in 2020-Q1 over 23 quarters, the largest price gap reached 20.986 log points, and the brake first turned on in 2021-Q3. That replay is history, not a prediction. The tests of whether this design keeps prices stable have not been run, so this report does not claim it works."
     ]
   }
 }
