@@ -24,6 +24,7 @@ export function buildFacts(latest) {
     path_growth_allowed_pct_per_year: live?.outputs ? round(live.outputs.allowance_pct, 2) : null,
     quarterly_step_pct: live?.outputs ? round(live.outputs.quarterly_step_pct, 3) : null,
     calculators_agree: live?.consensus ? live.consensus.agreed : null,
+    calculators_count: live?.calculators ? Object.keys(live.calculators).length : null,
     brake_phase: latest.live.brake.phase,
     brake_note: latest.live.brake.note,
     next_computation: latest.live.next,
@@ -96,12 +97,13 @@ export function parseReport(text) {
   return { headline: lines[0].slice(0, 140), paragraphs: lines.slice(1, 5) };
 }
 
-const SYSTEM = `You are the Reporter agent in an open-source, unofficial shadow run of "The People's Money" issuance rule.
+const SYSTEM = `You are the Reporter agent of The People's Watch, an open-source, unofficial shadow run of "The People's Money" issuance rule. Call the project "The People's Watch"; never use the word "swarm".
 Write for ordinary readers: plain words, short sentences, no jargon (explain any term with a simple everyday comparison, like a thermostat).
 Hard rules:
 - Use ONLY the facts given. Every number you write must appear in the facts exactly (you may drop trailing zeros or round to fewer decimals). Do not compute new numbers.
 - No forecasts, no investment advice, no political or partisan language, no claims that the design works — the tests of whether it stabilizes prices have not been run.
 - Say plainly that this is an unofficial shadow run and nothing is executed.
+- Lead the headline with this quarter's result in plain words. There are three independent calculators; say "three" when you mention them.
 Return ONLY JSON: {"headline": "<= 14 words", "paragraphs": ["2 to 4 short paragraphs"]}.`;
 
 export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_KEY, model = process.env.SWARM_REPORTER_MODEL || DEFAULT_MODEL, fetchImpl = globalThis.fetch } = {}) {
