@@ -20,6 +20,14 @@ export function metricValue(metric, obs, ctx = {}) {
     case 'pct_change_21d': return pctChangeBack(obs, 21);
     case 'pct_change_4q': return pctChangeBack(obs, 4);
     case 'pct_change_52w': return pctChangeBack(obs, 52);
+    case 'spread_vs': {
+      const other = ctx.byId?.[ctx.otherId];
+      if (!other?.ok) return null;
+      const lastDate = obs[obs.length - 1].date;
+      let ref = null;
+      for (const o of other.observations) { if (o.date <= lastDate) ref = o; else break; }
+      return ref ? last - ref.value : null;
+    }
     case 'change_vs_epoch_pp': {
       const months = quarterMonths(ctx.epochQ).map((m) => m.slice(0, 7));
       const inEpoch = obs.filter((o) => months.includes(o.date.slice(0, 7))).map((o) => o.value);
@@ -43,6 +51,7 @@ const METRIC_LABEL = {
   pct_change_4q: '4-quarter change, %',
   pct_change_52w: '52-week change, %',
   change_vs_epoch_pp: 'change since shadow-run start, points',
+  spread_vs: 'spread over the reserve rate, percentage points',
 };
 
 // Keep chart history small: every k-th point plus the last one.
@@ -55,12 +64,23 @@ const thin = (obs, maxPoints = 260) => {
   return out;
 };
 
+// A spread series (this minus the other series on or before each date), so the chart matches the number.
+const spreadSeries = (obs, other) => {
+  if (!other?.ok) return obs;
+  const out = []; let j = 0; let ref = null;
+  for (const o of obs) {
+    while (j < other.observations.length && other.observations[j].date <= o.date) { ref = other.observations[j]; j++; }
+    if (ref) out.push({ date: o.date, value: o.value - ref.value });
+  }
+  return out;
+};
+
 export function runSentinels(sensorById, cfgGroup, ctx) {
   const readings = [];
   for (const [id, cfg] of Object.entries(cfgGroup)) {
     const s = sensorById[id];
     if (!s || !s.ok) { readings.push({ id, status: 'unavailable', detail: s?.error ?? 'no data' }); continue; }
-    const value = metricValue(cfg.metric, s.observations, ctx);
+    const value = metricValue(cfg.metric, s.observations, { ...ctx, otherId: cfg.other });
     const status = classify(value, cfg);
     readings.push({
       id,
@@ -77,7 +97,7 @@ export function runSentinels(sensorById, cfgGroup, ctx) {
       direction: cfg.direction ?? 'up',
       status,
       note: cfg.note,
-      history: thin(s.observations),
+      history: thin(cfg.metric === 'spread_vs' ? spreadSeries(s.observations, ctx.byId?.[cfg.other]) : s.observations),
     });
   }
   const rank = { stress: 3, watch: 2, calm: 1, context: 0, unavailable: 0 };

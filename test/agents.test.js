@@ -89,3 +89,21 @@ test('executor refuses without agreement', () => {
   assert.equal(r.authorized, false);
   assert.equal(r.executed, false);
 });
+
+import { validateManifest, validateReport } from '../scripts/community.js';
+
+test('community: manifest rules (id matches folder, allowed interpreter, no paths outside the folder)', () => {
+  const ok = { id: 'my-agent', name: 'x', author: 'y', description: 'z', role: 'sentinel', command: ['python3', 'agent.py'] };
+  assert.deepEqual(validateManifest(ok, 'my-agent'), []);
+  assert.ok(validateManifest({ ...ok, command: ['bash', 'x.sh'] }, 'my-agent').length);
+  assert.ok(validateManifest({ ...ok, command: ['node', '../../scripts/run.js'] }, 'my-agent').length);
+  assert.ok(validateManifest({ ...ok, role: 'executor' }, 'my-agent').length);
+  assert.ok(validateManifest(ok, 'other-folder').length);
+});
+
+test('community: report rules', () => {
+  assert.deepEqual(validateReport({ status: 'watch', headline: 'Funding is tight', findings: [{ label: 'spread', value: '0.2' }] }), []);
+  assert.ok(validateReport({ status: 'execute', headline: 'x' }).length);
+  assert.ok(validateReport({ status: 'ok', headline: 'x'.repeat(200) }).length);
+  assert.ok(validateReport({ status: 'ok', headline: 'x', findings: Array(13).fill({ label: 'a' }) }).length);
+});

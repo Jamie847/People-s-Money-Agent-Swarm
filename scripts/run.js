@@ -48,15 +48,19 @@ if (ruleInputsOk) {
 const liveLatest = live?.history.length ? live.history[live.history.length - 1] : null;
 
 // ---- Tier 3: sentinels ----
-const ctx = { epochQ: parseQuarter(rule.live_epoch_quarter) };
+const ctx = { epochQ: parseQuarter(rule.live_epoch_quarter), byId };
 const globalDollar = runSentinels(byId, sentinelCfg.global_dollar, ctx);
 const domestic = runSentinels(byId, sentinelCfg.domestic, ctx);
+const plumbing = runSentinels(byId, sentinelCfg.plumbing, ctx);
+// Community agents ran earlier in the sandbox (scripts/community.js); their reports are advisory.
+const community = readJSON(P('data', 'community.json'), { agents: [] });
+const communityText = (() => { try { return readFileSync(P('data', 'community.json'), 'utf8'); } catch { return ''; } })();
 const backstop = runBackstop(byId, proposal, globalDollar.overall);
 
 // ---- Tier 5 & 6: human gates and executor ----
 const brake = live?.brake ?? { current: { phase: 'off', note: 'No live readings.' }, states: [] };
 const instruction = shadowInstruction({ liveLatest, consensusResult: liveLatest?.consensus, brake });
-const packets = buildPackets({ consensusResult: liveLatest?.consensus, liveLatest, integrity: sourceChecks, indexCheck, brake, globalDollar, domestic, rule, backstop });
+const packets = buildPackets({ consensusResult: liveLatest?.consensus, liveLatest, integrity: sourceChecks, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop });
 const seen = new Set(readJSON(P('data', 'packets-seen.json'), []));
 const newPackets = packets.filter((p) => !seen.has(p.id) && p.severity !== 'info');
 
@@ -76,6 +80,8 @@ const ledgerEntry = appendLedger(P('data', 'ledger.jsonl'), {
   brake_phase: brake.current.phase,
   global_dollar: globalDollar.overall,
   domestic: domestic.overall,
+  plumbing: plumbing.overall,
+  community_sha256: communityText ? sha256(communityText) : null,
   packets: packets.map((p) => p.id),
 });
 
@@ -95,6 +101,7 @@ const agents = [
   { tier: 1, group: 'Sensors', name: 'Growth sensor — real GDP', job: 'Fetch BEA annual real GDP for the ten-year trend.', status: sensorStatus(['GDP']) },
   { tier: 1, group: 'Sensors', name: 'Global-dollar sensors', job: 'Fed H.4.1 swap lines, foreign repo and custody; H.10 dollar index; BIS offshore dollar credit.', status: sensorStatus(['SWAPS', 'FIMA_REPO', 'FOREIGN_CUSTODY', 'DOLLAR_INDEX', 'OFFSHORE_CREDIT']) },
   { tier: 1, group: 'Sensors', name: 'Domestic sensors', job: '10-year yield, bank credit, St. Louis and Chicago stress indexes.', status: sensorStatus(['TEN_YEAR', 'BANK_CREDIT', 'STRESS_STL', 'STRESS_CHI']) },
+  { tier: 1, group: 'Sensors', name: 'Plumbing and expectations sensors', job: 'SOFR, reserve rate, reserves, Treasury cash, reverse repo, inflation expectations, median CPI, unemployment.', status: sensorStatus(['SOFR', 'IORB', 'RESERVES', 'TGA', 'ON_RRP', 'EXPECT_5Y5Y', 'EXPECT_MICH', 'MEDIAN_CPI', 'UNEMPLOYMENT']) },
   { tier: 1, group: 'Integrity', name: 'Freshness checker', job: 'Flag missing or stale inputs; disclose, never fill.', status: worst(sourceChecks.map((c) => c.status)) },
   { tier: 1, group: 'Integrity', name: 'Index-agreement checker', job: 'Flag when CPI-U and PCE 12-month changes differ by more than 1.5 points.', status: indexCheck?.status ?? 'fail' },
   { tier: 2, group: 'Calculators', name: 'Calculator A (JavaScript)', job: 'Apply the rule with direct arithmetic.', status: calcStatus('A') },
@@ -104,9 +111,14 @@ const agents = [
   { tier: 3, group: 'Sentinels', name: 'Brake monitor', job: 'Engage the brake after two successive readings above 3 log points.', status: { off: 'ok', released: 'ok', armed: 'warn', engaged: 'fail' }[brake.current.phase] ?? 'info' },
   { tier: 3, group: 'Sentinels', name: 'Global-dollar sentinel', job: 'Watch for an offshore dollar squeeze.', status: lvl(globalDollar.overall) },
   { tier: 3, group: 'Sentinels', name: 'Home stress sentinel', job: 'Watch financial stress, credit and Treasury yields.', status: lvl(domestic.overall) },
+  { tier: 3, group: 'Sentinels', name: 'Plumbing and expectations sentinel', job: 'Watch funding strain (SOFR vs reserve rate) and long-run inflation expectations.', status: lvl(plumbing.overall) },
+  { tier: 3, group: 'Sentinels', name: 'Community agents (sandboxed)', job: 'Agents written by outside contributors; advisory only; no secrets, no network.', status: !community.agents.length ? 'info' : community.agents.some((a) => a.error) ? 'warn' : 'ok' },
   { tier: 3, group: 'Sentinels', name: 'Transition backstop modeler', job: 'PROPOSAL: show what a capped, tapering dollar backstop would allow.', status: 'info' },
   { tier: 4, group: 'Auditors', name: 'Auditor', job: 'Re-check the ledger, fingerprints and every frozen reading.', status: status(audit.ok) },
   { tier: 4, group: 'Auditors', name: 'Ledger keeper', job: 'Seal each run to the one before it (hash chain).', status: status(audit.checks.find((c) => c.name === 'ledger-chain')?.status === 'ok') },
+  { tier: 4, group: 'Auditors', name: 'Bitcoin witness', job: 'Anchor each ledger checkpoint in Bitcoin via OpenTimestamps (free).', status: 'ok' },
+  { tier: 4, group: 'Auditors', name: 'Public attestation witness', job: 'Sign each checkpoint into Sigstore\'s public transparency log.', status: 'ok' },
+  { tier: 4, group: 'Auditors', name: 'Archive witness', job: 'Ask the Internet Archive to keep an outside copy of each checkpoint.', status: 'ok' },
   { tier: 4, group: 'Auditors', name: 'Red team', job: 'Attack the swarm and publish what breaks.', status: 'planned' },
   { tier: 5, group: 'Human gates', name: 'Decision-packet clerk', job: 'Turn anything that needs a person into a packet; open a GitHub issue.', status: packets.some((p) => p.severity === 'urgent') ? 'fail' : packets.some((p) => p.severity === 'review') ? 'warn' : 'ok' },
   { tier: 6, group: 'Executors', name: 'Executor (shadow)', job: 'Write the instruction the rule authorizes; refuse anything else; execute nothing.', status: instruction.authorized ? 'ok' : 'warn' },
@@ -131,7 +143,8 @@ const latest = {
   },
   replays,
   integrity: { sources: sourceChecks, index_agreement: indexCheck },
-  sentinels: { global_dollar: globalDollar, domestic },
+  sentinels: { global_dollar: globalDollar, domestic, plumbing },
+  community,
   backstop_proposal: backstop,
   instruction,
   packets,
@@ -151,5 +164,5 @@ writeJSON(P('data', 'packets-seen.json'), [...new Set([...seen, ...newPackets.ma
 
 console.log(`Run ${today} (${latest.run.mode}) sealed as ledger entry #${ledgerEntry.seq}`);
 console.log(`Live: ${liveLatest ? `${liveLatest.quarter} gap ${round(liveLatest.outputs?.gap_lp, 3)} lp, allowance ${round(liveLatest.outputs?.allowance_pct, 3)}%` : 'none'}; brake ${brake.current.phase}; next ${live?.next?.quarter} on ${live?.next?.computation_date}`);
-console.log(`Global dollar: ${globalDollar.overall}; domestic: ${domestic.overall}; packets: ${packets.length} (${newPackets.length} new); audit: ${audit.ok ? 'PASS' : 'FAIL'}; reporter: ${latest.report.source}`);
+console.log(`Global dollar: ${globalDollar.overall}; domestic: ${domestic.overall}; plumbing: ${plumbing.overall}; community agents: ${community.agents.length}; packets: ${packets.length} (${newPackets.length} new); audit: ${audit.ok ? 'PASS' : 'FAIL'}; reporter: ${latest.report.source}`);
 if (!audit.ok) process.exitCode = 1;

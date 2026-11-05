@@ -10,7 +10,10 @@ const out = join(root, process.argv[2] || '_site');
 const tpl = readFileSync(join(root, 'dashboard', 'index.html'), 'utf8');
 const css = readFileSync(join(root, 'dashboard', 'style.css'), 'utf8');
 const js = readFileSync(join(root, 'dashboard', 'app.js'), 'utf8');
-const data = readFileSync(join(root, 'data', 'latest.json'), 'utf8');
+// Inline the latest record plus the witnesses file (which is written after the run is sealed).
+const latestObj = JSON.parse(readFileSync(join(root, 'data', 'latest.json'), 'utf8'));
+try { latestObj.witnesses = JSON.parse(readFileSync(join(root, 'data', 'witnesses.json'), 'utf8')); } catch { latestObj.witnesses = { checkpoints: [] }; }
+const data = JSON.stringify(latestObj);
 // Make the JSON safe to embed inside a <script> element.
 const safeData = data.trim().replace(/</g, '\\u003c').split(String.fromCharCode(0x2028)).join('\\u2028').split(String.fromCharCode(0x2029)).join('\\u2029');
 

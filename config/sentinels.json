@@ -1,16 +1,113 @@
 {
   "_about": "Watch levels for the sentinel agents. These thresholds are PROVISIONAL choices made for this shadow run so the dashboard can say calm / watch / stress. They are not in the book or the Design Paper and should be reviewed. Sentinels never act; they only report and raise packets for humans.",
   "global_dollar": {
-    "SWAPS": { "metric": "level_billions", "watch": 10, "stress": 50, "note": "Peaks: about $583B (Dec 2008) and $449B (May 2020)." },
-    "FIMA_REPO": { "metric": "level_billions", "watch": 1, "stress": 10, "note": "Usage above zero means foreign official holders needed dollars against their Treasuries." },
-    "FOREIGN_CUSTODY": { "metric": "pct_change_13w", "watch": -3, "stress": -6, "direction": "down", "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries." },
-    "DOLLAR_INDEX": { "metric": "pct_change_21d", "watch": 3, "stress": 5, "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze." },
-    "OFFSHORE_CREDIT": { "metric": "pct_change_4q", "watch": null, "stress": null, "note": "Context only: the size of the offshore dollar system the transition must survive." }
+    "SWAPS": {
+      "metric": "level_billions",
+      "watch": 10,
+      "stress": 50,
+      "note": "Peaks: about $583B (Dec 2008) and $449B (May 2020)."
+    },
+    "FIMA_REPO": {
+      "metric": "level_billions",
+      "watch": 1,
+      "stress": 10,
+      "note": "Usage above zero means foreign official holders needed dollars against their Treasuries."
+    },
+    "FOREIGN_CUSTODY": {
+      "metric": "pct_change_13w",
+      "watch": -3,
+      "stress": -6,
+      "direction": "down",
+      "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries."
+    },
+    "DOLLAR_INDEX": {
+      "metric": "pct_change_21d",
+      "watch": 3,
+      "stress": 5,
+      "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze."
+    },
+    "OFFSHORE_CREDIT": {
+      "metric": "pct_change_4q",
+      "watch": null,
+      "stress": null,
+      "note": "Context only: the size of the offshore dollar system the transition must survive."
+    }
   },
   "domestic": {
-    "STRESS_STL": { "metric": "level", "watch": 1, "stress": 2, "note": "Stand-in for the design's payment-stress index, which is not yet specified." },
-    "STRESS_CHI": { "metric": "level", "watch": 0.5, "stress": 1, "note": "Stand-in for the design's payment-stress index." },
-    "BANK_CREDIT": { "metric": "pct_change_52w", "watch": null, "stress": null, "note": "Context only: the credit-standards formula (Ch. 8) has not been written yet, so no threshold is set." },
-    "TEN_YEAR": { "metric": "change_vs_epoch_pp", "watch": 1.5, "stress": 3, "note": "Proxy for kill criterion 5 (Treasury yields up more than 3 points and staying there)." }
+    "STRESS_STL": {
+      "metric": "level",
+      "watch": 1,
+      "stress": 2,
+      "note": "Stand-in for the design's payment-stress index, which is not yet specified."
+    },
+    "STRESS_CHI": {
+      "metric": "level",
+      "watch": 0.5,
+      "stress": 1,
+      "note": "Stand-in for the design's payment-stress index."
+    },
+    "BANK_CREDIT": {
+      "metric": "pct_change_52w",
+      "watch": null,
+      "stress": null,
+      "note": "Context only: the credit-standards formula (Ch. 8) has not been written yet, so no threshold is set."
+    },
+    "TEN_YEAR": {
+      "metric": "change_vs_epoch_pp",
+      "watch": 1.5,
+      "stress": 3,
+      "note": "Proxy for kill criterion 5 (Treasury yields up more than 3 points and staying there)."
+    }
+  },
+  "plumbing": {
+    "SOFR": {
+      "metric": "spread_vs",
+      "other": "IORB",
+      "watch": 0.1,
+      "stress": 0.25,
+      "note": "Funding strain: when overnight Treasury-backed borrowing costs rise well above the rate on reserves, cash is getting scarce (as in September 2019)."
+    },
+    "RESERVES": {
+      "metric": "level_billions",
+      "watch": null,
+      "stress": null,
+      "note": "Context: the reserves that would become custody balances behind protected accounts at the switch (Ch. 8)."
+    },
+    "TGA": {
+      "metric": "level_billions",
+      "watch": null,
+      "stress": null,
+      "note": "Context: the Treasury's cash balance. The design caps Treasury cash and pays out any excess as a dividend (Ch. 9)."
+    },
+    "ON_RRP": {
+      "metric": "level",
+      "watch": null,
+      "stress": null,
+      "note": "Context: spare cash money funds park at the Fed overnight ($ billions)."
+    },
+    "EXPECT_5Y5Y": {
+      "metric": "level",
+      "watch": 3.0,
+      "stress": 3.5,
+      "note": "If markets expect inflation far above target years ahead, trust in the measuring stick is slipping."
+    },
+    "EXPECT_MICH": {
+      "metric": "level",
+      "watch": null,
+      "stress": null,
+      "note": "Context: what households expect prices to do over the next year."
+    },
+    "MEDIAN_CPI": {
+      "metric": "level",
+      "watch": null,
+      "stress": null,
+      "note": "Context: the middle price change across the CPI basket, a check on how broad inflation is."
+    },
+    "UNEMPLOYMENT": {
+      "metric": "level",
+      "watch": null,
+      "stress": null,
+      "note": "Context: the book's goal is stable prices while supporting employment; the rule does not target jobs directly."
+    }
   }
 }

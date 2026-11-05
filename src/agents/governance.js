@@ -7,7 +7,7 @@ import { sha256 } from '../lib/util.js';
 
 const packet = (type, key, fields) => ({ id: `${type}-${sha256(`${type}|${key}`).slice(0, 10)}`, type, ...fields });
 
-export function buildPackets({ consensusResult, liveLatest, integrity, indexCheck, brake, globalDollar, domestic, rule, backstop }) {
+export function buildPackets({ consensusResult, liveLatest, integrity, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop }) {
   const out = [];
 
   if (liveLatest && consensusResult && !consensusResult.agreed) {
@@ -54,7 +54,7 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
     }));
   }
 
-  for (const group of [globalDollar, domestic]) {
+  for (const group of [globalDollar, domestic, plumbing].filter(Boolean)) {
     for (const r of group.readings.filter((x) => x.status === 'stress' || x.status === 'watch')) {
       out.push(packet('SENTINEL', `${r.id}|${r.status}|${r.as_of.slice(0, 7)}`, {
         severity: r.status === 'stress' ? 'urgent' : 'review',

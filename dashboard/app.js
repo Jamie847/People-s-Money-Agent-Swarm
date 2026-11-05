@@ -15,6 +15,28 @@
   }
   function daysUntil(iso) { return Math.round((new Date(iso + 'T00:00:00Z') - new Date(D.run.date + 'T00:00:00Z')) / 86400000); }
 
+  // Architecture at a glance (static SVG).
+  function archSvg() {
+    var rows = [['Outside agencies', 'BLS, BEA, Federal Reserve, BIS publish the data', 'tint'], ['Tier 1 · Sensors and integrity', 'Fetch the data, fingerprint it, flag problems', ''], ['Tier 2 · Calculators A, B and C', 'All three must agree, or nothing is published', ''], ['SPLIT'], ['Tier 5 · Human gates', 'Packets name who decides; each opens a public issue', 'accent'], ['Tier 6 · Executor (shadow)', 'Writes only what the rule authorizes; executes nothing', ''], ['Tier 7 · Reporters', 'Plain-language report; every number checked', ''], ['The public', 'Dashboard, raw data, one-command recompute', 'tint']];
+    var y = 16, out = '<svg viewBox="0 0 760 ' + (16 + rows.length * 72 + 4) + '" role="img" aria-label="Agent swarm architecture: data flows down seven tiers to a human gate">';
+    var box = function (x, w, yy, t, s, k) {
+      var fill = k === 'accent' ? '#e8ecf8' : k === 'tint' ? '#f3f1ea' : '#fff', stroke = k === 'accent' ? '#13235b' : '#c9cedb';
+      return '<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="52" rx="8" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + (k === 'accent' ? 2 : 1) + '"/><text x="' + (x + w / 2) + '" y="' + (yy + 22) + '" text-anchor="middle" font-size="14" font-weight="600" fill="#13235b">' + esc(t) + '</text><text x="' + (x + w / 2) + '" y="' + (yy + 40) + '" text-anchor="middle" font-size="12" fill="#5a6072">' + esc(s) + '</text>';
+    };
+    var arrow = function (x, y1, y2) { return '<line x1="' + x + '" y1="' + y1 + '" x2="' + x + '" y2="' + (y2 - 4) + '" stroke="#9aa1b3" stroke-width="1.4"/><path d="M' + (x - 4) + ' ' + (y2 - 8) + 'L' + x + ' ' + (y2 - 2) + 'L' + (x + 4) + ' ' + (y2 - 8) + '" fill="none" stroke="#9aa1b3" stroke-width="1.4"/>'; };
+    rows.forEach(function (r, i) {
+      if (r[0] === 'SPLIT') {
+        out += box(100, 270, y, 'Tier 3 · Sentinels', 'Brake, dollar, stress, community agents', '') + box(390, 270, y, 'Tier 4 · Auditors and witnesses', 'Ledger, Bitcoin, Sigstore, Archive', '');
+        out += arrow(235, y + 52, y + 72) + arrow(525, y + 52, y + 72);
+      } else {
+        out += box(100, 560, y, r[0], r[1], r[2]);
+        if (i < rows.length - 1) { if (rows[i + 1][0] === 'SPLIT') out += arrow(235, y + 52, y + 72) + arrow(525, y + 52, y + 72); else out += arrow(380, y + 52, y + 72); }
+      }
+      y += 72;
+    });
+    return out + '</svg>';
+  }
+
   // Tiny dependency-free SVG line chart.
   function lineChart(series, opts) {
     opts = opts || {};
@@ -58,7 +80,7 @@
   var brake = live.brake || {};
   var next = live.next;
   var brakeStatus = { off: 'ok', released: 'ok', armed: 'warn', engaged: 'fail' }[brake.phase] || 'info';
-  var gd = D.sentinels.global_dollar, dm = D.sentinels.domestic;
+  var gd = D.sentinels.global_dollar, dm = D.sentinels.domestic, pl = D.sentinels.plumbing;
 
   document.getElementById('notice').innerHTML = '<strong>Unofficial shadow run.</strong> ' + esc(D.disclaimer);
 
@@ -100,8 +122,9 @@
   // ---- Agent roster ----
   var tiers = {};
   D.agents.forEach(function (a) { (tiers[a.tier] = tiers[a.tier] || { group: a.group, list: [] }).list.push(a); });
-  var tierNames = { 1: 'Sensors and integrity: fetch, fingerprint, check', 2: 'Calculators: apply the rule', 3: 'Sentinels: watch, never act', 4: 'Auditors: check the swarm itself', 5: 'Human gates: people decide', 6: 'Executors: act only on what is authorized', 7: 'Reporters: tell the public' };
-  h += '<section><h2>Watch the swarm</h2><p class="sub">Every agent has one job. Data flows down the tiers; anything that needs judgment stops at a human gate.</p>';
+  var tierNames = { 1: 'Sensors and integrity: fetch, fingerprint, check', 2: 'Calculators: apply the rule', 3: 'Sentinels and community agents: watch, never act', 4: 'Auditors and witnesses: check the swarm itself', 5: 'Human gates: people decide', 6: 'Executors: act only on what is authorized', 7: 'Reporters: tell the public' };
+  h += '<section><h2>Watch the swarm</h2><p class="sub">Every agent has one job. Data flows down the tiers; anything that needs judgment stops at a human gate. Outside witnesses keep a copy of the record nobody here controls.</p>';
+  h += '<div class="card chart" style="margin-bottom:16px">' + archSvg() + '</div>';
   Object.keys(tiers).sort().forEach(function (t) {
     h += '<div class="tier"><div class="tier-head"><span class="n">Tier ' + t + '</span><span class="t">' + esc(tierNames[t]) + '</span></div><div class="agents">';
     tiers[t].list.forEach(function (a) { h += '<div class="agent"><div class="name"><span class="s-' + esc(a.status) + '" style="border:0"><span class="dot"' + (a.status === 'planned' ? ' style="background:transparent;border:1.5px dashed currentColor"' : '') + '></span></span>' + esc(a.name) + '</div><div class="job">' + esc(a.job) + '</div></div>'; });
@@ -123,6 +146,7 @@
   }
   h += '<section><h2>Global dollar watch ' + pill(gd.overall) + '</h2><p class="sub">Trillions of dollars are owed and created outside the United States (the "Eurodollar" system). A dollar squeeze abroad can force foreign holders to dump Treasuries. These sentinels watch for it. Their watch levels are provisional and open to review.</p>' + watchCards(gd) + '</section>';
   h += '<section><h2>Home financial stress ' + pill(dm.overall) + '</h2><p class="sub">Stand-ins for the design\'s payment-stress index (not yet specified), plus bank credit and the 10-year Treasury yield as a proxy for kill criterion 5.</p>' + watchCards(dm) + '</section>';
+  if (pl) h += '<section><h2>Plumbing and expectations ' + pill(pl.overall) + '</h2><p class="sub">The pipes money flows through (overnight funding, bank reserves, the Treasury\'s cash) and what markets and households expect prices to do. A funding squeeze or slipping expectations are early signs of trouble.</p>' + watchCards(pl) + '</section>';
 
   // ---- Transition backstop proposal ----
   var bp = D.backstop_proposal;
@@ -153,6 +177,44 @@
     h += lineChart([{ points: rows.map(function (r) { return [r.quarter, r.allowance_pct]; }), color: '#c9a227' }], { label: 'path growth replay', min: 0, max: 4, height: 160, xLabels: labels });
     h += '<div class="legend"><span><i style="background:#c9a227"></i>path growth allowed, % a year (0–4%)</span></div><p class="caveat">' + esc(rp.caveat) + '</p></div></section>';
   });
+
+  // ---- Community agents ----
+  var cm = D.community || { agents: [] };
+  h += '<section><h2>Community agents</h2><p class="sub">Agents written by outside contributors and their AIs, plugged into the swarm like building blocks. Each runs in a sealed sandbox (no secrets, no internet, read-only) and its report is advisory. <a href="' + REPO + '/tree/main/community">Add your own agent</a>.</p>';
+  if (!cm.agents.length) h += '<div class="card"><p style="margin:0">No community agents yet. Be the first.</p></div>';
+  else {
+    h += '<div class="grid g2">';
+    cm.agents.forEach(function (a) {
+      var st = a.error ? 'warn' : a.report.status;
+      h += '<div class="card"><div class="row" style="display:flex;justify-content:space-between;gap:8px"><div><strong>' + esc(a.name || a.id) + '</strong><div class="meta">by ' + esc(a.author || 'unknown') + ' · ' + esc(a.role || '') + (a.isolated ? ' · ran sealed' : '') + '</div></div>' + pill(a.error ? 'warn' : (a.report.status === 'ok' ? 'ok' : a.report.status), a.error ? 'did not run' : a.report.status) + '</div>';
+      if (a.error) h += '<p class="meta">' + esc(a.error) + '</p>';
+      else {
+        h += '<p style="margin:10px 0 6px"><strong>' + esc(a.report.headline) + '</strong></p><ul style="margin:0;padding-left:18px">';
+        a.report.findings.forEach(function (f) { h += '<li>' + esc(f.label) + (f.value ? ': ' + esc(f.value) : '') + (f.note ? ' <span class="meta">(' + esc(f.note) + ')</span>' : '') + '</li>'; });
+        h += '</ul>';
+      }
+      h += '<p class="meta" style="margin:8px 0 0">' + esc(a.description || '') + (a.output_sha256 ? ' · fingerprint ' + esc(a.output_sha256.slice(0, 12)) + '…' : '') + '</p></div>';
+    });
+    h += '</div>';
+  }
+  h += '</section>';
+
+  // ---- Independent witnesses ----
+  var wt = (D.witnesses && D.witnesses.checkpoints) || [];
+  h += '<section><h2>Independent witnesses</h2><p class="sub">After every run, a fingerprint of the ledger is handed to three witnesses this project does not control: the Bitcoin blockchain (via OpenTimestamps, free), Sigstore\'s public transparency log (signed by GitHub\'s workflow identity), and the Internet Archive. Like printing the day\'s fingerprint in a newspaper the whole world keeps, no one can quietly rewrite the record later. A witness proves when the record existed and that it has not changed, not that the numbers are true.</p>';
+  if (!wt.length) h += '<div class="card"><p style="margin:0">The first checkpoint is witnessed on the next scheduled run.</p></div>';
+  else {
+    h += '<div class="card"><table><thead><tr><th>Checkpoint</th><th>Bitcoin</th><th>Sigstore log</th><th>Internet Archive</th></tr></thead><tbody>';
+    wt.slice(-10).reverse().forEach(function (c) {
+      var b = c.bitcoin || {};
+      var btc = b.status === 'confirmed' ? pill('ok', 'block ' + b.block_height) + (b.explorer ? ' <a class="meta" href="' + esc(b.explorer) + '">view</a>' : '') : b.status === 'pending' ? pill('warn', 'waiting for a block') : pill('info', b.status || '—');
+      var sg = c.sigstore && c.sigstore.rekor_log_index != null ? '<a href="' + esc(c.sigstore.rekor_search) + '">#' + esc(c.sigstore.rekor_log_index) + '</a>' : (c.sigstore && c.sigstore.attestation_url ? '<a href="' + esc(c.sigstore.attestation_url) + '">attested</a>' : '—');
+      var wb = c.wayback ? '<a href="' + esc(c.wayback.snapshot || c.wayback.lookup) + '">' + esc(c.wayback.status) + '</a>' : '—';
+      h += '<tr><td><a href="' + REPO + '/blob/main/' + esc(c.file) + '">#' + esc(c.ledger_seq) + ' · ' + esc(c.run_date) + '</a><div class="meta mono">' + esc((c.ledger_entry_hash || '').slice(0, 16)) + '…</div></td><td>' + btc + '</td><td>' + sg + '</td><td>' + wb + '</td></tr>';
+    });
+    h += '</tbody></table><p class="meta" style="margin:10px 0 0">Verify any checkpoint: <span class="mono">node scripts/witness.js verify data/checkpoints/&lt;file&gt;</span> · Bitcoin proofs can also be checked by dropping the file and its .ots proof on opentimestamps.org. A Bitcoin proof completes a few hours after submission.</p></div>';
+  }
+  h += '</section>';
 
   // ---- Human gates ----
   h += '<section><h2>Human gates</h2><p class="sub">Agents prepare, people decide. Each packet says what happened, what the rule says, and who decides. New packets open an issue on GitHub.</p>';

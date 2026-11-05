@@ -30,6 +30,7 @@ export function buildFacts(latest) {
     global_dollar_overall: g.overall,
     global_dollar_readings: g.readings.map((r) => ({ name: r.title, value: r.value, measure: r.metric_label, status: r.status, as_of: r.as_of })),
     domestic_overall: d.overall,
+    plumbing_overall: latest.sentinels.plumbing ? latest.sentinels.plumbing.overall : null,
     domestic_readings: d.readings.map((r) => ({ name: r.title, value: r.value, measure: r.metric_label, status: r.status, as_of: r.as_of })),
     open_human_packets: latest.packets.filter((p) => p.severity !== 'info').map((p) => p.title),
     replays: latest.replays.map((r) => ({ from: r.epoch, quarters: r.summary.quarters, largest_gap_log_points: r.summary.max_gap_lp, brake_first_engaged: r.summary.first_brake_engaged })),

@@ -10,6 +10,7 @@ permissions:
   issues: write
   pages: write
   id-token: write
+  attestations: write
 
 concurrency:
   group: swarm-run
@@ -20,17 +21,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Always build on the CURRENT record, even when an old run is re-run from the Actions page.
+      # No credentials are left on disk, so sandboxed community agents cannot find a token.
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      - name: Install the OpenTimestamps client (Bitcoin witness)
+        run: pipx install opentimestamps-client
+
       - name: Tests
         run: npm test
+
+      - name: Community agents (sandboxed — no secrets, no network, read-only)
+        run: node scripts/community.js --isolate
 
       - name: Run the swarm (all tiers)
         env:
@@ -38,14 +47,48 @@ jobs:
           SWARM_REPORTER_MODEL: claude-haiku-5-5   # low-cost model; the reporter makes one short call per run
         run: node scripts/run.js || echo "SWARM_AUDIT_FAILED=1" >> "$GITHUB_ENV"
 
+      - name: Checkpoint the ledger
+        id: cp
+        run: node scripts/witness.js prepare
+
+      - name: Witness 1 — anchor in Bitcoin (OpenTimestamps)
+        continue-on-error: true
+        run: node scripts/witness.js ots
+
+      - name: Witness 2 — public attestation (Sigstore transparency log)
+        id: attest
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.cp.outputs.checkpoint }}
+
+      - name: Record the attestation
+        if: steps.attest.outcome == 'success'
+        run: node scripts/witness.js attest "${{ steps.attest.outputs.bundle-path }}" "${{ steps.attest.outputs.attestation-url }}"
+
       - name: Seal results into the repository
+        id: seal
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "peoples-money-swarm[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
           git commit -m "Swarm run $(date -u +%F)" || echo "Nothing to commit"
           git pull --rebase origin main
-          git push origin HEAD:main
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Witness 3 — outside copy (Internet Archive)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/witness.js wayback "${{ steps.seal.outputs.sha }}"
+          git add data/witnesses.json
+          git commit -m "Witness: archive copy of checkpoint" || exit 0
+          git pull --rebase origin main
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
 
       - name: Open GitHub issues for new human-gate packets
         env:

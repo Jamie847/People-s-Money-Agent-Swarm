@@ -1,0 +1,9 @@
+{
+  "id": "purchasing-power-clock",
+  "name": "Purchasing-power clock",
+  "author": "People's Money project (example agent)",
+  "role": "analyst",
+  "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
+  "command": ["python3", "agent.py"],
+  "license": "MIT"
+}

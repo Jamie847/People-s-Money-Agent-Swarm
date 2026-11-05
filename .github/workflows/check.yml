@@ -5,11 +5,16 @@ on:
   push:
     branches-ignore: [main]
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -17,3 +22,5 @@ jobs:
         run: npm run check
       - name: Recompute the latest live quarter independently (Python)
         run: python3 scripts/recompute.py
+      - name: Community agents run in the sandbox and return valid reports
+        run: node scripts/community.js --isolate --validate
