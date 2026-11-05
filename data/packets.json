@@ -18,7 +18,7 @@
     "id": "REVIEW_INTERPRETATIONS-d4fa154146",
     "type": "REVIEW_INTERPRETATIONS",
     "severity": "info",
-    "title": "6 rule interpretations awaiting a Design Paper ruling",
+    "title": "7 rule interpretations awaiting a Design Paper ruling",
     "what_happened": "The shadow run had to choose how to implement details the book leaves open.",
     "what_the_rule_says": "The working specification is the Design Paper, which lists definitions and operating rules still to be completed (Ch. 7).",
     "who_decides": "Jamie, after Agent 2 review",
@@ -28,7 +28,8 @@
       "The annual path rate is turned into a quarterly step by compounding: (1 + a)^(1/4) - 1.",
       "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
       "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
-      "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED)."
+      "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED).",
+      "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
     ]
   },
   {
