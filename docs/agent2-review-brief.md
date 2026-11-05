@@ -3,7 +3,7 @@
 Jamie asks you to review The People's Watch the way you reviewed the Design Paper: attack it, accept nothing on trust, and say plainly
 what you accept, what you reject, and why. Four jobs, in order of importance.
 
-**Repo:** https://github.com/Jamie847/People-s-Money-Agent-Swarm · **Dashboard:** https://jamie847.github.io/People-s-Money-Agent-Swarm/
+**Repo:** https://github.com/Jamie847/peoples-money-watch · **Dashboard:** https://jamie847.github.io/peoples-money-watch/
 **Rule source:** *The People's Money* Ch. 7 and Design Paper 0.7.2 (as clarified Nov 1, 2026).
 
 ## 1. Rule on the seven interpretations

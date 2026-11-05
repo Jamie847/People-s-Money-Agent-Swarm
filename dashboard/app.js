@@ -4,7 +4,7 @@
   var REPO = (function () {
     var m = /^([a-z0-9-]+)\.github\.io$/i.exec(location.hostname);
     var seg = location.pathname.split('/')[1];
-    return m && seg ? 'https://github.com/' + m[1] + '/' + seg : 'https://github.com/Jamie847/People-s-Money-Agent-Swarm';
+    return m && seg ? 'https://github.com/' + m[1] + '/' + seg : 'https://github.com/Jamie847/peoples-money-watch';
   })();
   var app = document.getElementById('app');
   var EMBED = /[?&]embed=1/.test(location.search);

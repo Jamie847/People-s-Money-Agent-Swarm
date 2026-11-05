@@ -23,7 +23,7 @@ import { readLedger, verifyLedger } from '../src/agents/ledger.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const P = (...p) => join(root, ...p);
-const REPO = process.env.GITHUB_REPOSITORY || 'Jamie847/People-s-Money-Agent-Swarm';
+const REPO = process.env.GITHUB_REPOSITORY || 'Jamie847/peoples-money-watch';
 const witnessesPath = P('data', 'witnesses.json');
 const load = () => readJSON(witnessesPath, { about: 'Independent witnesses for each checkpoint of the ledger. See scripts/witness.js.', checkpoints: [] });
 const save = (w) => writeJSON(witnessesPath, w);

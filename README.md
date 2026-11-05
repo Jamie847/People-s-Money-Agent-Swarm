@@ -33,7 +33,7 @@ Every day, a network of small automated agents reads public data, applies the ru
 After every run, a fingerprint of the ledger (a checkpoint in `data/checkpoints/`) goes to three witnesses this project does not control:
 
 1. **Bitcoin**, via [OpenTimestamps](https://opentimestamps.org) (free). Proof files: `data/checkpoints/*.ots`. They complete a few hours after submission, once a Bitcoin block confirms them.
-2. **Sigstore's public transparency log**, via GitHub artifact attestations, signed with the workflow's identity. Verify with `gh attestation verify <checkpoint> --repo Jamie847/People-s-Money-Agent-Swarm`.
+2. **Sigstore's public transparency log**, via GitHub artifact attestations, signed with the workflow's identity. Verify with `gh attestation verify <checkpoint> --repo Jamie847/peoples-money-watch`. (The repository was renamed on November 5, 2026. Checkpoints written before then record its old address; GitHub forwards the old links, and the sealed files are left exactly as they were written.)
 3. **The Internet Archive**, which keeps an outside copy of each checkpoint file.
 
 `node scripts/witness.js verify data/checkpoints/<file>` checks a checkpoint against the ledger. A witness proves when the record existed and that it has not changed since, not that the numbers are true.
@@ -75,8 +75,8 @@ Node 20+ and Python 3. No dependencies.
 
 1. **Settings → Pages → Build and deployment → Source: GitHub Actions.** The dashboard then publishes on every run.
 2. **Settings → Secrets and variables → Actions → New repository secret:** `ANTHROPIC_API_KEY` (for the AI reporter). Without it, the reporter uses a plain template.
-3. **Actions → Swarm run → Run workflow** to start the first scheduled run. After that it runs daily.
-4. On peoplesmoneyproject.org, link to or embed the Pages URL, e.g. `<iframe src="https://jamie847.github.io/People-s-Money-Agent-Swarm/" style="width:100%;height:2400px;border:0"></iframe>`.
+3. **Actions → The People's Watch daily run → Run workflow** to start the first scheduled run. After that it runs daily.
+4. On peoplesmoneyproject.org, link to or embed the Pages URL, e.g. `<iframe src="https://jamie847.github.io/peoples-money-watch/" style="width:100%;height:2400px;border:0"></iframe>`.
 
 ## Files
 

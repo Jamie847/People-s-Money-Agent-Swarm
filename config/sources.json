@@ -245,14 +245,14 @@
     },
     {
       "id": "CURRENCY",
-      "series": "CURRCIR",
+      "series": "WCURCIR",
       "transport": "fred",
-      "start": "1999-01-01",
+      "start": "2003-01-01",
       "role": "comparison",
-      "freq": "monthly",
+      "freq": "weekly",
       "agency": "Federal Reserve Board (H.4.1)",
-      "title": "Currency in circulation",
-      "units": "billions of dollars"
+      "title": "Currency in circulation (Wednesday level)",
+      "units": "millions of dollars"
     },
     {
       "id": "NGDP",

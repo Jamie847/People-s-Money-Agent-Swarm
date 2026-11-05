@@ -38,7 +38,7 @@
     { "text": "Read the Preface and Chapter 1 of The People's Money free, then tell us what surprised you.", "label": "Read it free", "href": "https://peoplesmoneyproject.org/chapter-1.pdf" },
     { "text": "Check our work: recompute this quarter's number on your own computer with one command.", "label": "See how", "href": "https://peoplesmoneyproject.org/watch.html" },
     { "text": "Forward this email to one person who complains about prices. That's how a conversation starts.", "label": null, "href": null },
-    { "text": "Know an economist, engineer or data nerd? Invite them to add an agent or try to break ours.", "label": "Build an agent", "href": "https://github.com/Jamie847/People-s-Money-Agent-Swarm/tree/main/community" },
+    { "text": "Know an economist, engineer or data nerd? Invite them to add an agent or try to break ours.", "label": "Build an agent", "href": "https://github.com/Jamie847/peoples-money-watch/tree/main/community" },
     { "text": "Hit reply and send us the money question that confuses you most. The best ones become next month's explainer.", "label": null, "href": null }
   ],
   "unknowns": "Whether the rule would actually keep prices steady. What credit and mortgages would cost. Whether the switch could happen without serious disruption. Whether a cheaper reform could get most of the benefit. Those are the tests in Chapter 9, and we will report them, good or bad, as they come in."

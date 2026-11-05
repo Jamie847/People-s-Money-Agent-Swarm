@@ -148,7 +148,7 @@ export function runHeadToHead({ byId, replays, live, cfg, aiUsage }) {
   const deferred = remit.filter((o) => o.date >= '2022-01-01').map((o) => [o.date, r2(Math.max(0, -o.value) / 1000, 1)]);
   // (c) what a year's inflation took from the cash people hold
   const cpiG = decGrowth(cpi);
-  const curDec = decValues(cur);
+  const curDec = Object.fromEntries(Object.entries(decValues(cur)).map(([y, v]) => [y, v / 1000]));   // weekly series is in $ millions
   const inflationOnCash = {};
   for (const y of Object.keys(cpiG).map(Number)) if (curDec[y - 1] && y >= y0) inflationOnCash[y] = r2(curDec[y - 1] * cpiG[y] / 100, 1);
   const lastRes = res.length ? res[res.length - 1].date : '';
@@ -192,7 +192,7 @@ export function runHeadToHead({ byId, replays, live, cfg, aiUsage }) {
     rule_costs: {
       ai_per_run_usd: aiPerRun == null ? null : r2(aiPerRun, 4),
       ai_per_month_usd: aiPerRun == null ? null : r2(aiPerRun * cfg.runs_per_month, 2),
-      ai_tokens_last_run: aiUsage || null,
+      ai_tokens_last_run: aiUsage ? { input: aiUsage.input_tokens ?? null, output: aiUsage.output_tokens ?? null } : null,
       compute: 'GitHub Actions runs public projects free.',
       not_estimated: 'Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans.',
     },
