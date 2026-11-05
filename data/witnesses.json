@@ -185,7 +185,12 @@
         "rekor_search": "https://search.sigstore.dev/?logIndex=3694374766",
         "verify": "gh attestation verify data/checkpoints/000011-2026-11-05.json --repo Jamie847/People-s-Money-Agent-Swarm"
       },
-      "wayback": null
+      "wayback": {
+        "target": "https://raw.githubusercontent.com/Jamie847/People-s-Money-Agent-Swarm/8a79a3c3b8a321293dd782a3a01df6b2457f465d/data/checkpoints/000011-2026-11-05.json",
+        "snapshot": "https://web.archive.org/web/20261105142050/https://raw.githubusercontent.com/Jamie847/People-s-Money-Agent-Swarm/8a79a3c3b8a321293dd782a3a01df6b2457f465d/data/checkpoints/000011-2026-11-05.json",
+        "lookup": "https://web.archive.org/web/*/https://raw.githubusercontent.com/Jamie847/People-s-Money-Agent-Swarm/8a79a3c3b8a321293dd782a3a01df6b2457f465d/data/checkpoints/000011-2026-11-05.json",
+        "status": "saved"
+      }
     }
   ]
 }
