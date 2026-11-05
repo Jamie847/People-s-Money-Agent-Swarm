@@ -41,6 +41,12 @@ jobs:
       - name: Community agents (sandboxed — no secrets, no network, read-only)
         run: node scripts/community.js --isolate
 
+      - name: Red team (attacks a throwaway copy of the record)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SWARM_REPORTER_MODEL: claude-haiku-5-5
+        run: node scripts/redteam.js
+
       - name: Run the swarm (all tiers)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

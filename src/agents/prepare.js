@@ -8,7 +8,9 @@ export function lastGdpYearAvailable(compDateIso, availableFrom = '05-01') {
   return compDateIso.slice(5) >= availableFrom ? y - 1 : y - 2;
 }
 
-export function prepareQuarter({ cpi, pce, gdp }, epochQ, q, rule) {
+// frozenBase: the epoch quarter's prices exactly as frozen in the live record. Later quarters must measure
+// from that frozen starting point, not from a re-read (and possibly revised) copy of it.
+export function prepareQuarter({ cpi, pce, gdp }, epochQ, q, rule, frozenBase = null) {
   const cpiM = toMap(cpi);
   const pceM = toMap(pce);
   const gdpM = new Map(gdp.map((o) => [Number(o.date.slice(0, 4)), o.value]));
@@ -23,7 +25,7 @@ export function prepareQuarter({ cpi, pce, gdp }, epochQ, q, rule) {
 
   const baseMonths = quarterMonths(epochQ);
   const curMonths = quarterMonths(q);
-  const base = { cpi: pick(cpiM, baseMonths, 'CPI'), pce: pick(pceM, baseMonths, 'PCE') };
+  const base = frozenBase ? { cpi: [...frozenBase.cpi], pce: [...frozenBase.pce] } : { cpi: pick(cpiM, baseMonths, 'CPI'), pce: pick(pceM, baseMonths, 'PCE') };
   const cur = { cpi: pick(cpiM, curMonths, 'CPI'), pce: pick(pceM, curMonths, 'PCE') };
 
   let lastYear = lastGdpYearAvailable(compDate, rule.annual_gdp_available_from_month_day);

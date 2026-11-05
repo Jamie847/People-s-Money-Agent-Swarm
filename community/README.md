@@ -58,6 +58,17 @@ It prints ONE JSON object to **stdout**:
 }
 ```
 
+**Independent recompute (Calculator D and beyond).** If your agent recomputes the rule itself, add a `recompute` object
+and the swarm will compare it with the published number every run, raising a public flag on any disagreement larger
+than 0.001:
+
+```json
+"recompute": { "quarter": "2026-Q3", "gap_lp": 0.4725, "allowance_pct": 2.2296 }
+```
+
+Write it from the book and the Design Paper, not from this repo's code. Independence is the point. Your inputs are
+in `inputs` (CPI, PCE, GDP), and the frozen starting quarter is in `latest.live.readings` / `data/live-history.json`.
+
 4. Try it exactly as the swarm will run it:
 
 ```bash

@@ -2,6 +2,8 @@
   var D = window.SWARM_DATA;
   var REPO = 'https://github.com/Jamie847/People-s-Money-Agent-Swarm';
   var app = document.getElementById('app');
+  var EMBED = /[?&]embed=1/.test(location.search);
+  if (EMBED) document.documentElement.className += ' embed';
   if (!D) { app.innerHTML = '<p>No data yet.</p>'; return; }
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -116,6 +118,12 @@
     });
     h += '</tbody></table><p style="margin:12px 0 0">' + (latest.consensus.agreed ? pill('ok', 'calculators agree') : pill('fail', 'calculators disagree — nothing published')) + ' <span class="meta">tolerance ' + latest.consensus.tolerance + ' · inputs: ' + esc(latest.inputs.current_months[0].slice(0, 7)) + ' to ' + esc(latest.inputs.current_months[2].slice(0, 7)) + ' vs ' + esc(latest.inputs.base_months[0].slice(0, 7)) + ' to ' + esc(latest.inputs.base_months[2].slice(0, 7)) + '; real GDP ' + latest.inputs.gdp_years[0] + '–' + latest.inputs.gdp_years[latest.inputs.gdp_years.length - 1] + '</span></p></div>';
   }
+  if (latest && latest.data_vintage) h += '<p class="meta" style="margin:10px 0 0">Data used: ' + (latest.data_vintage.as_published_on ? 'figures exactly as published on ' + esc(latest.data_vintage.as_published_on) + ' (ALFRED archive), so later revisions never change this reading' : esc(latest.data_vintage.note || '')) + ' · starting prices: ' + esc(latest.base_source || '') + '.</p>';
+  var rc = D.recomputes || [];
+  h += '<div class="card" style="margin-top:14px"><p style="margin:0"><strong>Independent recomputes by outside authors</strong> <span class="meta">(Calculator D and beyond)</span></p>';
+  if (!rc.length) h += '<p class="meta" style="margin:6px 0 0">None yet. Anyone can submit one as a community agent that reports its own answer; the swarm compares it to the published number and raises a public flag on any disagreement.</p>';
+  else rc.forEach(function (r) { h += '<p style="margin:6px 0 0">' + pill(r.agrees === false ? 'fail' : r.agrees ? 'ok' : 'info', r.agrees === false ? 'disagrees' : r.agrees ? 'agrees' : 'no matching quarter') + ' ' + esc(r.name) + ' by ' + esc(r.author) + ' · ' + esc(r.quarter) + ': gap ' + esc(r.gap_lp) + ', path growth ' + esc(r.allowance_pct) + '%</p>'; });
+  h += '</div>';
   h += '<div class="card instruction" style="margin-top:14px"><p class="eyebrow" style="color:#8a6d0f">What the executor would instruct · nothing is executed</p><p style="margin:0">' + esc(D.instruction.instruction) + '</p>' + (D.instruction.note ? '<p class="meta" style="margin:6px 0 0">' + esc(D.instruction.note) + '</p>' : '') + '</div>';
   h += '</section>';
 
@@ -199,6 +207,16 @@
   }
   h += '</section>';
 
+  // ---- Red team ----
+  var rt = D.redteam;
+  if (rt) {
+    h += '<section><h2>Red team ' + pill(rt.all_caught ? 'ok' : 'fail', rt.all_caught ? 'every attack caught' : 'attack missed') + '</h2><p class="sub">Before every run, a red-team agent attacks a throwaway copy of the record: forging the ledger, editing inputs, making a calculator lie, trying to break out of the sandbox. Each control must catch its attack. Anything missed raises an urgent public flag.</p><div class="card"><table><thead><tr><th>Attack</th><th>Result</th></tr></thead><tbody>';
+    rt.attacks.forEach(function (a) { h += '<tr><td>' + esc(a.description) + '<div class="meta">' + esc(a.detail) + '</div></td><td>' + pill(a.caught ? 'ok' : 'fail', a.caught ? 'caught' : 'missed') + '</td></tr>'; });
+    h += '</tbody></table>';
+    if (rt.ai_ideas && rt.ai_ideas.ideas && rt.ai_ideas.ideas.length) { h += '<p style="margin:12px 0 4px"><strong>New attacks to try next</strong> <span class="meta">(suggested by the AI red-teamer; for humans to review, never executed)</span></p><ul style="margin:0">'; rt.ai_ideas.ideas.forEach(function (x) { h += '<li>' + esc(x) + '</li>'; }); h += '</ul>'; }
+    h += '<p class="meta" style="margin:10px 0 0">Last attacked ' + esc(rt.ran_at.slice(0, 16).replace('T', ' ')) + ' UTC.</p></div></section>';
+  }
+
   // ---- Independent witnesses ----
   var wt = (D.witnesses && D.witnesses.checkpoints) || [];
   h += '<section><h2>Independent witnesses</h2><p class="sub">After every run, a fingerprint of the ledger is handed to three witnesses this project does not control: the Bitcoin blockchain (via OpenTimestamps, free), Sigstore\'s public transparency log (signed by GitHub\'s workflow identity), and the Internet Archive. Like printing the day\'s fingerprint in a newspaper the whole world keeps, no one can quietly rewrite the record later. A witness proves when the record existed and that it has not changed, not that the numbers are true.</p>';
@@ -246,5 +264,10 @@
   h += '<a class="btn" href="' + REPO + '">See all the code</a></div></section>';
 
   app.innerHTML = h;
+  // When embedded on peoplesmoneyproject.org, tell the host page how tall we are, so there is no inner scrollbar.
+  if (window.parent !== window) {
+    var tell = function () { try { window.parent.postMessage({ type: 'swarm-height', height: document.documentElement.scrollHeight }, '*'); } catch (e) {} };
+    tell(); window.addEventListener('resize', tell); setTimeout(tell, 600); setTimeout(tell, 2000);
+  }
   document.getElementById('footer').innerHTML = '<p style="margin:0 0 6px"><strong>The People\'s Money</strong> · <a href="https://peoplesmoneyproject.org">peoplesmoneyproject.org</a> · <a href="' + REPO + '">source code (MIT)</a> · <a href="data/latest.json">raw data</a> · <a href="data/ledger.jsonl">ledger</a></p><p style="margin:0">' + esc(D.disclaimer) + ' Run ' + esc(D.run.date) + ' (' + esc(D.run.mode) + ').</p>';
 })();

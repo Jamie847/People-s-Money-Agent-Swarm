@@ -13,14 +13,16 @@
   "computation_day_of_second_month_after_quarter": 15,
   "annual_gdp_available_from_month_day": "05-01",
   "live_epoch_quarter": "2026-Q2",
-  "replay_epochs": ["2020-Q1"],
+  "replay_epochs": [
+    "2020-Q1"
+  ],
   "interpretations_pending_review": [
     "CPI-U and the PCE price index have different base years, so each is measured as a log gap from its own epoch level and the two gaps are averaged.",
     "The seasonally adjusted CPI-U (CPIAUCSL) is used; the book says CPI-U without specifying seasonal adjustment.",
     "The annual path rate is turned into a quarterly step by compounding: (1 + a)^(1/4) - 1.",
     "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
     "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
-    "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED).",
+    "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
     "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
   ]
 }

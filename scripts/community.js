@@ -49,6 +49,10 @@ export function validateReport(r) {
   if (!r || typeof r !== 'object') return ['output is not a JSON object'];
   if (!STATUSES.includes(r.status)) errs.push(`status must be one of ${STATUSES.join(', ')}`);
   if (typeof r.headline !== 'string' || !r.headline.trim() || r.headline.length > 160) errs.push('headline: 1-160 characters');
+  if (r.recompute !== undefined) {
+    const x = r.recompute;
+    if (!x || typeof x.quarter !== 'string' || typeof x.gap_lp !== 'number' || typeof x.allowance_pct !== 'number') errs.push('recompute: {quarter: "YYYY-Qn", gap_lp: number, allowance_pct: number}');
+  }
   if (r.findings !== undefined) {
     if (!Array.isArray(r.findings) || r.findings.length > 12) errs.push('findings: an array of at most 12 items');
     else r.findings.forEach((f, i) => { if (!f || typeof f.label !== 'string') errs.push(`findings[${i}].label is required`); });
@@ -104,7 +108,8 @@ export function runAgent(dir, manifest, contextText, prefix) {
   try { report = JSON.parse(res.stdout); } catch { return { ...out, error: 'output is not valid JSON' }; }
   const errs = validateReport(report);
   if (errs.length) return { ...out, error: `invalid report: ${errs.join('; ')}` };
-  return { ...out, report: { status: report.status, headline: report.headline, findings: (report.findings || []).map((f) => ({ label: String(f.label).slice(0, 120), value: f.value === undefined ? null : String(f.value).slice(0, 120), note: f.note ? String(f.note).slice(0, 300) : null })) }, output_sha256: sha256(res.stdout) };
+  const recompute = report.recompute ? { quarter: report.recompute.quarter, gap_lp: report.recompute.gap_lp, allowance_pct: report.recompute.allowance_pct } : null;
+  return { ...out, report: { status: report.status, headline: report.headline, recompute, findings: (report.findings || []).map((f) => ({ label: String(f.label).slice(0, 120), value: f.value === undefined ? null : String(f.value).slice(0, 120), note: f.note ? String(f.note).slice(0, 300) : null })) }, output_sha256: sha256(res.stdout) };
 }
 
 function main() {

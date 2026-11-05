@@ -81,3 +81,6 @@ pre { white-space: pre-wrap; word-break: break-all; }
   td.num { font-size: 12px; }
   .kpi .value { font-size: 26px; }
 }
+/* Embedded on peoplesmoneyproject.org: the host page supplies its own header and footer. */
+.embed header.top, .embed footer { display: none; }
+.embed main section:first-child { padding-top: 12px; }

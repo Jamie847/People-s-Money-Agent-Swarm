@@ -13,7 +13,7 @@ export function checkSources(sensorResults, today) {
     const limit = STALE_AFTER_DAYS[s.freq] ?? 60;
     // Observation dates mark the START of the period, so allow one period of lag on top.
     if (age > limit + ({ monthly: 31, quarterly: 92, annual: 366 }[s.freq] ?? 0)) {
-      return { id: s.id, check: 'fresh', status: 'warn', detail: `Latest ${s.series} observation is ${s.last.date} (${age} days old)` };
+      return { id: s.id, check: 'fresh', status: 'warn', last: s.last.date, detail: `Latest ${s.series} observation is ${s.last.date} (${age} days old)` };
     }
     return { id: s.id, check: 'fresh', status: 'ok', detail: `Latest ${s.last.date}; ${s.observations.length} observations; sha256 ${s.sha256.slice(0, 12)}…` };
   });

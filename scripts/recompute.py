@@ -19,8 +19,8 @@ getcontext().prec = 40
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def read_series(name):
-    path = os.path.join(ROOT, 'data', 'inputs', f'{name}.csv')
+def read_series(name, inputs_dir=None):
+    path = os.path.join(inputs_dir or os.path.join(ROOT, 'data', 'inputs'), f'{name}.csv')
     with open(path, newline='') as f:
         rows = list(csv.reader(f))
     out = {}
@@ -31,8 +31,8 @@ def read_series(name):
     return out
 
 
-def sha256_file(name):
-    path = os.path.join(ROOT, 'data', 'inputs', f'{name}.csv')
+def sha256_file(name, inputs_dir=None):
+    path = os.path.join(inputs_dir or os.path.join(ROOT, 'data', 'inputs'), f'{name}.csv')
     with open(path, 'rb') as f:
         return hashlib.sha256(f.read()).hexdigest()
 
@@ -53,8 +53,19 @@ def comp_date(y, q, day):
     return f'{yy}-{m:02d}-{day:02d}'
 
 
-def compute(epoch, quarter, rule):
-    cpi, pce, gdp_raw = read_series('CPI'), read_series('PCE'), read_series('GDP')
+def frozen_base(base_file, epoch):
+    """The starting quarter's prices exactly as frozen in the live record."""
+    with open(base_file) as f:
+        hist = json.load(f)
+    for h in hist:
+        if h.get('quarter') == epoch and h.get('inputs'):
+            b = h['inputs']['base']
+            return [Decimal(repr(x)) for x in b['cpi']], [Decimal(repr(x)) for x in b['pce']]
+    return None
+
+
+def compute(epoch, quarter, rule, inputs_dir=None, base_file=None):
+    cpi, pce, gdp_raw = read_series('CPI', inputs_dir), read_series('PCE', inputs_dir), read_series('GDP', inputs_dir)
     gdp = {int(k[:4]): v for k, v in gdp_raw.items()}
     ey, eq = parse_q(epoch)
     y, q = parse_q(quarter)
@@ -68,8 +79,11 @@ def compute(epoch, quarter, rule):
         return sum(vals) / Decimal(len(vals))
 
     hundred = Decimal(100)
-    gap_cpi = hundred * (avg(cpi, months(y, q)) / avg(cpi, months(ey, eq))).ln()
-    gap_pce = hundred * (avg(pce, months(y, q)) / avg(pce, months(ey, eq))).ln()
+    fb = frozen_base(base_file, epoch) if base_file else None
+    base_cpi = sum(fb[0]) / Decimal(3) if fb else avg(cpi, months(ey, eq))
+    base_pce = sum(fb[1]) / Decimal(3) if fb else avg(pce, months(ey, eq))
+    gap_cpi = hundred * (avg(cpi, months(y, q)) / base_cpi).ln()
+    gap_pce = hundred * (avg(pce, months(y, q)) / base_pce).ln()
     gap = (gap_cpi + gap_pce) / 2
     n = rule['trend_growth_years']
     growth = [hundred * (gdp[t] / gdp[t - 1] - 1) for t in range(last_year - n + 1, last_year + 1)]
@@ -84,7 +98,9 @@ def compute(epoch, quarter, rule):
         'trend_growth_pct': float(trend), 'gap_cpi_lp': float(gap_cpi), 'gap_pce_lp': float(gap_pce),
         'gap_lp': float(gap), 'allowance_raw_pct': float(raw), 'allowance_pct': float(allowance),
         'quarterly_step_pct': float(step),
-        'input_sha256': {k: sha256_file(k) for k in ('CPI', 'PCE', 'GDP')},
+        'input_sha256': {k: sha256_file(k, inputs_dir) for k in ('CPI', 'PCE', 'GDP')},
+        'inputs_dir': os.path.relpath(inputs_dir, ROOT) if inputs_dir else 'data/inputs',
+        'base': 'frozen starting quarter' if fb else 'read from data',
     }
 
 
@@ -109,12 +125,29 @@ def main():
     ap.add_argument('--epoch', default=rule['live_epoch_quarter'])
     ap.add_argument('--quarter')
     ap.add_argument('--json', action='store_true')
+    ap.add_argument('--inputs-dir', help='folder of CPI/PCE/GDP files (default: data/inputs)')
+    ap.add_argument('--base-file', help='live-history.json holding the frozen starting quarter')
     a = ap.parse_args()
-    quarter = a.quarter or latest_live_quarter(rule)
+    inputs_dir, base_file, quarter = a.inputs_dir, a.base_file, a.quarter
+    if not quarter:
+        # Default: re-check the latest frozen live reading with exactly the data it used.
+        hist_path = os.path.join(ROOT, 'data', 'live-history.json')
+        hist = json.load(open(hist_path)) if os.path.exists(hist_path) else []
+        done = [h for h in hist if h.get('available')]
+        if done:
+            last = done[-1]
+            quarter = last['quarter']
+            vdir = (last.get('data_vintage') or {}).get('dir')
+            if vdir and not inputs_dir:
+                inputs_dir = os.path.join(ROOT, vdir)
+            if last.get('base_source') == 'frozen starting quarter' and not base_file:
+                base_file = hist_path
+        else:
+            quarter = latest_live_quarter(rule)
     if not quarter:
         sys.exit('No completed live quarter yet.')
     try:
-        r = compute(a.epoch, quarter, rule)
+        r = compute(a.epoch, quarter, rule, inputs_dir, base_file)
     except KeyError as e:
         msg = {'error': f'incomplete data: {e}'}
         print(json.dumps(msg) if a.json else msg['error'])
@@ -128,6 +161,7 @@ def main():
     print(f"  Price gap ................... {r['gap_lp']:+.3f} log points (CPI-U {r['gap_cpi_lp']:+.3f}, PCE {r['gap_pce_lp']:+.3f})")
     print(f"  Path growth allowed ......... {r['allowance_pct']:.3f}% a year (unclamped {r['allowance_raw_pct']:.3f}%)")
     print(f"  Quarterly step .............. {r['quarterly_step_pct']:.4f}%")
+    print(f"  Data used ................... {r['inputs_dir']} (starting prices: {r['base']})")
     print('  Input fingerprints (SHA-256):')
     for k, v in r['input_sha256'].items():
         print(f'    {k}: {v}')

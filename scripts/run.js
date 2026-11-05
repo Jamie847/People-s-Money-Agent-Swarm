@@ -42,7 +42,7 @@ const history = readJSON(P('data', 'live-history.json'), []);
 let live = null;
 let replays = [];
 if (ruleInputsOk) {
-  live = runLiveTrack({ root, sensorById: byId, rule, today, history });
+  live = await runLiveTrack({ root, sensorById: byId, rule, today, history, offline });
   replays = rule.replay_epochs.map((e) => runReplay({ sensorById: byId, rule, epochLabel: e }));
 }
 const liveLatest = live?.history.length ? live.history[live.history.length - 1] : null;
@@ -55,12 +55,22 @@ const plumbing = runSentinels(byId, sentinelCfg.plumbing, ctx);
 // Community agents ran earlier in the sandbox (scripts/community.js); their reports are advisory.
 const community = readJSON(P('data', 'community.json'), { agents: [] });
 const communityText = (() => { try { return readFileSync(P('data', 'community.json'), 'utf8'); } catch { return ''; } })();
+// The red team attacked a throwaway copy of the record before this run (scripts/redteam.js).
+const redteam = readJSON(P('data', 'redteam.json'), null);
+const redteamText = (() => { try { return readFileSync(P('data', 'redteam.json'), 'utf8'); } catch { return ''; } })();
 const backstop = runBackstop(byId, proposal, globalDollar.overall);
 
 // ---- Tier 5 & 6: human gates and executor ----
 const brake = live?.brake ?? { current: { phase: 'off', note: 'No live readings.' }, states: [] };
+// Independent recomputes ("Calculator D" and beyond): community agents that report their own answer.
+const recomputes = community.agents.filter((a) => a.report?.recompute).map((a) => {
+  const r = a.report.recompute;
+  const match = live?.history.find((h) => h.quarter === r.quarter && h.available);
+  const agrees = match ? Math.abs(match.outputs.gap_lp - r.gap_lp) <= 0.001 && Math.abs(match.outputs.allowance_pct - r.allowance_pct) <= 0.001 : null;
+  return { agent: a.id, name: a.name, author: a.author, quarter: r.quarter, gap_lp: r.gap_lp, allowance_pct: r.allowance_pct, swarm_gap_lp: match ? round(match.outputs.gap_lp, 4) : null, swarm_allowance_pct: match ? round(match.outputs.allowance_pct, 4) : null, agrees };
+});
 const instruction = shadowInstruction({ liveLatest, consensusResult: liveLatest?.consensus, brake });
-const packets = buildPackets({ consensusResult: liveLatest?.consensus, liveLatest, integrity: sourceChecks, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop });
+const packets = buildPackets({ consensusResult: liveLatest?.consensus, liveLatest, integrity: sourceChecks, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop, recomputes, redteam });
 const seen = new Set(readJSON(P('data', 'packets-seen.json'), []));
 const newPackets = packets.filter((p) => !seen.has(p.id) && p.severity !== 'info');
 
@@ -82,6 +92,7 @@ const ledgerEntry = appendLedger(P('data', 'ledger.jsonl'), {
   domestic: domestic.overall,
   plumbing: plumbing.overall,
   community_sha256: communityText ? sha256(communityText) : null,
+  redteam_sha256: redteamText ? sha256(redteamText) : null,
   packets: packets.map((p) => p.id),
 });
 
@@ -98,6 +109,7 @@ const lvl = (s) => ({ calm: 'ok', watch: 'warn', stress: 'fail', context: 'info'
 const agents = [
   { tier: 1, group: 'Sensors', name: 'Price sensor — CPI-U', job: 'Fetch the BLS consumer price index; fingerprint it; never alter it.', status: sensorStatus(['CPI']) },
   { tier: 1, group: 'Sensors', name: 'Price sensor — PCE', job: 'Fetch the BEA PCE price index; fingerprint it; never alter it.', status: sensorStatus(['PCE']) },
+  { tier: 1, group: 'Sensors', name: 'Vintage sensor', job: 'Fetch the rule inputs as published ON each computation date (ALFRED), so revisions never change a reading.', status: liveLatest?.data_vintage?.as_published_on ? 'ok' : 'info' },
   { tier: 1, group: 'Sensors', name: 'Growth sensor — real GDP', job: 'Fetch BEA annual real GDP for the ten-year trend.', status: sensorStatus(['GDP']) },
   { tier: 1, group: 'Sensors', name: 'Global-dollar sensors', job: 'Fed H.4.1 swap lines, foreign repo and custody; H.10 dollar index; BIS offshore dollar credit.', status: sensorStatus(['SWAPS', 'FIMA_REPO', 'FOREIGN_CUSTODY', 'DOLLAR_INDEX', 'OFFSHORE_CREDIT']) },
   { tier: 1, group: 'Sensors', name: 'Domestic sensors', job: '10-year yield, bank credit, St. Louis and Chicago stress indexes.', status: sensorStatus(['TEN_YEAR', 'BANK_CREDIT', 'STRESS_STL', 'STRESS_CHI']) },
@@ -107,6 +119,7 @@ const agents = [
   { tier: 2, group: 'Calculators', name: 'Calculator A (JavaScript)', job: 'Apply the rule with direct arithmetic.', status: calcStatus('A') },
   { tier: 2, group: 'Calculators', name: 'Calculator B (JavaScript)', job: 'Apply the rule by a different arithmetic route.', status: calcStatus('B') },
   { tier: 2, group: 'Calculators', name: 'Calculator C (Python)', job: 'Re-read the raw files and apply the rule in high-precision decimals.', status: calcStatus('C') },
+  { tier: 2, group: 'Calculators', name: 'Calculator D (outside author)', job: 'An independent recompute written by someone else, submitted as a community agent.', status: !recomputes.length ? 'planned' : recomputes.every((r) => r.agrees !== false) ? 'ok' : 'fail' },
   { tier: 2, group: 'Calculators', name: 'Consensus keeper', job: 'Publish only if every calculator agrees.', status: !liveLatest ? 'info' : cons?.agreed ? 'ok' : 'fail' },
   { tier: 3, group: 'Sentinels', name: 'Brake monitor', job: 'Engage the brake after two successive readings above 3 log points.', status: { off: 'ok', released: 'ok', armed: 'warn', engaged: 'fail' }[brake.current.phase] ?? 'info' },
   { tier: 3, group: 'Sentinels', name: 'Global-dollar sentinel', job: 'Watch for an offshore dollar squeeze.', status: lvl(globalDollar.overall) },
@@ -119,7 +132,7 @@ const agents = [
   { tier: 4, group: 'Auditors', name: 'Bitcoin witness', job: 'Anchor each ledger checkpoint in Bitcoin via OpenTimestamps (free).', status: 'ok' },
   { tier: 4, group: 'Auditors', name: 'Public attestation witness', job: 'Sign each checkpoint into Sigstore\'s public transparency log.', status: 'ok' },
   { tier: 4, group: 'Auditors', name: 'Archive witness', job: 'Ask the Internet Archive to keep an outside copy of each checkpoint.', status: 'ok' },
-  { tier: 4, group: 'Auditors', name: 'Red team', job: 'Attack the swarm and publish what breaks.', status: 'planned' },
+  { tier: 4, group: 'Auditors', name: 'Red team', job: 'Attack a copy of the record every run (forged ledger, edited inputs, lying calculator, sandbox escape) and publish what was caught.', status: !redteam ? 'planned' : redteam.all_caught ? 'ok' : 'fail' },
   { tier: 5, group: 'Human gates', name: 'Decision-packet clerk', job: 'Turn anything that needs a person into a packet; open a GitHub issue.', status: packets.some((p) => p.severity === 'urgent') ? 'fail' : packets.some((p) => p.severity === 'review') ? 'warn' : 'ok' },
   { tier: 6, group: 'Executors', name: 'Executor (shadow)', job: 'Write the instruction the rule authorizes; refuse anything else; execute nothing.', status: instruction.authorized ? 'ok' : 'warn' },
   { tier: 7, group: 'Reporters', name: 'Reporter (AI)', job: 'Explain the run in plain words; every number checked.', status: 'info' },
@@ -129,7 +142,7 @@ const agents = [
 const latest = {
   schema: 1,
   title: "The People's Money — Agent Swarm Shadow Run",
-  disclaimer: "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Inputs are public data as currently published (revised figures), not first-release vintages. Whether the rule would keep prices stable has not been tested. Not financial advice.",
+  disclaimer: "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   run: { date: today, started_at: startedAt, finished_at: new Date().toISOString(), mode: offline ? 'offline' : 'live', ledger_seq: ledgerEntry.seq, ledger_hash: ledgerEntry.hash },
   rule: { version: rule.design_paper_version, parameters: { feedback_strength: rule.feedback_strength, floor_pct: rule.path_growth_floor_pct, ceiling_pct: rule.path_growth_ceiling_pct, trend_years: rule.trend_growth_years, brake_trigger_lp: rule.brake_trigger_log_points, brake_release_lp: rule.brake_release_log_points }, interpretations_pending_review: rule.interpretations_pending_review },
   live: {
@@ -145,6 +158,8 @@ const latest = {
   integrity: { sources: sourceChecks, index_agreement: indexCheck },
   sentinels: { global_dollar: globalDollar, domestic, plumbing },
   community,
+  recomputes,
+  redteam,
   backstop_proposal: backstop,
   instruction,
   packets,

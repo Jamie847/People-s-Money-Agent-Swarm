@@ -12,16 +12,16 @@ Every day, a swarm of small agents reads public data, applies the rule three ind
 - **It is** a working demonstration of how the design's replacement for the Federal Reserve could be run in the open: rule-based, recomputable, audited, with humans at the gates.
 - **It is not** the design's formal 18-month rehearsal. It executes nothing and publishes **no national dollar issuance figure**: the book withholds one until a reconciled model release supports it (Ch. 10).
 - **It does not test** whether the rule would keep prices stable. That needs the economic stress tests described in Chapter 9.
-- Inputs are public data **as currently published** (revised figures). The design calls for first-release figures; vintage handling is on the work order.
+- Each live reading uses the rule's inputs **as published on its computation date** (ALFRED vintages, archived in `data/inputs/vintages/`), so later revisions never change it. The replay and the sentinels use current revised data.
 
 ## The swarm, tier by tier
 
 | Tier | Agents | Job | Never |
 |---|---|---|---|
 | 1 Sensors and integrity | Price sensors (BLS CPI-U, BEA PCE), growth sensor (BEA real GDP), global-dollar sensors (Fed H.4.1/H.10, BIS), domestic sensors; freshness and index-agreement checkers | Fetch, fingerprint (SHA-256) and check every input | Edit, fill or invent a number. The money authority may not produce the numbers it uses (Ch. 8) |
-| 2 Calculators | Calculator A (JS), Calculator B (JS, different arithmetic), Calculator C (Python, re-reads raw files), consensus keeper | Apply the rule; publish only if all three agree | Use judgment or forecasts |
+| 2 Calculators | Calculator A (JS), Calculator B (JS, different arithmetic), Calculator C (Python, re-reads raw files), Calculator D slot (outside author), consensus keeper | Apply the rule; publish only if all three agree | Use judgment or forecasts |
 | 3 Sentinels | Brake monitor, global-dollar sentinel, home stress sentinel, plumbing and expectations sentinel, community agents (sandboxed), transition backstop modeler (proposal) | Watch around the clock; calm / watch / stress | Act |
-| 4 Auditors and witnesses | Auditor, ledger keeper, Bitcoin witness, public attestation witness, archive witness, red team (planned) | Re-check the hash-chained ledger, fingerprints and every frozen reading; hand checkpoints to outside witnesses | Trust their own output |
+| 4 Auditors and witnesses | Auditor, ledger keeper, Bitcoin witness, public attestation witness, archive witness, red team (attacks a copy of the record every run) | Re-check the hash-chained ledger, fingerprints and every frozen reading; hand checkpoints to outside witnesses | Trust their own output |
 | 5 Human gates | Decision-packet clerk | Turn anything needing a person into a packet; open a GitHub issue | Decide |
 | 6 Executors | Executor (shadow) | Write the instruction the rule authorizes; refuse anything else | Execute anything (shadow mode) |
 | 7 Reporters | Reporter (AI), publisher | Explain in plain words; publish the dashboard | Say a number the engine did not produce. Every number is checked, and unverified text is rejected |

@@ -63,7 +63,7 @@ export const parseBisCsv = (text) => {
 
 // curl first (present on GitHub runners and respects proxy settings); Node fetch as fallback.
 // Note: FRED rejects unfamiliar User-Agent strings, so curl's default is kept.
-const download = async (url) => {
+export const download = async (url) => {
   let lastErr;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {

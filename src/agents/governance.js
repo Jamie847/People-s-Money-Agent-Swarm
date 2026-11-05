@@ -7,7 +7,7 @@ import { sha256 } from '../lib/util.js';
 
 const packet = (type, key, fields) => ({ id: `${type}-${sha256(`${type}|${key}`).slice(0, 10)}`, type, ...fields });
 
-export function buildPackets({ consensusResult, liveLatest, integrity, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop }) {
+export function buildPackets({ consensusResult, liveLatest, integrity, indexCheck, brake, globalDollar, domestic, plumbing, rule, backstop, recomputes, redteam }) {
   const out = [];
 
   if (liveLatest && consensusResult && !consensusResult.agreed) {
@@ -33,7 +33,8 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
   }
 
   for (const c of integrity.filter((x) => x.status !== 'ok')) {
-    out.push(packet('DATA_PROBLEM', `${c.id}|${c.detail}`, {
+    // Key on the series and its last date (not the day count), so one stale series opens one issue, not one a day.
+    out.push(packet('DATA_PROBLEM', `${c.id}|${c.check}|${c.status}|${c.last ?? c.detail}`, {
       severity: c.status === 'fail' ? 'urgent' : 'review',
       title: `Data problem: ${c.id}`,
       what_happened: c.detail,
@@ -65,6 +66,28 @@ export function buildPackets({ consensusResult, liveLatest, integrity, indexChec
         evidence: { id: r.id, value: r.value, as_of: r.as_of, note: r.note },
       }));
     }
+  }
+
+  for (const r of (recomputes || []).filter((x) => x.agrees === false)) {
+    out.push(packet('INDEPENDENT_RECOMPUTE_DISAGREES', `${r.agent}|${r.quarter}`, {
+      severity: 'urgent',
+      title: `Independent recompute by ${r.author} disagrees for ${r.quarter}`,
+      what_happened: `${r.name} reported gap ${r.gap_lp} and path growth ${r.allowance_pct}%; the swarm published gap ${r.swarm_gap_lp} and ${r.swarm_allowance_pct}%.`,
+      what_the_rule_says: 'A figure that does not match the published inputs can be caught by anyone who recomputes it (Ch. 7).',
+      who_decides: 'Jamie and the agent author: find which implementation is wrong, on the record',
+      evidence: r,
+    }));
+  }
+  if (redteam && redteam.attacks && redteam.attacks.some((a) => !a.caught)) {
+    const missed = redteam.attacks.filter((a) => !a.caught);
+    out.push(packet('RED_TEAM_FINDING', missed.map((a) => a.id).join(','), {
+      severity: 'urgent',
+      title: `Red team: ${missed.length} attack(s) NOT caught`,
+      what_happened: missed.map((a) => `${a.id}: ${a.detail}`).join(' | '),
+      what_the_rule_says: 'Controls for prevention, detection and recovery have to be attacked in a published red-team exercise (Ch. 9).',
+      who_decides: 'Jamie; fix the control and keep the first result on the record',
+      evidence: missed,
+    }));
   }
 
   // Standing review items: things only humans can settle.

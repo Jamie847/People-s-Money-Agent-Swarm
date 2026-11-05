@@ -7,15 +7,18 @@
 // They are a way to see the rule's behavior, not a simulation of outcomes.
 
 import { execFileSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseQuarter, quarterLabel, nextQuarter, computationDate, quarterMonths, sha256, stableStringify, round } from '../lib/util.js';
 import { prepareQuarter } from './prepare.js';
+import { fetchVintage } from './vintages.js';
 import { calculatorA, calculatorB, consensus } from './calculators.js';
 import { runBrake } from './brake.js';
 
-export function calculatorC(root, epoch, quarter) {
+export function calculatorC(root, epoch, quarter, inputsDir = null, baseFile = null) {
   try {
-    const out = execFileSync('python3', [join(root, 'scripts', 'recompute.py'), '--epoch', epoch, '--quarter', quarter, '--json'], { encoding: 'utf8' });
+    const extra = [...(inputsDir ? ['--inputs-dir', inputsDir] : []), ...(baseFile ? ['--base-file', baseFile] : [])];
+    const out = execFileSync('python3', [join(root, 'scripts', 'recompute.py'), '--epoch', epoch, '--quarter', quarter, '--json', ...extra], { encoding: 'utf8' });
     const r = JSON.parse(out);
     if (r.error) return { error: r.error };
     return r;
@@ -26,7 +29,7 @@ export function calculatorC(root, epoch, quarter) {
 
 const seriesOf = (sensorById) => ({ cpi: sensorById.CPI.observations, pce: sensorById.PCE.observations, gdp: sensorById.GDP.observations });
 
-export function runLiveTrack({ root, sensorById, rule, today, history }) {
+export async function runLiveTrack({ root, sensorById, rule, today, history, offline = false }) {
   const epochQ = parseQuarter(rule.live_epoch_quarter);
   const frozen = new Map(history.map((h) => [h.quarter, h]));
   const firstRun = history.length ? history[0].computed_at : today;
@@ -36,7 +39,14 @@ export function runLiveTrack({ root, sensorById, rule, today, history }) {
   while (computationDate(q, day) <= today) {
     const label = quarterLabel(q);
     if (!frozen.has(label)) {
-      const prep = prepareQuarter(seriesOf(sensorById), epochQ, q, rule);
+      // Use the data AS PUBLISHED ON the computation date (ALFRED vintage), so later revisions never change
+      // the reading. Falls back to the current files, disclosed, if the vintage cannot be read.
+      const cd = computationDate(q, day);
+      const vint = label === rule.live_epoch_quarter ? null : await fetchVintage(root, cd, { offline });
+      const series = vint?.ok ? vint.series : seriesOf(sensorById);
+      const epochEntry = updated.find((h) => h.quarter === rule.live_epoch_quarter && h.inputs);
+      const frozenBase = epochEntry ? epochEntry.inputs.base : null;
+      const prep = prepareQuarter(series, epochQ, q, rule, frozenBase);
       const entry = {
         quarter: label,
         epoch: prep.epoch,
@@ -46,10 +56,13 @@ export function runLiveTrack({ root, sensorById, rule, today, history }) {
         complete: prep.complete,
         missing: prep.missing,
         gdp_note: prep.gdp_note,
-        input_sha256: { CPI: sensorById.CPI.sha256, PCE: sensorById.PCE.sha256, GDP: sensorById.GDP.sha256 },
+        input_sha256: vint?.ok ? vint.sha256 : { CPI: sensorById.CPI.sha256, PCE: sensorById.PCE.sha256, GDP: sensorById.GDP.sha256 },
+        data_vintage: vint?.ok ? { as_published_on: cd, dir: vint.dir } : { as_published_on: null, note: vint ? `vintage unavailable (${vint.error}); current revised data used` : 'starting quarter: data as published at launch' },
+        base_source: frozenBase ? 'frozen starting quarter' : 'read from data',
       };
       if (prep.complete) {
-        const results = { A: calculatorA(prep, rule), B: calculatorB(prep, rule), C: calculatorC(root, prep.epoch, label) };
+        const baseFile = frozenBase ? join(root, 'data', 'live-history.json') : null;
+        const results = { A: calculatorA(prep, rule), B: calculatorB(prep, rule), C: calculatorC(root, prep.epoch, label, vint?.ok ? join(root, vint.dir) : null, baseFile) };
         const cons = consensus(results);
         entry.inputs = { base_months: prep.base_months, current_months: prep.current_months, base: prep.base, cur: prep.cur, gdp_years: prep.gdp_years, gdp_levels: prep.gdp_levels };
         entry.calculators = Object.fromEntries(Object.entries(results).map(([k, v]) => [k, v.error ? { error: v.error } : pickOutputs(v)]));
