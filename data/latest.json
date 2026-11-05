@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Inputs are public data as currently published (revised figures), not first-release vintages. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T04:31:25.391Z",
-    "finished_at": "2026-11-05T04:31:32.204Z",
+    "started_at": "2026-11-05T04:37:26.907Z",
+    "finished_at": "2026-11-05T04:37:32.265Z",
     "mode": "live",
-    "ledger_seq": 2,
-    "ledger_hash": "b55f992705d63d7e3cbc88a2996c4b98d0c0b90100b8c6dba6352d1521a953c6"
+    "ledger_seq": 3,
+    "ledger_hash": "37c82631ea693e69c5093fd762fca7125b3132c6d1268989f61aa5f91f4e145b"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -9347,7 +9347,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "3 entries; head b55f992705d63d7e…"
+        "detail": "4 entries; head 37c82631ea693e69…"
       },
       {
         "name": "input-fingerprints",
@@ -9712,7 +9712,7 @@
   "report": {
     "source": "template",
     "reason": "Reporter error: Anthropic API HTTP 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purcha",
-    "model": "claude-sonnet-5-5",
+    "model": "claude-haiku-5-5",
     "headline": "Rule allows 2.47% path growth for 2026-Q2; brake off",
     "paragraphs": [
       "For 2026-Q2, the rule measured prices right at its flat target (this is the starting quarter, so the gap is zero by definition) and long-run real growth of 2.47% a year. So it would let the path for public money grow at 2.47% a year. Three independent calculators agreed.",
