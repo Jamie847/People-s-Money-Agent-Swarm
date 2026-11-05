@@ -23,6 +23,24 @@
         "lookup": "https://web.archive.org/web/*/https://raw.githubusercontent.com/Jamie847/People-s-Money-Agent-Swarm/0a3667fdcb1a46e25638a8bc2b9b24a1d2839136/data/checkpoints/000004-2026-11-05.json",
         "status": "saved"
       }
+    },
+    {
+      "file": "data/checkpoints/000005-2026-11-05.json",
+      "ledger_seq": 5,
+      "ledger_entry_hash": "b8658862bb76ff15c6247c0d9123d40d03da27dfd3c935d6d57deb0106f0a246",
+      "run_date": "2026-11-05",
+      "bitcoin": {
+        "status": "pending",
+        "ots_file": "data/checkpoints/000005-2026-11-05.json.ots",
+        "submitted": "2026-11-05T05:08:25.803Z"
+      },
+      "sigstore": {
+        "attestation_url": "https://github.com/Jamie847/People-s-Money-Agent-Swarm/attestations/63898752",
+        "rekor_log_index": 3692603434,
+        "rekor_search": "https://search.sigstore.dev/?logIndex=3692603434",
+        "verify": "gh attestation verify data/checkpoints/000005-2026-11-05.json --repo Jamie847/People-s-Money-Agent-Swarm"
+      },
+      "wayback": null
     }
   ]
 }

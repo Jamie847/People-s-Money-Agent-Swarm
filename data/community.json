@@ -1,0 +1,40 @@
+{
+  "ran_at": "2026-11-05T05:08:12.779Z",
+  "isolated": true,
+  "context_sha256": "4e6135b8e62f9d9f2de4a62a0b28c9466c7aa09aa15b557e0ad7d74bc04c98dc",
+  "agents": [
+    {
+      "id": "purchasing-power-clock",
+      "name": "Purchasing-power clock",
+      "author": "People's Money project (example agent)",
+      "role": "analyst",
+      "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
+      "homepage": null,
+      "duration_ms": 52,
+      "isolated": true,
+      "report": {
+        "status": "info",
+        "headline": "A dollar saved in January 2000 now buys about 50¢ (CPI-U, 2026-09)",
+        "recompute": null,
+        "findings": [
+          {
+            "label": "A dollar saved in January 2000",
+            "value": "buys 50¢ of goods today",
+            "note": "CPI-U 169.300 then vs 336.298 in 2026-09"
+          },
+          {
+            "label": "A dollar saved in January 2020",
+            "value": "buys 77¢ of goods today",
+            "note": "CPI-U 259.127 then vs 336.298 in 2026-09"
+          },
+          {
+            "label": "A dollar saved at the shadow-run start (April 2026)",
+            "value": "buys 99¢ of goods today",
+            "note": "CPI-U 332.407 then vs 336.298 in 2026-09"
+          }
+        ]
+      },
+      "output_sha256": "aeec8bcfead2670e28dc887950917479cdf4ff1e6753c4bf9e4e5b24fec0f5fb"
+    }
+  ]
+}

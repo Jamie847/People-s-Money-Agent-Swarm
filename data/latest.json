@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "title": "The People's Money — Agent Swarm Shadow Run",
-  "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Inputs are public data as currently published (revised figures), not first-release vintages. Whether the rule would keep prices stable has not been tested. Not financial advice.",
+  "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading uses the rule's inputs exactly as published on its computation date; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T04:48:08.387Z",
-    "finished_at": "2026-11-05T04:48:18.718Z",
+    "started_at": "2026-11-05T05:08:13.083Z",
+    "finished_at": "2026-11-05T05:08:22.307Z",
     "mode": "live",
-    "ledger_seq": 4,
-    "ledger_hash": "fbeb51eef23e526b8613a7b8f649ae04b8f546db8a6986ac34dd5b1b3cf03839"
+    "ledger_seq": 5,
+    "ledger_hash": "b8658862bb76ff15c6247c0d9123d40d03da27dfd3c935d6d57deb0106f0a246"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -26,7 +26,7 @@
       "The annual path rate is turned into a quarterly step by compounding: (1 + a)^(1/4) - 1.",
       "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
       "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
-      "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED).",
+      "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
       "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
     ]
   },
@@ -17227,9 +17227,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T04:48:08.335Z",
+    "ran_at": "2026-11-05T05:08:12.779Z",
     "isolated": true,
-    "context_sha256": "7ec5d36d77b4219c5a420fe19911b9f2ba7fd5482cf2a87a84d521eb5c98c093",
+    "context_sha256": "4e6135b8e62f9d9f2de4a62a0b28c9466c7aa09aa15b557e0ad7d74bc04c98dc",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17238,11 +17238,12 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 39,
+        "duration_ms": 52,
         "isolated": true,
         "report": {
           "status": "info",
           "headline": "A dollar saved in January 2000 now buys about 50¢ (CPI-U, 2026-09)",
+          "recompute": null,
           "findings": [
             {
               "label": "A dollar saved in January 2000",
@@ -17264,6 +17265,74 @@
         "output_sha256": "aeec8bcfead2670e28dc887950917479cdf4ff1e6753c4bf9e4e5b24fec0f5fb"
       }
     ]
+  },
+  "recomputes": [],
+  "redteam": {
+    "ran_at": "2026-11-05T05:08:13.014Z",
+    "all_caught": true,
+    "attacks": [
+      {
+        "id": "edit-raw-input",
+        "description": "Change one digit in a raw input file after it was sealed",
+        "caught": true,
+        "detail": "auditor: input fingerprint mismatch"
+      },
+      {
+        "id": "rewrite-old-ledger-entry",
+        "description": "Quietly rewrite an old ledger entry",
+        "caught": true,
+        "detail": "ledger chain broken at the edited entry"
+      },
+      {
+        "id": "reseal-rewritten-entry",
+        "description": "Rewrite an old entry AND recompute its own seal",
+        "caught": true,
+        "detail": "chain link to the next entry broken"
+      },
+      {
+        "id": "rewrite-entire-ledger",
+        "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
+        "caught": true,
+        "detail": "chain re-sealed perfectly, but 1 witnessed checkpoint(s) expose it"
+      },
+      {
+        "id": "edit-frozen-reading",
+        "description": "Change a frozen live reading after it was published",
+        "caught": true,
+        "detail": "frozen fingerprint and ledger fingerprint both fail"
+      },
+      {
+        "id": "change-rule-quietly",
+        "description": "Change the feedback strength without a recorded run",
+        "caught": true,
+        "detail": "rule fingerprint mismatch"
+      },
+      {
+        "id": "one-calculator-lies",
+        "description": "One calculator returns a slightly different answer",
+        "caught": true,
+        "detail": "consensus refused; executor refused to act"
+      },
+      {
+        "id": "reporter-invents-number",
+        "description": "The AI reporter claims a dollar figure the engine never produced",
+        "caught": true,
+        "detail": "rejected unverified numbers: 312"
+      },
+      {
+        "id": "missing-reading-resets-brake",
+        "description": "A missing reading is used to quietly reset an armed brake",
+        "caught": true,
+        "detail": "count kept through the missing reading; brake engaged"
+      },
+      {
+        "id": "community-agent-escape",
+        "description": "A community agent tries to read secrets, write the repo and reach the internet",
+        "caught": true,
+        "detail": "no secrets visible; repo write blocked; network blocked"
+      }
+    ],
+    "ai_ideas": null
   },
   "backstop_proposal": {
     "status": "proposal-pending-review",
@@ -17335,7 +17404,7 @@
         "The annual path rate is turned into a quarterly step by compounding: (1 + a)^(1/4) - 1.",
         "Computation dates are fixed at the 15th of the second month after each quarter ends (Feb 15, May 15, Aug 15, Nov 15).",
         "Trend real growth is the arithmetic mean of the last ten annual percent changes in real GDP available on the computation date.",
-        "Inputs come through FRED, which serves the latest revised figures. The design calls for figures as first released; vintage handling is a v2 task (ALFRED).",
+        "\"As first released\" is implemented as \"as published on the computation date\" (an ALFRED vintage, archived with fingerprints). Strict per-month first-release values are a Design Paper question. The starting quarter (2026-Q2) used data as published at launch.",
         "Brake release 'within 1% of target' is read as a price gap of 1 log point or less."
       ]
     },
@@ -17361,7 +17430,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "5 entries; head fbeb51eef23e526b…"
+        "detail": "6 entries; head b8658862bb76ff15…"
       },
       {
         "name": "input-fingerprints",
@@ -17399,6 +17468,13 @@
       "name": "Price sensor — PCE",
       "job": "Fetch the BEA PCE price index; fingerprint it; never alter it.",
       "status": "ok"
+    },
+    {
+      "tier": 1,
+      "group": "Sensors",
+      "name": "Vintage sensor",
+      "job": "Fetch the rule inputs as published ON each computation date (ALFRED), so revisions never change a reading.",
+      "status": "info"
     },
     {
       "tier": 1,
@@ -17462,6 +17538,13 @@
       "name": "Calculator C (Python)",
       "job": "Re-read the raw files and apply the rule in high-precision decimals.",
       "status": "ok"
+    },
+    {
+      "tier": 2,
+      "group": "Calculators",
+      "name": "Calculator D (outside author)",
+      "job": "An independent recompute written by someone else, submitted as a community agent.",
+      "status": "planned"
     },
     {
       "tier": 2,
@@ -17551,8 +17634,8 @@
       "tier": 4,
       "group": "Auditors",
       "name": "Red team",
-      "job": "Attack the swarm and publish what breaks.",
-      "status": "planned"
+      "job": "Attack a copy of the record every run (forged ledger, edited inputs, lying calculator, sandbox escape) and publish what was caught.",
+      "status": "ok"
     },
     {
       "tier": 5,

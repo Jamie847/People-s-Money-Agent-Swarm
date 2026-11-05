@@ -1,0 +1,67 @@
+{
+  "ran_at": "2026-11-05T05:08:13.014Z",
+  "all_caught": true,
+  "attacks": [
+    {
+      "id": "edit-raw-input",
+      "description": "Change one digit in a raw input file after it was sealed",
+      "caught": true,
+      "detail": "auditor: input fingerprint mismatch"
+    },
+    {
+      "id": "rewrite-old-ledger-entry",
+      "description": "Quietly rewrite an old ledger entry",
+      "caught": true,
+      "detail": "ledger chain broken at the edited entry"
+    },
+    {
+      "id": "reseal-rewritten-entry",
+      "description": "Rewrite an old entry AND recompute its own seal",
+      "caught": true,
+      "detail": "chain link to the next entry broken"
+    },
+    {
+      "id": "rewrite-entire-ledger",
+      "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
+      "caught": true,
+      "detail": "chain re-sealed perfectly, but 1 witnessed checkpoint(s) expose it"
+    },
+    {
+      "id": "edit-frozen-reading",
+      "description": "Change a frozen live reading after it was published",
+      "caught": true,
+      "detail": "frozen fingerprint and ledger fingerprint both fail"
+    },
+    {
+      "id": "change-rule-quietly",
+      "description": "Change the feedback strength without a recorded run",
+      "caught": true,
+      "detail": "rule fingerprint mismatch"
+    },
+    {
+      "id": "one-calculator-lies",
+      "description": "One calculator returns a slightly different answer",
+      "caught": true,
+      "detail": "consensus refused; executor refused to act"
+    },
+    {
+      "id": "reporter-invents-number",
+      "description": "The AI reporter claims a dollar figure the engine never produced",
+      "caught": true,
+      "detail": "rejected unverified numbers: 312"
+    },
+    {
+      "id": "missing-reading-resets-brake",
+      "description": "A missing reading is used to quietly reset an armed brake",
+      "caught": true,
+      "detail": "count kept through the missing reading; brake engaged"
+    },
+    {
+      "id": "community-agent-escape",
+      "description": "A community agent tries to read secrets, write the repo and reach the internet",
+      "caught": true,
+      "detail": "no secrets visible; repo write blocked; network blocked"
+    }
+  ],
+  "ai_ideas": null
+}
