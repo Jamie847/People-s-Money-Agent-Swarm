@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-05",
-    "started_at": "2026-11-05T16:48:09.169Z",
-    "finished_at": "2026-11-05T16:48:16.434Z",
+    "started_at": "2026-11-05T17:06:33.664Z",
+    "finished_at": "2026-11-05T17:06:48.452Z",
     "mode": "live",
-    "ledger_seq": 13,
-    "ledger_hash": "2114a8349c54de41064fddc97ef3e0fac1a396450b3238df194bf8323b3d0d13"
+    "ledger_seq": 14,
+    "ledger_hash": "aeeb1036b0682c097fb5cab9b2e833d895664a633366b591b7e1d9145368653a"
   },
   "rule": {
     "version": "0.7.2 (as clarified 2026-11-01)",
@@ -222,6 +222,1602 @@
     }
   },
   "replays": [
+    {
+      "epoch": "2000-Q1",
+      "label": "Signal replay from 2000-Q1",
+      "caveat": "Uses today's revised data and actual prices. The rule did not run, so prices were not affected by it. This shows what the rule would have signaled, not what would have happened.",
+      "calculators_A_B_max_difference": 4.263256414560601e-14,
+      "rows": [
+        {
+          "quarter": "2000-Q1",
+          "trend_growth_pct": 3.226,
+          "gap_lp": 0,
+          "allowance_pct": 3.226,
+          "allowance_raw_pct": 3.226,
+          "path_index": 100.797,
+          "brake": "off"
+        },
+        {
+          "quarter": "2000-Q2",
+          "trend_growth_pct": 3.226,
+          "gap_lp": 0.628,
+          "allowance_pct": 2.912,
+          "allowance_raw_pct": 2.912,
+          "path_index": 101.523,
+          "brake": "off"
+        },
+        {
+          "quarter": "2000-Q3",
+          "trend_growth_pct": 3.226,
+          "gap_lp": 1.404,
+          "allowance_pct": 2.524,
+          "allowance_raw_pct": 2.524,
+          "path_index": 102.157,
+          "brake": "off"
+        },
+        {
+          "quarter": "2000-Q4",
+          "trend_growth_pct": 3.226,
+          "gap_lp": 2.041,
+          "allowance_pct": 2.205,
+          "allowance_raw_pct": 2.205,
+          "path_index": 102.716,
+          "brake": "off"
+        },
+        {
+          "quarter": "2001-Q1",
+          "trend_growth_pct": 3.445,
+          "gap_lp": 2.886,
+          "allowance_pct": 2.002,
+          "allowance_raw_pct": 2.002,
+          "path_index": 103.226,
+          "brake": "off"
+        },
+        {
+          "quarter": "2001-Q2",
+          "trend_growth_pct": 3.445,
+          "gap_lp": 3.469,
+          "allowance_pct": 1.71,
+          "allowance_raw_pct": 1.71,
+          "path_index": 103.665,
+          "brake": "armed"
+        },
+        {
+          "quarter": "2001-Q3",
+          "trend_growth_pct": 3.445,
+          "gap_lp": 3.635,
+          "allowance_pct": 1.627,
+          "allowance_raw_pct": 1.627,
+          "path_index": 104.084,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2001-Q4",
+          "trend_growth_pct": 3.445,
+          "gap_lp": 3.618,
+          "allowance_pct": 1.636,
+          "allowance_raw_pct": 1.636,
+          "path_index": 104.507,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2002-Q1",
+          "trend_growth_pct": 3.551,
+          "gap_lp": 3.878,
+          "allowance_pct": 1.612,
+          "allowance_raw_pct": 1.612,
+          "path_index": 104.926,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2002-Q2",
+          "trend_growth_pct": 3.551,
+          "gap_lp": 4.639,
+          "allowance_pct": 1.232,
+          "allowance_raw_pct": 1.232,
+          "path_index": 105.247,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2002-Q3",
+          "trend_growth_pct": 3.551,
+          "gap_lp": 5.166,
+          "allowance_pct": 0.968,
+          "allowance_raw_pct": 0.968,
+          "path_index": 105.501,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2002-Q4",
+          "trend_growth_pct": 3.551,
+          "gap_lp": 5.694,
+          "allowance_pct": 0.704,
+          "allowance_raw_pct": 0.704,
+          "path_index": 105.686,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2003-Q1",
+          "trend_growth_pct": 3.369,
+          "gap_lp": 6.586,
+          "allowance_pct": 0.076,
+          "allowance_raw_pct": 0.076,
+          "path_index": 105.706,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2003-Q2",
+          "trend_growth_pct": 3.369,
+          "gap_lp": 6.554,
+          "allowance_pct": 0.092,
+          "allowance_raw_pct": 0.092,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2003-Q3",
+          "trend_growth_pct": 3.369,
+          "gap_lp": 7.254,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -0.258,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2003-Q4",
+          "trend_growth_pct": 3.369,
+          "gap_lp": 7.689,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -0.476,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2004-Q1",
+          "trend_growth_pct": 3.373,
+          "gap_lp": 8.494,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -0.874,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2004-Q2",
+          "trend_growth_pct": 3.373,
+          "gap_lp": 9.221,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.237,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2004-Q3",
+          "trend_growth_pct": 3.373,
+          "gap_lp": 9.784,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.519,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2004-Q4",
+          "trend_growth_pct": 3.373,
+          "gap_lp": 10.744,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.999,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2005-Q1",
+          "trend_growth_pct": 3.355,
+          "gap_lp": 11.286,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.288,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2005-Q2",
+          "trend_growth_pct": 3.355,
+          "gap_lp": 11.937,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.613,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2005-Q3",
+          "trend_growth_pct": 3.355,
+          "gap_lp": 13.226,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.258,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2005-Q4",
+          "trend_growth_pct": 3.355,
+          "gap_lp": 14.086,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.688,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2006-Q1",
+          "trend_growth_pct": 3.435,
+          "gap_lp": 14.605,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.867,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2006-Q2",
+          "trend_growth_pct": 3.435,
+          "gap_lp": 15.491,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.31,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2006-Q3",
+          "trend_growth_pct": 3.435,
+          "gap_lp": 16.319,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.724,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2006-Q4",
+          "trend_growth_pct": 3.435,
+          "gap_lp": 16.031,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.58,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2007-Q1",
+          "trend_growth_pct": 3.336,
+          "gap_lp": 16.974,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.151,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2007-Q2",
+          "trend_growth_pct": 3.336,
+          "gap_lp": 17.96,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.644,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2007-Q3",
+          "trend_growth_pct": 3.336,
+          "gap_lp": 18.557,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.942,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2007-Q4",
+          "trend_growth_pct": 3.336,
+          "gap_lp": 19.673,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.5,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2008-Q1",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 20.616,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.216,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2008-Q2",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 21.747,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.782,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2008-Q3",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 23.043,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -8.429,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2008-Q4",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 21.08,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.448,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2009-Q1",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 20.396,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.543,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2009-Q2",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 20.859,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.775,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2009-Q3",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 21.631,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -8.161,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2009-Q4",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 22.405,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -8.548,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2010-Q1",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 22.678,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -9.42,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2010-Q2",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 22.737,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -9.45,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2010-Q3",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 22.98,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -9.571,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2010-Q4",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 23.702,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -9.933,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q1",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 24.651,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -10.545,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q2",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 25.706,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.073,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q3",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 26.261,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.35,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q4",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 26.65,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.545,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q1",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 27.261,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.789,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q2",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 27.487,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.902,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q3",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 27.858,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.088,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q4",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 28.469,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.393,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q1",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 28.844,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.522,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q2",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 28.815,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.507,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q3",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 29.29,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.745,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q4",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 29.658,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.929,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q1",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 30.198,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.267,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q2",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 30.686,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.511,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q3",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 30.95,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.643,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q4",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 30.759,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.547,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q1",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 30.21,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.405,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q2",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 30.799,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.699,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q3",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 31.117,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.858,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q4",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 31.075,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.837,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q1",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 31.068,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.888,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q2",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 31.783,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.245,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q3",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 32.167,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.437,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q4",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 32.712,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.71,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q1",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 33.353,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.127,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q2",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 33.511,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.206,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q3",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 33.926,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.413,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q4",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 34.621,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.761,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q1",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 35.389,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.099,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q2",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 35.922,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.366,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q3",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 36.29,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.55,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q4",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 36.683,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.746,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q1",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 36.918,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.579,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q2",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 37.563,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.901,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q3",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 37.847,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -17.043,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q4",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 38.393,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -17.316,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q1",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 38.747,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.977,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q2",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 38.051,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.629,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q3",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 39.011,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -17.109,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q4",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 39.625,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -17.416,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q1",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 40.668,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -18.415,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q2",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 42.311,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -19.237,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q3",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 43.778,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -19.97,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q4",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 45.687,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -20.925,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q1",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 47.702,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -21.462,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q2",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 49.756,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -22.489,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q3",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 51.025,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -23.124,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q4",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 52.058,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -23.64,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q1",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 52.965,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -24.079,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q2",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 53.694,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -24.444,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q3",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 54.464,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -24.829,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q4",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 55.102,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -25.148,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q1",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 55.96,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -25.497,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q2",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 56.597,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -25.816,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q3",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 56.976,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -26.005,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q4",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 57.688,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -26.361,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q1",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 58.532,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -26.74,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q2",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 59.032,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -26.99,
+          "path_index": 105.731,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q3",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 59.733,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -27.34,
+          "path_index": 105.731,
+          "brake": "engaged"
+        }
+      ],
+      "summary": {
+        "quarters": 103,
+        "max_gap_lp": 59.733,
+        "first_brake_engaged": "2001-Q3",
+        "quarters_brake_engaged": 97,
+        "quarters_at_floor": 89
+      }
+    },
+    {
+      "epoch": "2008-Q1",
+      "label": "Signal replay from 2008-Q1",
+      "caveat": "Uses today's revised data and actual prices. The rule did not run, so prices were not affected by it. This shows what the rule would have signaled, not what would have happened.",
+      "calculators_A_B_max_difference": 5.1514348342607263e-14,
+      "rows": [
+        {
+          "quarter": "2008-Q1",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 0,
+          "allowance_pct": 3.092,
+          "allowance_raw_pct": 3.092,
+          "path_index": 100.764,
+          "brake": "off"
+        },
+        {
+          "quarter": "2008-Q2",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 1.131,
+          "allowance_pct": 2.527,
+          "allowance_raw_pct": 2.527,
+          "path_index": 101.395,
+          "brake": "off"
+        },
+        {
+          "quarter": "2008-Q3",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 2.427,
+          "allowance_pct": 1.879,
+          "allowance_raw_pct": 1.879,
+          "path_index": 101.868,
+          "brake": "off"
+        },
+        {
+          "quarter": "2008-Q4",
+          "trend_growth_pct": 3.092,
+          "gap_lp": 0.463,
+          "allowance_pct": 2.86,
+          "allowance_raw_pct": 2.86,
+          "path_index": 102.588,
+          "brake": "off"
+        },
+        {
+          "quarter": "2009-Q1",
+          "trend_growth_pct": 2.655,
+          "gap_lp": -0.221,
+          "allowance_pct": 2.765,
+          "allowance_raw_pct": 2.765,
+          "path_index": 103.29,
+          "brake": "off"
+        },
+        {
+          "quarter": "2009-Q2",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 0.243,
+          "allowance_pct": 2.534,
+          "allowance_raw_pct": 2.534,
+          "path_index": 103.939,
+          "brake": "off"
+        },
+        {
+          "quarter": "2009-Q3",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 1.015,
+          "allowance_pct": 2.148,
+          "allowance_raw_pct": 2.148,
+          "path_index": 104.492,
+          "brake": "off"
+        },
+        {
+          "quarter": "2009-Q4",
+          "trend_growth_pct": 2.655,
+          "gap_lp": 1.789,
+          "allowance_pct": 1.761,
+          "allowance_raw_pct": 1.761,
+          "path_index": 104.949,
+          "brake": "off"
+        },
+        {
+          "quarter": "2010-Q1",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 2.061,
+          "allowance_pct": 0.888,
+          "allowance_raw_pct": 0.888,
+          "path_index": 105.181,
+          "brake": "off"
+        },
+        {
+          "quarter": "2010-Q2",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 2.121,
+          "allowance_pct": 0.858,
+          "allowance_raw_pct": 0.858,
+          "path_index": 105.406,
+          "brake": "off"
+        },
+        {
+          "quarter": "2010-Q3",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 2.364,
+          "allowance_pct": 0.737,
+          "allowance_raw_pct": 0.737,
+          "path_index": 105.6,
+          "brake": "off"
+        },
+        {
+          "quarter": "2010-Q4",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 3.086,
+          "allowance_pct": 0.376,
+          "allowance_raw_pct": 0.376,
+          "path_index": 105.699,
+          "brake": "armed"
+        },
+        {
+          "quarter": "2011-Q1",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 4.035,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -0.237,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q2",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 5.089,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -0.764,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q3",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 5.645,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.042,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2011-Q4",
+          "trend_growth_pct": 1.78,
+          "gap_lp": 6.034,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.237,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q1",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 6.645,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.481,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q2",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 6.871,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.594,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q3",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 7.241,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -1.779,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2012-Q4",
+          "trend_growth_pct": 1.841,
+          "gap_lp": 7.852,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.085,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q1",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 8.228,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.214,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q2",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 8.199,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.199,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q3",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 8.673,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.437,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2013-Q4",
+          "trend_growth_pct": 1.9,
+          "gap_lp": 9.042,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.621,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q1",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 9.582,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -2.958,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q2",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 10.07,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.202,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q3",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 10.334,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.335,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2014-Q4",
+          "trend_growth_pct": 1.832,
+          "gap_lp": 10.143,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.239,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q1",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 9.594,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.097,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q2",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 10.182,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.391,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q3",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 10.5,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.55,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2015-Q4",
+          "trend_growth_pct": 1.7,
+          "gap_lp": 10.458,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.529,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q1",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 10.452,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.58,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q2",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 11.166,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -3.937,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q3",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 11.55,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.129,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2016-Q4",
+          "trend_growth_pct": 1.646,
+          "gap_lp": 12.095,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.402,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q1",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 12.737,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.819,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q2",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 12.895,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -4.898,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q3",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 13.31,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.105,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2017-Q4",
+          "trend_growth_pct": 1.55,
+          "gap_lp": 14.004,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.453,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q1",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 14.772,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -5.791,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q2",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 15.306,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.058,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q3",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 15.674,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.242,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2018-Q4",
+          "trend_growth_pct": 1.595,
+          "gap_lp": 16.066,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.438,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q1",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 16.301,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.27,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q2",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 16.946,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.593,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q3",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 17.231,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.735,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2019-Q4",
+          "trend_growth_pct": 1.88,
+          "gap_lp": 17.777,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.008,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q1",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 18.131,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.669,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q2",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 17.435,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.321,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q3",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 18.395,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -6.801,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2020-Q4",
+          "trend_growth_pct": 2.396,
+          "gap_lp": 19.009,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -7.108,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q1",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 20.051,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -8.107,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q2",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 21.695,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -8.929,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q3",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 23.162,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -9.662,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2021-Q4",
+          "trend_growth_pct": 1.919,
+          "gap_lp": 25.071,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -10.617,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q1",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 27.086,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -11.154,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q2",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 29.14,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.181,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q3",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 30.409,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -12.815,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2022-Q4",
+          "trend_growth_pct": 2.389,
+          "gap_lp": 31.441,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.331,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q1",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 32.349,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -13.771,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q2",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 33.077,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.136,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q3",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 33.847,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.521,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2023-Q4",
+          "trend_growth_pct": 2.403,
+          "gap_lp": 34.486,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -14.84,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q1",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 35.343,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.188,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q2",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 35.981,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.507,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q3",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 36.359,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -15.696,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2024-Q4",
+          "trend_growth_pct": 2.483,
+          "gap_lp": 37.071,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.053,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q1",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 37.915,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.432,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q2",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 38.416,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -16.682,
+          "path_index": 105.699,
+          "brake": "engaged"
+        },
+        {
+          "quarter": "2025-Q3",
+          "trend_growth_pct": 2.526,
+          "gap_lp": 39.116,
+          "allowance_pct": 0,
+          "allowance_raw_pct": -17.032,
+          "path_index": 105.699,
+          "brake": "engaged"
+        }
+      ],
+      "summary": {
+        "quarters": 71,
+        "max_gap_lp": 39.116,
+        "first_brake_engaged": "2011-Q1",
+        "quarters_brake_engaged": 59,
+        "quarters_at_floor": 59
+      }
+    },
     {
       "epoch": "2020-Q1",
       "label": "Signal replay from 2020-Q1",
@@ -487,7 +2083,7 @@
         "id": "DOLLAR_INDEX",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-10-30; 1956 observations; sha256 d7fe8e034609…"
+        "detail": "Latest 2026-10-30; 5222 observations; sha256 908a19a96d1b…"
       },
       {
         "id": "OFFSHORE_CREDIT",
@@ -535,7 +2131,7 @@
         "id": "RESERVES",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-10-28; 1035 observations; sha256 e749246922d9…"
+        "detail": "Latest 2026-10-28; 1246 observations; sha256 aced7bef4aca…"
       },
       {
         "id": "TGA",
@@ -553,7 +2149,7 @@
         "id": "EXPECT_5Y5Y",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-11-04; 1962 observations; sha256 9a633fa4cd45…"
+        "detail": "Latest 2026-11-04; 5965 observations; sha256 5f728cd9ebc8…"
       },
       {
         "id": "EXPECT_MICH",
@@ -572,6 +2168,49 @@
         "check": "fresh",
         "status": "ok",
         "detail": "Latest 2026-09-01; 236 observations; sha256 58a12b1907d0…"
+      },
+      {
+        "id": "BASE",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Latest 2026-09-01; 333 observations; sha256 cbf77890eb47…"
+      },
+      {
+        "id": "CURRENCY",
+        "check": "fresh",
+        "status": "warn",
+        "last": "2025-10-01",
+        "detail": "Latest CURRCIR observation is 2025-10-01 (400 days old)"
+      },
+      {
+        "id": "NGDP",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Latest 2026-07-01; 111 observations; sha256 1fb6c8bcdfa3…"
+      },
+      {
+        "id": "POPULATION",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Latest 2026-09-01; 333 observations; sha256 f8fd1a5ec941…"
+      },
+      {
+        "id": "PRODUCTIVITY",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Latest 2026-07-01; 111 observations; sha256 d1b6196370de…"
+      },
+      {
+        "id": "IOER",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Historical series (discontinued); 4676 observations; sha256 7e00dee924a8…"
+      },
+      {
+        "id": "FED_REMIT",
+        "check": "fresh",
+        "status": "ok",
+        "detail": "Latest 2026-10-28; 1035 observations; sha256 5e187b2d2f8b…"
       }
     ],
     "index_agreement": {
@@ -3819,984 +5458,1000 @@
           },
           "history": [
             [
-              "2019-01-02",
-              115.7689
+              "2006-01-02",
+              101.4155
             ],
             [
-              "2019-01-15",
-              114.3402
+              "2006-01-31",
+              99.4311
             ],
             [
-              "2019-01-28",
-              114.0522
+              "2006-03-01",
+              99.8355
             ],
             [
-              "2019-02-07",
-              114.4339
+              "2006-03-30",
+              100.5698
             ],
             [
-              "2019-02-21",
-              114.5091
+              "2006-04-28",
+              98.1412
             ],
             [
-              "2019-03-05",
-              114.804
+              "2006-05-29",
+              97.8936
             ],
             [
-              "2019-03-15",
-              114.5815
+              "2006-06-27",
+              99.219
             ],
             [
-              "2019-03-27",
-              115.1243
+              "2006-07-26",
+              98.742
             ],
             [
-              "2019-04-08",
-              114.6893
+              "2006-08-24",
+              97.7939
             ],
             [
-              "2019-04-18",
-              114.7073
+              "2006-09-22",
+              97.8667
             ],
             [
-              "2019-04-30",
-              115.3281
+              "2006-10-23",
+              98.4483
             ],
             [
-              "2019-05-10",
-              115.5334
+              "2006-11-21",
+              98.0215
             ],
             [
-              "2019-05-22",
-              116.2412
+              "2006-12-20",
+              96.7762
             ],
             [
-              "2019-06-04",
-              116.091
+              "2007-01-19",
+              97.6868
             ],
             [
-              "2019-06-14",
-              115.9057
+              "2007-02-19",
+              97.1545
             ],
             [
-              "2019-06-26",
-              114.5608
+              "2007-03-20",
+              96.7985
             ],
             [
-              "2019-07-09",
-              115.1017
+              "2007-04-18",
+              95.3109
+            ],
+            [
+              "2007-05-17",
+              94.8339
+            ],
+            [
+              "2007-06-15",
+              94.6228
+            ],
+            [
+              "2007-07-16",
+              92.9094
+            ],
+            [
+              "2007-08-14",
+              94.0416
+            ],
+            [
+              "2007-09-12",
+              92.6386
+            ],
+            [
+              "2007-10-11",
+              90.4901
+            ],
+            [
+              "2007-11-09",
+              88.4615
+            ],
+            [
+              "2007-12-10",
+              89.6811
+            ],
+            [
+              "2008-01-08",
+              89.3398
+            ],
+            [
+              "2008-02-06",
+              88.9987
+            ],
+            [
+              "2008-03-06",
+              86.9105
+            ],
+            [
+              "2008-04-04",
+              86.5108
+            ],
+            [
+              "2008-05-05",
+              87.0636
+            ],
+            [
+              "2008-06-03",
+              86.8359
+            ],
+            [
+              "2008-07-02",
+              86.4782
+            ],
+            [
+              "2008-07-31",
+              86.8567
+            ],
+            [
+              "2008-08-29",
+              90.0567
+            ],
+            [
+              "2008-09-29",
+              91.3961
+            ],
+            [
+              "2008-10-28",
+              102.4236
+            ],
+            [
+              "2008-11-26",
+              101.2566
+            ],
+            [
+              "2008-12-25",
+              98.2419
+            ],
+            [
+              "2009-01-28",
+              100.5461
+            ],
+            [
+              "2009-02-27",
+              104.9284
+            ],
+            [
+              "2009-03-30",
+              102.749
+            ],
+            [
+              "2009-04-28",
+              101.3145
+            ],
+            [
+              "2009-05-28",
+              96.1313
+            ],
+            [
+              "2009-06-26",
+              96.1935
+            ],
+            [
+              "2009-07-28",
+              94.5592
+            ],
+            [
+              "2009-08-26",
+              94.8662
+            ],
+            [
+              "2009-09-25",
+              93.5535
+            ],
+            [
+              "2009-10-27",
+              92.5335
+            ],
+            [
+              "2009-11-27",
+              91.5272
+            ],
+            [
+              "2009-12-30",
+              93.0872
+            ],
+            [
+              "2010-02-01",
+              93.7321
+            ],
+            [
+              "2010-03-09",
+              93.1941
+            ],
+            [
+              "2010-04-07",
+              92.7452
+            ],
+            [
+              "2010-05-06",
+              95.3032
+            ],
+            [
+              "2010-06-07",
+              97.503
+            ],
+            [
+              "2010-07-07",
+              95.1795
+            ],
+            [
+              "2010-08-05",
+              92.6401
+            ],
+            [
+              "2010-09-03",
+              93.6952
+            ],
+            [
+              "2010-10-05",
+              90.5622
+            ],
+            [
+              "2010-11-04",
+              88.9831
+            ],
+            [
+              "2010-12-07",
+              90.9732
+            ],
+            [
+              "2011-01-07",
+              91.0001
+            ],
+            [
+              "2011-02-08",
+              89.1241
+            ],
+            [
+              "2011-03-10",
+              88.8698
+            ],
+            [
+              "2011-04-08",
+              87.1493
+            ],
+            [
+              "2011-05-09",
+              86.8346
+            ],
+            [
+              "2011-06-08",
+              86.5714
+            ],
+            [
+              "2011-07-08",
+              86.615
+            ],
+            [
+              "2011-08-08",
+              87.1873
+            ],
+            [
+              "2011-09-07",
+              87.9699
+            ],
+            [
+              "2011-10-06",
+              91.9661
+            ],
+            [
+              "2011-11-07",
+              90.3832
+            ],
+            [
+              "2011-12-08",
+              91.668
+            ],
+            [
+              "2012-01-10",
+              92.2461
+            ],
+            [
+              "2012-02-09",
+              89.6246
+            ],
+            [
+              "2012-03-12",
+              90.6643
+            ],
+            [
+              "2012-04-10",
+              91.2728
+            ],
+            [
+              "2012-05-09",
+              91.7632
+            ],
+            [
+              "2012-06-08",
+              94.2024
+            ],
+            [
+              "2012-07-10",
+              93.5552
+            ],
+            [
+              "2012-08-08",
+              92.5407
+            ],
+            [
+              "2012-09-07",
+              91.3469
+            ],
+            [
+              "2012-10-09",
+              90.8703
+            ],
+            [
+              "2012-11-09",
+              91.6871
+            ],
+            [
+              "2012-12-12",
+              90.7708
+            ],
+            [
+              "2013-01-14",
+              90.4935
+            ],
+            [
+              "2013-02-13",
+              91.2709
+            ],
+            [
+              "2013-03-18",
+              92.3377
+            ],
+            [
+              "2013-04-16",
+              91.8451
+            ],
+            [
+              "2013-05-15",
+              92.7691
+            ],
+            [
+              "2013-06-14",
+              92.1886
+            ],
+            [
+              "2013-07-16",
+              93.5232
+            ],
+            [
+              "2013-08-14",
+              93.382
+            ],
+            [
+              "2013-09-13",
+              93.6666
+            ],
+            [
+              "2013-10-15",
+              92.7642
+            ],
+            [
+              "2013-11-14",
+              93.4328
+            ],
+            [
+              "2013-12-17",
+              93.302
+            ],
+            [
+              "2014-01-17",
+              94.5846
+            ],
+            [
+              "2014-02-20",
+              94.6571
+            ],
+            [
+              "2014-03-26",
+              94.5281
+            ],
+            [
+              "2014-04-24",
+              94.1294
+            ],
+            [
+              "2014-05-23",
+              93.7042
+            ],
+            [
+              "2014-06-24",
+              93.7093
+            ],
+            [
+              "2014-07-24",
+              93.6836
+            ],
+            [
+              "2014-08-22",
+              94.8012
+            ],
+            [
+              "2014-09-23",
+              96.5112
+            ],
+            [
+              "2014-10-23",
+              97.6047
+            ],
+            [
+              "2014-11-24",
+              99.4227
+            ],
+            [
+              "2014-12-24",
+              102.3028
+            ],
+            [
+              "2015-01-28",
+              104.4737
+            ],
+            [
+              "2015-03-02",
+              105.8151
+            ],
+            [
+              "2015-04-01",
+              107.06
+            ],
+            [
+              "2015-04-30",
+              105.312
+            ],
+            [
+              "2015-06-01",
+              107.2238
+            ],
+            [
+              "2015-06-30",
+              106.5191
+            ],
+            [
+              "2015-07-30",
+              109.4328
+            ],
+            [
+              "2015-08-28",
+              110.6714
+            ],
+            [
+              "2015-09-29",
+              111.5219
+            ],
+            [
+              "2015-10-29",
+              110.8083
+            ],
+            [
+              "2015-12-01",
+              112.1134
+            ],
+            [
+              "2015-12-31",
+              113.3429
+            ],
+            [
+              "2016-02-05",
+              114.2935
+            ],
+            [
+              "2016-03-08",
+              112.8465
+            ],
+            [
+              "2016-04-06",
+              110.5347
+            ],
+            [
+              "2016-05-05",
+              110.2417
+            ],
+            [
+              "2016-06-06",
+              111.2295
+            ],
+            [
+              "2016-07-06",
+              112.5438
+            ],
+            [
+              "2016-08-04",
+              111.9149
+            ],
+            [
+              "2016-09-02",
+              112.0009
+            ],
+            [
+              "2016-10-04",
+              112.6579
+            ],
+            [
+              "2016-11-03",
+              113.7664
+            ],
+            [
+              "2016-12-06",
+              116.9225
+            ],
+            [
+              "2017-01-06",
+              118.3495
+            ],
+            [
+              "2017-02-08",
+              116.1382
+            ],
+            [
+              "2017-03-10",
+              116.616
+            ],
+            [
+              "2017-04-10",
+              115.11
+            ],
+            [
+              "2017-05-09",
+              115.3933
+            ],
+            [
+              "2017-06-08",
+              112.8351
+            ],
+            [
+              "2017-07-10",
+              112.1587
+            ],
+            [
+              "2017-08-08",
+              110.396
+            ],
+            [
+              "2017-09-07",
+              107.9224
+            ],
+            [
+              "2017-10-06",
+              110.7841
+            ],
+            [
+              "2017-11-07",
+              111.9446
+            ],
+            [
+              "2017-12-08",
+              111.2273
+            ],
+            [
+              "2018-01-10",
+              109.628
+            ],
+            [
+              "2018-02-09",
+              108.2582
+            ],
+            [
+              "2018-03-14",
+              107.8623
+            ],
+            [
+              "2018-04-13",
+              107.2368
+            ],
+            [
+              "2018-05-14",
+              110.408
+            ],
+            [
+              "2018-06-13",
+              112.2577
+            ],
+            [
+              "2018-07-13",
+              113.0705
+            ],
+            [
+              "2018-08-13",
+              114.851
+            ],
+            [
+              "2018-09-12",
+              114.2192
+            ],
+            [
+              "2018-10-12",
+              114.3691
+            ],
+            [
+              "2018-11-13",
+              116.6694
+            ],
+            [
+              "2018-12-14",
+              116.79
+            ],
+            [
+              "2019-01-17",
+              114.4115
+            ],
+            [
+              "2019-02-19",
+              114.57
+            ],
+            [
+              "2019-03-21",
+              114.1684
+            ],
+            [
+              "2019-04-19",
+              114.6977
+            ],
+            [
+              "2019-05-20",
+              116.3119
+            ],
+            [
+              "2019-06-19",
+              115.7889
             ],
             [
               "2019-07-19",
               114.8695
             ],
             [
-              "2019-07-31",
-              115.4946
+              "2019-08-19",
+              117.3886
             ],
             [
-              "2019-08-12",
-              116.7548
+              "2019-09-18",
+              116.9766
             ],
             [
-              "2019-08-22",
-              117.3558
+              "2019-10-18",
+              116.1344
             ],
             [
-              "2019-09-04",
-              117.6729
+              "2019-11-19",
+              116.5391
             ],
             [
-              "2019-09-16",
-              117.0251
+              "2019-12-19",
+              115.5988
             ],
             [
-              "2019-09-26",
-              117.7267
+              "2020-01-23",
+              115.5545
             ],
             [
-              "2019-10-08",
-              117.7407
-            ],
-            [
-              "2019-10-21",
-              116.0436
-            ],
-            [
-              "2019-10-31",
-              115.9125
-            ],
-            [
-              "2019-11-13",
-              116.8397
-            ],
-            [
-              "2019-11-25",
-              117.0098
-            ],
-            [
-              "2019-12-06",
-              116.5381
-            ],
-            [
-              "2019-12-18",
-              115.6618
-            ],
-            [
-              "2020-01-02",
-              114.9745
-            ],
-            [
-              "2020-01-14",
-              115.0239
-            ],
-            [
-              "2020-01-27",
-              115.8004
-            ],
-            [
-              "2020-02-06",
-              116.1518
-            ],
-            [
-              "2020-02-19",
-              116.7829
-            ],
-            [
-              "2020-03-02",
-              116.8144
-            ],
-            [
-              "2020-03-12",
-              120.4883
+              "2020-02-24",
+              117.4018
             ],
             [
               "2020-03-24",
               125.5001
             ],
             [
-              "2020-04-03",
-              124.4152
+              "2020-04-22",
+              123.9256
             ],
             [
-              "2020-04-15",
-              123.0752
+              "2020-05-21",
+              122.0914
             ],
             [
-              "2020-04-27",
-              123.8843
+              "2020-06-22",
+              119.7532
             ],
             [
-              "2020-05-07",
-              123.1249
+              "2020-07-22",
+              118.1337
             ],
             [
-              "2020-05-19",
-              122.5655
+              "2020-08-20",
+              116.8126
             ],
             [
-              "2020-06-01",
-              120.2686
+              "2020-09-21",
+              116.378
             ],
             [
-              "2020-06-11",
-              119.2347
-            ],
-            [
-              "2020-06-23",
-              119.3285
-            ],
-            [
-              "2020-07-06",
-              119.2852
-            ],
-            [
-              "2020-07-16",
-              118.9275
-            ],
-            [
-              "2020-07-28",
-              117.3189
-            ],
-            [
-              "2020-08-07",
-              117.6239
-            ],
-            [
-              "2020-08-19",
-              116.567
-            ],
-            [
-              "2020-08-31",
-              115.7586
-            ],
-            [
-              "2020-09-11",
-              116.0866
-            ],
-            [
-              "2020-09-23",
-              117.2526
-            ],
-            [
-              "2020-10-05",
-              116.1767
-            ],
-            [
-              "2020-10-16",
-              115.7679
-            ],
-            [
-              "2020-10-28",
-              115.8023
-            ],
-            [
-              "2020-11-09",
-              114.0895
+              "2020-10-21",
+              114.9108
             ],
             [
               "2020-11-20",
               113.489
             ],
             [
-              "2020-12-04",
-              111.7778
+              "2020-12-23",
+              111.9807
             ],
             [
-              "2020-12-16",
-              111.7157
+              "2021-01-28",
+              112.0059
             ],
             [
-              "2020-12-30",
-              111.3084
+              "2021-03-01",
+              112.5263
             ],
             [
-              "2021-01-12",
-              111.5501
+              "2021-03-30",
+              114.203
             ],
             [
-              "2021-01-26",
-              111.6572
+              "2021-04-28",
+              111.7909
             ],
             [
-              "2021-02-05",
-              112.2379
+              "2021-05-27",
+              110.8688
             ],
             [
-              "2021-02-18",
-              112.1603
-            ],
-            [
-              "2021-03-02",
-              112.5342
-            ],
-            [
-              "2021-03-12",
-              113.0269
-            ],
-            [
-              "2021-03-24",
-              113.6565
-            ],
-            [
-              "2021-04-05",
-              113.394
-            ],
-            [
-              "2021-04-15",
-              112.6181
-            ],
-            [
-              "2021-04-27",
-              111.9097
-            ],
-            [
-              "2021-05-07",
-              111.0249
-            ],
-            [
-              "2021-05-19",
-              110.8807
-            ],
-            [
-              "2021-06-01",
-              110.5046
-            ],
-            [
-              "2021-06-11",
-              111.0933
-            ],
-            [
-              "2021-06-23",
-              112.3819
-            ],
-            [
-              "2021-07-06",
-              112.9516
-            ],
-            [
-              "2021-07-16",
-              113.0428
+              "2021-06-28",
+              112.0248
             ],
             [
               "2021-07-28",
               113.1807
             ],
             [
-              "2021-08-09",
-              113.4521
+              "2021-08-26",
+              113.7883
             ],
             [
-              "2021-08-19",
-              114.1106
+              "2021-09-27",
+              113.7432
             ],
             [
-              "2021-08-31",
-              113.1076
+              "2021-10-27",
+              113.6218
             ],
             [
-              "2021-09-13",
-              113.0341
+              "2021-11-29",
+              116.581
             ],
             [
-              "2021-09-23",
-              113.513
+              "2021-12-29",
+              115.3678
             ],
             [
-              "2021-10-05",
-              114.3654
+              "2022-01-31",
+              115.566
             ],
             [
-              "2021-10-18",
-              113.9899
-            ],
-            [
-              "2021-10-28",
-              113.4389
-            ],
-            [
-              "2021-11-09",
-              113.762
-            ],
-            [
-              "2021-11-22",
-              115.6481
-            ],
-            [
-              "2021-12-03",
-              116.2377
-            ],
-            [
-              "2021-12-15",
-              116.4219
-            ],
-            [
-              "2021-12-28",
-              115.4192
-            ],
-            [
-              "2022-01-10",
-              115.2216
-            ],
-            [
-              "2022-01-21",
-              114.6125
-            ],
-            [
-              "2022-02-02",
-              115.1538
-            ],
-            [
-              "2022-02-14",
-              115.1946
-            ],
-            [
-              "2022-02-25",
-              115.2577
-            ],
-            [
-              "2022-03-09",
-              116.5961
-            ],
-            [
-              "2022-03-21",
-              115.9398
+              "2022-03-02",
+              115.7623
             ],
             [
               "2022-03-31",
               115.2218
             ],
             [
-              "2022-04-12",
-              116.3866
+              "2022-04-29",
+              119.4933
             ],
             [
-              "2022-04-22",
-              118.0186
+              "2022-05-31",
+              118.0704
             ],
             [
-              "2022-05-04",
-              119.5592
+              "2022-06-30",
+              120.9652
             ],
             [
-              "2022-05-16",
-              120.6881
+              "2022-08-01",
+              121.4109
             ],
             [
-              "2022-05-26",
-              118.7687
+              "2022-08-30",
+              123.6848
             ],
             [
-              "2022-06-08",
-              118.3951
+              "2022-09-29",
+              127.5437
             ],
             [
-              "2022-06-21",
-              120.6427
-            ],
-            [
-              "2022-07-01",
-              121.5058
-            ],
-            [
-              "2022-07-14",
-              124.0622
-            ],
-            [
-              "2022-07-26",
-              122.7581
-            ],
-            [
-              "2022-08-05",
-              122.321
-            ],
-            [
-              "2022-08-17",
-              122.0711
-            ],
-            [
-              "2022-08-29",
-              123.4686
-            ],
-            [
-              "2022-09-09",
-              123.7874
-            ],
-            [
-              "2022-09-21",
-              125.7399
-            ],
-            [
-              "2022-10-03",
-              127.0813
-            ],
-            [
-              "2022-10-14",
-              128.3325
-            ],
-            [
-              "2022-10-26",
-              126.4723
-            ],
-            [
-              "2022-11-07",
-              126.3062
-            ],
-            [
-              "2022-11-18",
-              123.8524
+              "2022-10-31",
+              127.6219
             ],
             [
               "2022-12-01",
               122.0045
             ],
             [
-              "2022-12-13",
-              121.8493
+              "2023-01-03",
+              122.0905
             ],
             [
-              "2022-12-23",
-              121.9743
+              "2023-02-02",
+              118.3421
             ],
             [
-              "2023-01-06",
-              121.0852
+              "2023-03-06",
+              120.485
             ],
             [
-              "2023-01-19",
-              119.6107
+              "2023-04-04",
+              119.142
             ],
             [
-              "2023-01-31",
-              118.9802
+              "2023-05-03",
+              119.1233
             ],
             [
-              "2023-02-10",
-              120.1419
+              "2023-06-02",
+              120.0049
             ],
             [
-              "2023-02-23",
-              121.0896
-            ],
-            [
-              "2023-03-07",
-              121.4623
-            ],
-            [
-              "2023-03-17",
-              121.5643
-            ],
-            [
-              "2023-03-29",
-              119.7258
-            ],
-            [
-              "2023-04-10",
-              119.7948
-            ],
-            [
-              "2023-04-20",
-              119.1199
-            ],
-            [
-              "2023-05-02",
-              119.6105
-            ],
-            [
-              "2023-05-12",
-              119.3671
-            ],
-            [
-              "2023-05-24",
-              120.4752
-            ],
-            [
-              "2023-06-06",
-              119.9718
-            ],
-            [
-              "2023-06-16",
-              118.4184
-            ],
-            [
-              "2023-06-29",
-              119.527
-            ],
-            [
-              "2023-07-12",
-              117.6385
-            ],
-            [
-              "2023-07-24",
-              117.8124
+              "2023-07-05",
+              119.3483
             ],
             [
               "2023-08-03",
               119.3963
             ],
             [
-              "2023-08-15",
-              120.2127
+              "2023-09-01",
+              120.759
             ],
             [
-              "2023-08-25",
-              120.5137
+              "2023-10-03",
+              123.7848
             ],
             [
-              "2023-09-07",
-              121.9528
+              "2023-11-02",
+              122.8818
             ],
             [
-              "2023-09-19",
-              121.1645
+              "2023-12-05",
+              120.7913
             ],
             [
-              "2023-09-29",
-              122.3077
+              "2024-01-05",
+              119.388
             ],
             [
-              "2023-10-12",
-              123.2101
+              "2024-02-06",
+              120.9588
             ],
             [
-              "2023-10-24",
-              123.6416
-            ],
-            [
-              "2023-11-03",
-              121.7564
-            ],
-            [
-              "2023-11-16",
-              121.1754
-            ],
-            [
-              "2023-11-29",
-              119.8159
-            ],
-            [
-              "2023-12-11",
-              120.9279
-            ],
-            [
-              "2023-12-21",
-              119.3168
-            ],
-            [
-              "2024-01-04",
-              119.6208
-            ],
-            [
-              "2024-01-17",
-              121.0402
-            ],
-            [
-              "2024-01-29",
-              120.8538
-            ],
-            [
-              "2024-02-08",
-              121.0798
-            ],
-            [
-              "2024-02-21",
-              121.0379
-            ],
-            [
-              "2024-03-04",
-              120.872
-            ],
-            [
-              "2024-03-14",
-              120.241
-            ],
-            [
-              "2024-03-26",
-              121.0742
+              "2024-03-07",
+              120.1909
             ],
             [
               "2024-04-05",
               120.9646
             ],
             [
-              "2024-04-17",
-              123.0207
+              "2024-05-06",
+              121.8913
             ],
             [
-              "2024-04-29",
-              122.5449
+              "2024-06-05",
+              122.5339
             ],
             [
-              "2024-05-09",
-              122.1634
+              "2024-07-08",
+              123.3576
             ],
             [
-              "2024-05-21",
-              121.3793
+              "2024-08-06",
+              123.6532
             ],
             [
-              "2024-06-03",
-              122.3509
+              "2024-09-05",
+              122.4533
             ],
             [
-              "2024-06-13",
-              124.0235
+              "2024-10-04",
+              122.2197
             ],
             [
-              "2024-06-26",
-              124.26
-            ],
-            [
-              "2024-07-09",
-              123.4071
-            ],
-            [
-              "2024-07-19",
-              123.147
-            ],
-            [
-              "2024-07-31",
-              123.6373
-            ],
-            [
-              "2024-08-12",
-              123.2204
-            ],
-            [
-              "2024-08-22",
-              122.3626
-            ],
-            [
-              "2024-09-04",
-              122.5144
-            ],
-            [
-              "2024-09-16",
-              121.4976
-            ],
-            [
-              "2024-09-26",
-              121.0785
-            ],
-            [
-              "2024-10-08",
-              122.6625
-            ],
-            [
-              "2024-10-21",
-              124.4757
-            ],
-            [
-              "2024-10-31",
-              124.7988
-            ],
-            [
-              "2024-11-13",
-              126.9572
-            ],
-            [
-              "2024-11-25",
-              126.9948
+              "2024-11-05",
+              124.5532
             ],
             [
               "2024-12-06",
               126.688
             ],
             [
-              "2024-12-18",
-              127.6418
+              "2025-01-08",
+              129.0785
             ],
             [
-              "2024-12-31",
-              129.2775
+              "2025-02-07",
+              128.4292
             ],
             [
-              "2025-01-13",
-              130.0413
+              "2025-03-11",
+              126.0457
             ],
             [
-              "2025-01-24",
-              127.4611
+              "2025-04-09",
+              126.628
             ],
             [
-              "2025-02-05",
-              127.9751
+              "2025-05-08",
+              122.7568
             ],
             [
-              "2025-02-18",
-              127.2906
+              "2025-06-09",
+              120.9103
             ],
             [
-              "2025-02-28",
-              128.2805
-            ],
-            [
-              "2025-03-12",
-              125.8664
-            ],
-            [
-              "2025-03-24",
-              126.1956
-            ],
-            [
-              "2025-04-03",
-              124.7316
-            ],
-            [
-              "2025-04-15",
-              123.776
-            ],
-            [
-              "2025-04-25",
-              122.8858
-            ],
-            [
-              "2025-05-07",
-              122.117
-            ],
-            [
-              "2025-05-19",
-              122.4186
-            ],
-            [
-              "2025-05-30",
-              121.7674
-            ],
-            [
-              "2025-06-11",
-              120.587
-            ],
-            [
-              "2025-06-24",
-              120.3645
-            ],
-            [
-              "2025-07-07",
-              119.6201
-            ],
-            [
-              "2025-07-17",
-              120.6384
-            ],
-            [
-              "2025-07-29",
-              120.9674
+              "2025-07-10",
+              119.8343
             ],
             [
               "2025-08-08",
               120.3329
             ],
             [
-              "2025-08-20",
-              120.7757
+              "2025-09-09",
+              120.1569
             ],
             [
-              "2025-09-02",
-              120.6837
+              "2025-10-08",
+              120.7766
             ],
             [
-              "2025-09-12",
-              120.0611
+              "2025-11-07",
+              121.388
             ],
             [
-              "2025-09-24",
-              120.1707
+              "2025-12-10",
+              120.6752
             ],
             [
-              "2025-10-06",
-              120.2722
+              "2026-01-12",
+              119.9958
             ],
             [
-              "2025-10-17",
-              120.7028
+              "2026-02-11",
+              117.4601
             ],
             [
-              "2025-10-29",
-              120.5312
-            ],
-            [
-              "2025-11-10",
-              121.2984
-            ],
-            [
-              "2025-11-21",
-              121.8653
-            ],
-            [
-              "2025-12-04",
-              120.6766
-            ],
-            [
-              "2025-12-16",
-              119.8902
-            ],
-            [
-              "2025-12-29",
-              119.5899
-            ],
-            [
-              "2026-01-09",
-              120.2215
-            ],
-            [
-              "2026-01-22",
-              119.1962
-            ],
-            [
-              "2026-02-03",
-              117.9764
-            ],
-            [
-              "2026-02-13",
-              117.5258
-            ],
-            [
-              "2026-02-26",
-              117.9042
-            ],
-            [
-              "2026-03-10",
-              118.7255
-            ],
-            [
-              "2026-03-20",
-              120.2757
-            ],
-            [
-              "2026-04-01",
-              120.1198
+              "2026-03-13",
+              120.5518
             ],
             [
               "2026-04-13",
               118.9916
             ],
             [
-              "2026-04-23",
-              118.7155
+              "2026-05-12",
+              118.5238
             ],
             [
-              "2026-05-05",
-              118.6207
+              "2026-06-11",
+              120.1174
             ],
             [
-              "2026-05-15",
-              119.2825
+              "2026-07-14",
+              120.4728
             ],
             [
-              "2026-05-28",
-              119.0318
+              "2026-08-12",
+              119.1179
             ],
             [
-              "2026-06-09",
-              119.9617
+              "2026-09-11",
+              118.2126
             ],
             [
-              "2026-06-22",
-              120.5463
-            ],
-            [
-              "2026-07-02",
-              120.6902
-            ],
-            [
-              "2026-07-15",
-              120.3088
-            ],
-            [
-              "2026-07-27",
-              120.7739
-            ],
-            [
-              "2026-08-06",
-              119.5113
-            ],
-            [
-              "2026-08-18",
-              118.9831
-            ],
-            [
-              "2026-08-28",
-              118.7479
-            ],
-            [
-              "2026-09-10",
-              118.0787
-            ],
-            [
-              "2026-09-22",
-              119.5933
-            ],
-            [
-              "2026-10-02",
-              121.3848
-            ],
-            [
-              "2026-10-15",
-              121.5693
-            ],
-            [
-              "2026-10-27",
-              121.6622
+              "2026-10-13",
+              121.4433
             ],
             [
               "2026-10-30",
@@ -10302,1040 +11957,1000 @@
           "calibration": null,
           "history": [
             [
-              "2007-01-03",
-              12206
+              "2002-12-18",
+              9028
+            ],
+            [
+              "2003-01-22",
+              12337
+            ],
+            [
+              "2003-02-26",
+              8084
+            ],
+            [
+              "2003-04-02",
+              13314
+            ],
+            [
+              "2003-05-07",
+              6756
+            ],
+            [
+              "2003-06-11",
+              10099
+            ],
+            [
+              "2003-07-16",
+              11134
+            ],
+            [
+              "2003-08-20",
+              21955
+            ],
+            [
+              "2003-09-24",
+              9141
+            ],
+            [
+              "2003-10-29",
+              16292
+            ],
+            [
+              "2003-12-03",
+              12668
+            ],
+            [
+              "2004-01-07",
+              9839
+            ],
+            [
+              "2004-02-11",
+              7469
+            ],
+            [
+              "2004-03-17",
+              14588
+            ],
+            [
+              "2004-04-21",
+              14021
+            ],
+            [
+              "2004-05-26",
+              15726
+            ],
+            [
+              "2004-06-30",
+              14753
+            ],
+            [
+              "2004-08-04",
+              16333
+            ],
+            [
+              "2004-09-08",
+              10128
+            ],
+            [
+              "2004-10-13",
+              11175
+            ],
+            [
+              "2004-11-17",
+              12278
+            ],
+            [
+              "2004-12-22",
+              10747
+            ],
+            [
+              "2005-01-26",
+              12624
+            ],
+            [
+              "2005-03-02",
+              16224
+            ],
+            [
+              "2005-04-06",
+              12369
+            ],
+            [
+              "2005-05-11",
+              9499
+            ],
+            [
+              "2005-06-15",
+              10240
+            ],
+            [
+              "2005-07-20",
+              12934
+            ],
+            [
+              "2005-08-24",
+              9474
+            ],
+            [
+              "2005-09-28",
+              14074
+            ],
+            [
+              "2005-11-02",
+              12248
+            ],
+            [
+              "2005-12-07",
+              10698
+            ],
+            [
+              "2006-01-11",
+              7466
+            ],
+            [
+              "2006-02-15",
+              11260
+            ],
+            [
+              "2006-03-22",
+              7114
+            ],
+            [
+              "2006-04-26",
+              9965
+            ],
+            [
+              "2006-05-31",
+              9590
+            ],
+            [
+              "2006-07-05",
+              11478
+            ],
+            [
+              "2006-08-09",
+              6255
+            ],
+            [
+              "2006-09-13",
+              6616
+            ],
+            [
+              "2006-10-18",
+              8140
+            ],
+            [
+              "2006-11-22",
+              8740
+            ],
+            [
+              "2006-12-27",
+              6867
             ],
             [
               "2007-01-31",
               13124
             ],
             [
-              "2007-02-28",
-              9378
+              "2007-03-07",
+              7064
             ],
             [
-              "2007-03-28",
-              9255
+              "2007-04-11",
+              6270
             ],
             [
-              "2007-04-25",
-              7428
-            ],
-            [
-              "2007-05-23",
-              9562
+              "2007-05-16",
+              7513
             ],
             [
               "2007-06-20",
               10185
             ],
             [
-              "2007-07-18",
-              9171
+              "2007-07-25",
+              6215
             ],
             [
-              "2007-08-15",
-              23801
+              "2007-08-29",
+              7841
             ],
             [
-              "2007-09-12",
-              8926
-            ],
-            [
-              "2007-10-10",
-              7074
+              "2007-10-03",
+              12404
             ],
             [
               "2007-11-07",
               8618
             ],
             [
-              "2007-12-05",
-              9952
+              "2007-12-12",
+              4451
             ],
             [
-              "2008-01-02",
-              13029
+              "2008-01-16",
+              11626
             ],
             [
-              "2008-01-30",
-              12402
-            ],
-            [
-              "2008-02-27",
-              8006
+              "2008-02-20",
+              10523
             ],
             [
               "2008-03-26",
               6014
             ],
             [
-              "2008-04-23",
-              10668
+              "2008-04-30",
+              9128
             ],
             [
-              "2008-05-21",
-              11440
+              "2008-06-04",
+              12099
             ],
             [
-              "2008-06-18",
-              11050
-            ],
-            [
-              "2008-07-16",
-              11690
+              "2008-07-09",
+              7475
             ],
             [
               "2008-08-13",
               9025
             ],
             [
-              "2008-09-10",
-              9020
+              "2008-09-17",
+              46998
             ],
             [
-              "2008-10-08",
-              119718
+              "2008-10-22",
+              301260
             ],
             [
-              "2008-11-05",
-              493611
-            ],
-            [
-              "2008-12-03",
-              633911
+              "2008-11-26",
+              577731
             ],
             [
               "2008-12-31",
               847821
             ],
             [
-              "2009-01-28",
-              795229
+              "2009-02-04",
+              661731
             ],
             [
-              "2009-02-25",
-              692397
+              "2009-03-11",
+              628627
             ],
             [
-              "2009-03-25",
-              795806
-            ],
-            [
-              "2009-04-22",
-              924827
+              "2009-04-15",
+              837749
             ],
             [
               "2009-05-20",
               934135
             ],
             [
-              "2009-06-17",
-              817587
+              "2009-06-24",
+              692454
             ],
             [
-              "2009-07-15",
-              781790
+              "2009-07-29",
+              764658
             ],
             [
-              "2009-08-12",
-              746807
-            ],
-            [
-              "2009-09-09",
-              859581
+              "2009-09-02",
+              837154
             ],
             [
               "2009-10-07",
               958831
             ],
             [
-              "2009-11-04",
-              1084635
+              "2009-11-11",
+              1035227
             ],
             [
-              "2009-12-02",
-              1139438
+              "2009-12-16",
+              1096672
             ],
             [
-              "2009-12-30",
-              1066737
-            ],
-            [
-              "2010-01-27",
-              1104555
+              "2010-01-20",
+              1078881
             ],
             [
               "2010-02-24",
               1227597
             ],
             [
-              "2010-03-24",
-              1127725
+              "2010-03-31",
+              1124679
             ],
             [
-              "2010-04-21",
-              1067938
+              "2010-05-05",
+              1021581
             ],
             [
-              "2010-05-19",
-              1092540
-            ],
-            [
-              "2010-06-16",
-              1066441
+              "2010-06-09",
+              1060078
             ],
             [
               "2010-07-14",
               1058516
             ],
             [
-              "2010-08-11",
-              1045180
+              "2010-08-18",
+              1041298
             ],
             [
-              "2010-09-08",
-              1031310
+              "2010-09-22",
+              975434
             ],
             [
-              "2010-10-06",
-              985331
-            ],
-            [
-              "2010-11-03",
-              992204
+              "2010-10-27",
+              1003206
             ],
             [
               "2010-12-01",
               1003827
             ],
             [
-              "2010-12-29",
-              1027089
+              "2011-01-05",
+              1001783
             ],
             [
-              "2011-01-26",
-              1078051
+              "2011-02-09",
+              1152388
             ],
             [
-              "2011-02-23",
-              1265869
-            ],
-            [
-              "2011-03-23",
-              1391980
+              "2011-03-16",
+              1395330
             ],
             [
               "2011-04-20",
               1486650
             ],
             [
-              "2011-05-18",
-              1547236
+              "2011-05-25",
+              1571447
             ],
             [
-              "2011-06-15",
-              1650065
+              "2011-06-29",
+              1617276
             ],
             [
-              "2011-07-13",
-              1679080
-            ],
-            [
-              "2011-08-10",
-              1649269
+              "2011-08-03",
+              1624803
             ],
             [
               "2011-09-07",
               1615771
             ],
             [
-              "2011-10-05",
-              1604285
+              "2011-10-12",
+              1624516
             ],
             [
-              "2011-11-02",
-              1571930
+              "2011-11-16",
+              1583716
             ],
             [
-              "2011-11-30",
-              1520197
-            ],
-            [
-              "2011-12-28",
-              1534135
+              "2011-12-21",
+              1509961
             ],
             [
               "2012-01-25",
               1529646
             ],
             [
-              "2012-02-22",
-              1621626
+              "2012-02-29",
+              1607919
             ],
             [
-              "2012-03-21",
-              1523382
+              "2012-04-04",
+              1548610
             ],
             [
-              "2012-04-18",
-              1562988
-            ],
-            [
-              "2012-05-16",
-              1501657
+              "2012-05-09",
+              1497049
             ],
             [
               "2012-06-13",
               1549830
             ],
             [
-              "2012-07-11",
-              1514001
+              "2012-07-18",
+              1543311
             ],
             [
-              "2012-08-08",
-              1553199
+              "2012-08-22",
+              1511753
             ],
             [
-              "2012-09-05",
-              1518165
-            ],
-            [
-              "2012-10-03",
-              1446881
+              "2012-09-26",
+              1424890
             ],
             [
               "2012-10-31",
               1494414
             ],
             [
-              "2012-11-28",
-              1485795
+              "2012-12-05",
+              1526122
             ],
             [
-              "2012-12-26",
-              1503482
+              "2013-01-09",
+              1543024
             ],
             [
-              "2013-01-23",
-              1586337
-            ],
-            [
-              "2013-02-20",
-              1667383
+              "2013-02-13",
+              1683304
             ],
             [
               "2013-03-20",
               1753364
             ],
             [
-              "2013-04-17",
-              1855933
+              "2013-04-24",
+              1818122
             ],
             [
-              "2013-05-15",
-              1917007
+              "2013-05-29",
+              1979200
             ],
             [
-              "2013-06-12",
-              2031047
-            ],
-            [
-              "2013-07-10",
-              2070591
+              "2013-07-03",
+              2023336
             ],
             [
               "2013-08-07",
               2171441
             ],
             [
-              "2013-09-04",
-              2266587
+              "2013-09-11",
+              2265831
             ],
             [
-              "2013-10-02",
-              2311359
+              "2013-10-16",
+              2370944
             ],
             [
-              "2013-10-30",
-              2424917
-            ],
-            [
-              "2013-11-27",
-              2466785
+              "2013-11-20",
+              2473552
             ],
             [
               "2013-12-25",
               2474155
             ],
             [
-              "2014-01-22",
-              2522890
+              "2014-01-29",
+              2519198
             ],
             [
-              "2014-02-19",
-              2616352
+              "2014-03-05",
+              2629608
             ],
             [
-              "2014-03-19",
-              2644893
-            ],
-            [
-              "2014-04-16",
-              2724744
+              "2014-04-09",
+              2684341
             ],
             [
               "2014-05-14",
               2630836
             ],
             [
-              "2014-06-11",
-              2709510
+              "2014-06-18",
+              2703925
             ],
             [
-              "2014-07-09",
-              2622832
+              "2014-07-23",
+              2792302
             ],
             [
-              "2014-08-06",
-              2789330
-            ],
-            [
-              "2014-09-03",
-              2777409
+              "2014-08-27",
+              2778794
             ],
             [
               "2014-10-01",
               2705717
             ],
             [
-              "2014-10-29",
-              2629809
+              "2014-11-05",
+              2561062
             ],
             [
-              "2014-11-26",
-              2486574
+              "2014-12-10",
+              2433138
             ],
             [
-              "2014-12-24",
-              2681801
-            ],
-            [
-              "2015-01-21",
-              2722392
+              "2015-01-14",
+              2753903
             ],
             [
               "2015-02-18",
               2457419
             ],
             [
-              "2015-03-18",
-              2782935
+              "2015-03-25",
+              2706627
             ],
             [
-              "2015-04-15",
-              2793314
+              "2015-04-29",
+              2593777
             ],
             [
-              "2015-05-13",
-              2619317
-            ],
-            [
-              "2015-06-10",
-              2654281
+              "2015-06-03",
+              2444765
             ],
             [
               "2015-07-08",
               2555100
             ],
             [
-              "2015-08-05",
-              2598529
+              "2015-08-12",
+              2558957
             ],
             [
-              "2015-09-02",
-              2682003
+              "2015-09-16",
+              2696511
             ],
             [
-              "2015-09-30",
-              2514321
-            ],
-            [
-              "2015-10-28",
-              2657762
+              "2015-10-21",
+              2693306
             ],
             [
               "2015-11-25",
               2553608
             ],
             [
-              "2015-12-23",
-              2408573
+              "2015-12-30",
+              2306241
             ],
             [
-              "2016-01-20",
-              2454769
+              "2016-02-03",
+              2374971
             ],
             [
-              "2016-02-17",
-              2478361
-            ],
-            [
-              "2016-03-16",
-              2499512
+              "2016-03-09",
+              2515893
             ],
             [
               "2016-04-13",
               2496830
             ],
             [
-              "2016-05-11",
-              2401680
+              "2016-05-18",
+              2416214
             ],
             [
-              "2016-06-08",
-              2429639
+              "2016-06-22",
+              2361897
             ],
             [
-              "2016-07-06",
-              2253410
-            ],
-            [
-              "2016-08-03",
-              2332761
+              "2016-07-27",
+              2322008
             ],
             [
               "2016-08-31",
               2337960
             ],
             [
-              "2016-09-28",
-              2131792
+              "2016-10-05",
+              1999935
             ],
             [
-              "2016-10-26",
-              2061583
+              "2016-11-09",
+              2175670
             ],
             [
-              "2016-11-23",
-              2130901
-            ],
-            [
-              "2016-12-21",
-              2023009
+              "2016-12-14",
+              2138296
             ],
             [
               "2017-01-18",
               2148195
             ],
             [
-              "2017-02-15",
-              2246912
+              "2017-02-22",
+              2239022
             ],
             [
-              "2017-03-15",
-              2360216
+              "2017-03-29",
+              2308932
             ],
             [
-              "2017-04-12",
-              2358407
-            ],
-            [
-              "2017-05-10",
-              2232191
+              "2017-05-03",
+              2173987
             ],
             [
               "2017-06-07",
               2272308
             ],
             [
-              "2017-07-05",
-              2076340
+              "2017-07-12",
+              2220769
             ],
             [
-              "2017-08-02",
-              2271315
+              "2017-08-16",
+              2336388
             ],
             [
-              "2017-08-30",
-              2364546
-            ],
-            [
-              "2017-09-27",
-              2212709
+              "2017-09-20",
+              2292801
             ],
             [
               "2017-10-25",
               2243832
             ],
             [
-              "2017-11-22",
-              2339907
+              "2017-11-29",
+              2294895
             ],
             [
-              "2017-12-20",
-              2269164
+              "2018-01-03",
+              2045930
             ],
             [
-              "2018-01-17",
-              2249899
-            ],
-            [
-              "2018-02-14",
-              2253929
+              "2018-02-07",
+              2244845
             ],
             [
               "2018-03-14",
               2204829
             ],
             [
-              "2018-04-11",
-              2119965
+              "2018-04-18",
+              2141390
             ],
             [
-              "2018-05-09",
-              2025750
+              "2018-05-23",
+              2021946
             ],
             [
-              "2018-06-06",
-              2029579
-            ],
-            [
-              "2018-07-04",
-              1917987
+              "2018-06-27",
+              1940847
             ],
             [
               "2018-08-01",
               1937548
             ],
             [
-              "2018-08-29",
-              1883924
+              "2018-09-05",
+              1895010
             ],
             [
-              "2018-09-26",
-              1832500
+              "2018-10-10",
+              1865065
             ],
             [
-              "2018-10-24",
-              1817608
-            ],
-            [
-              "2018-11-21",
-              1757729
+              "2018-11-14",
+              1801383
             ],
             [
               "2018-12-19",
               1699138
             ],
             [
-              "2019-01-16",
-              1664138
+              "2019-01-23",
+              1621876
             ],
             [
-              "2019-02-13",
-              1649973
+              "2019-02-27",
+              1640750
             ],
             [
-              "2019-03-13",
-              1703948
-            ],
-            [
-              "2019-04-10",
-              1634591
+              "2019-04-03",
+              1600398
             ],
             [
               "2019-05-08",
               1484975
             ],
             [
-              "2019-06-05",
-              1537089
+              "2019-06-12",
+              1586963
             ],
             [
-              "2019-07-03",
-              1456496
+              "2019-07-17",
+              1515664
             ],
             [
-              "2019-07-31",
-              1534523
-            ],
-            [
-              "2019-08-28",
-              1498680
+              "2019-08-21",
+              1516045
             ],
             [
               "2019-09-25",
               1400171
             ],
             [
-              "2019-10-23",
-              1449043
+              "2019-10-30",
+              1483702
             ],
             [
-              "2019-11-20",
-              1518759
+              "2019-12-04",
+              1573261
             ],
             [
-              "2019-12-18",
-              1660249
-            ],
-            [
-              "2020-01-15",
-              1686801
+              "2020-01-08",
+              1654086
             ],
             [
               "2020-02-12",
               1675566
             ],
             [
-              "2020-03-11",
-              1744525
+              "2020-03-18",
+              1895588
             ],
             [
-              "2020-04-08",
-              2760451
+              "2020-04-22",
+              3103504
             ],
             [
-              "2020-05-06",
-              3158938
-            ],
-            [
-              "2020-06-03",
-              3237461
+              "2020-05-27",
+              3268144
             ],
             [
               "2020-07-01",
               2884819
             ],
             [
-              "2020-07-29",
-              2615272
+              "2020-08-05",
+              2713287
             ],
             [
-              "2020-08-26",
-              2815794
+              "2020-09-09",
+              2857463
             ],
             [
-              "2020-09-23",
-              2830499
-            ],
-            [
-              "2020-10-21",
-              2860480
+              "2020-10-14",
+              2861929
             ],
             [
               "2020-11-18",
               3043822
             ],
             [
-              "2020-12-16",
-              3168240
+              "2020-12-23",
+              3143041
             ],
             [
-              "2021-01-13",
-              3183917
+              "2021-01-27",
+              3163008
             ],
             [
-              "2021-02-10",
-              3258919
-            ],
-            [
-              "2021-03-10",
-              3592010
+              "2021-03-03",
+              3503120
             ],
             [
               "2021-04-07",
               3932949
             ],
             [
-              "2021-05-05",
-              3873728
+              "2021-05-12",
+              3947565
             ],
             [
-              "2021-06-02",
-              3814127
+              "2021-06-16",
+              3940038
             ],
             [
-              "2021-06-30",
-              3780791
-            ],
-            [
-              "2021-07-28",
-              3984371
+              "2021-07-21",
+              3972940
             ],
             [
               "2021-08-25",
               4167748
             ],
             [
-              "2021-09-22",
-              4156747
+              "2021-09-29",
+              4125348
             ],
             [
-              "2021-10-20",
-              4134714
+              "2021-11-03",
+              4086336
             ],
             [
-              "2021-11-17",
-              4209802
-            ],
-            [
-              "2021-12-15",
-              4251431
+              "2021-12-08",
+              4275806
             ],
             [
               "2022-01-12",
               3973554
             ],
             [
-              "2022-02-09",
-              3771911
+              "2022-02-16",
+              3799973
             ],
             [
-              "2022-03-09",
-              3959659
+              "2022-03-23",
+              3801095
             ],
             [
-              "2022-04-06",
-              3834183
-            ],
-            [
-              "2022-05-04",
-              3296085
+              "2022-04-27",
+              3331982
             ],
             [
               "2022-06-01",
               3322030
             ],
             [
-              "2022-06-29",
-              3130087
+              "2022-07-06",
+              3190627
             ],
             [
-              "2022-07-27",
-              3256875
+              "2022-08-10",
+              3348147
             ],
             [
-              "2022-08-24",
-              3307365
-            ],
-            [
-              "2022-09-21",
-              3104032
+              "2022-09-14",
+              3234928
             ],
             [
               "2022-10-19",
               3092044
             ],
             [
-              "2022-11-16",
-              3128277
+              "2022-11-23",
+              3160730
             ],
             [
-              "2022-12-14",
-              3188634
+              "2022-12-28",
+              3017889
             ],
             [
-              "2023-01-11",
-              3081237
-            ],
-            [
-              "2023-02-08",
-              3037584
+              "2023-02-01",
+              3015506
             ],
             [
               "2023-03-08",
               2999720
             ],
             [
-              "2023-04-05",
-              3292058
+              "2023-04-12",
+              3413989
             ],
             [
-              "2023-05-03",
-              3089706
+              "2023-05-17",
+              3248878
             ],
             [
-              "2023-05-31",
-              3309447
-            ],
-            [
-              "2023-06-28",
-              3171567
+              "2023-06-21",
+              3251558
             ],
             [
               "2023-07-26",
               3172244
             ],
             [
-              "2023-08-23",
-              3186789
+              "2023-08-30",
+              3238345
             ],
             [
-              "2023-09-20",
-              3231649
+              "2023-10-04",
+              3145720
             ],
             [
-              "2023-10-18",
-              3353881
-            ],
-            [
-              "2023-11-15",
-              3391713
+              "2023-11-08",
+              3328908
             ],
             [
               "2023-12-13",
               3540619
             ],
             [
-              "2024-01-10",
-              3498748
+              "2024-01-17",
+              3611719
             ],
             [
-              "2024-02-07",
-              3599323
+              "2024-02-21",
+              3565999
             ],
             [
-              "2024-03-06",
-              3626176
-            ],
-            [
-              "2024-04-03",
-              3414288
+              "2024-03-27",
+              3496121
             ],
             [
               "2024-05-01",
               3252733
             ],
             [
-              "2024-05-29",
-              3409342
+              "2024-06-05",
+              3408310
             ],
             [
-              "2024-06-26",
-              3302647
+              "2024-07-10",
+              3341977
             ],
             [
-              "2024-07-24",
-              3308580
-            ],
-            [
-              "2024-08-21",
-              3355586
+              "2024-08-14",
+              3346138
             ],
             [
               "2024-09-18",
               3313281
             ],
             [
-              "2024-10-16",
-              3209877
+              "2024-10-23",
+              3230145
             ],
             [
-              "2024-11-13",
-              3244149
+              "2024-11-27",
+              3227674
             ],
             [
-              "2024-12-11",
-              3264559
-            ],
-            [
-              "2025-01-08",
-              3254743
+              "2025-01-01",
+              3095997
             ],
             [
               "2025-02-05",
               3177065
             ],
             [
-              "2025-03-05",
-              3312625
+              "2025-03-12",
+              3400235
             ],
             [
-              "2025-04-02",
-              3379339
+              "2025-04-16",
+              3452030
             ],
             [
-              "2025-04-30",
-              3219214
-            ],
-            [
-              "2025-05-28",
-              3270661
+              "2025-05-21",
+              3289469
             ],
             [
               "2025-06-25",
               3369328
             ],
             [
-              "2025-07-23",
-              3362277
+              "2025-07-30",
+              3347414
             ],
             [
-              "2025-08-20",
-              3317292
+              "2025-09-03",
+              3181701
             ],
             [
-              "2025-09-17",
-              3073355
-            ],
-            [
-              "2025-10-15",
-              3019028
+              "2025-10-08",
+              2998471
             ],
             [
               "2025-11-12",
               2855030
             ],
             [
-              "2025-12-10",
-              2932112
+              "2025-12-17",
+              2959044
             ],
             [
-              "2026-01-07",
-              2996379
+              "2026-01-21",
+              2954903
             ],
             [
-              "2026-02-04",
-              2925170
-            ],
-            [
-              "2026-03-04",
-              3015531
+              "2026-02-25",
+              2965765
             ],
             [
               "2026-04-01",
               3026708
             ],
             [
-              "2026-04-29",
-              2918599
+              "2026-05-06",
+              3032588
             ],
             [
-              "2026-05-27",
-              3066560
+              "2026-06-10",
+              3080723
             ],
             [
-              "2026-06-24",
-              2951416
-            ],
-            [
-              "2026-07-22",
-              3062149
+              "2026-07-15",
+              3142721
             ],
             [
               "2026-08-19",
               2935287
             ],
             [
-              "2026-09-16",
-              3013794
-            ],
-            [
-              "2026-10-14",
-              3022140
+              "2026-09-23",
+              2930193
             ],
             [
               "2026-10-28",
@@ -13429,635 +15044,919 @@
           },
           "history": [
             [
-              "2019-01-02",
+              "2003-01-02",
+              1.98
+            ],
+            [
+              "2003-02-05",
+              2.19
+            ],
+            [
+              "2003-03-11",
+              2.08
+            ],
+            [
+              "2003-04-11",
+              1.92
+            ],
+            [
+              "2003-05-15",
+              1.95
+            ],
+            [
+              "2003-06-18",
+              1.8
+            ],
+            [
+              "2003-07-22",
+              2.37
+            ],
+            [
+              "2003-08-22",
+              2.39
+            ],
+            [
+              "2003-09-25",
+              2.19
+            ],
+            [
+              "2003-10-29",
+              2.63
+            ],
+            [
+              "2003-12-03",
+              2.6
+            ],
+            [
+              "2004-01-07",
+              2.61
+            ],
+            [
+              "2004-02-10",
+              2.51
+            ],
+            [
+              "2004-03-15",
+              2.42
+            ],
+            [
+              "2004-04-16",
+              2.56
+            ],
+            [
+              "2004-05-19",
+              2.91
+            ],
+            [
+              "2004-06-23",
+              2.58
+            ],
+            [
+              "2004-07-27",
+              2.56
+            ],
+            [
+              "2004-08-27",
+              2.45
+            ],
+            [
+              "2004-09-30",
+              2.41
+            ],
+            [
+              "2004-11-03",
+              2.39
+            ],
+            [
+              "2004-12-08",
+              2.38
+            ],
+            [
+              "2005-01-11",
+              2.4
+            ],
+            [
+              "2005-02-14",
+              2.36
+            ],
+            [
+              "2005-03-18",
+              2.56
+            ],
+            [
+              "2005-04-21",
+              2.52
+            ],
+            [
+              "2005-05-24",
+              2.36
+            ],
+            [
+              "2005-06-27",
+              2.21
+            ],
+            [
+              "2005-07-29",
+              2.4
+            ],
+            [
+              "2005-08-31",
+              2.3
+            ],
+            [
+              "2005-10-04",
+              2.34
+            ],
+            [
+              "2005-11-07",
+              2.6
+            ],
+            [
+              "2005-12-12",
+              2.44
+            ],
+            [
+              "2006-01-17",
+              2.38
+            ],
+            [
+              "2006-02-17",
+              2.42
+            ],
+            [
+              "2006-03-23",
+              2.4
+            ],
+            [
+              "2006-04-26",
+              2.59
+            ],
+            [
+              "2006-05-30",
+              2.61
+            ],
+            [
+              "2006-06-30",
+              2.59
+            ],
+            [
+              "2006-08-03",
+              2.63
+            ],
+            [
+              "2006-09-06",
+              2.55
+            ],
+            [
+              "2006-10-10",
+              2.46
+            ],
+            [
+              "2006-11-10",
+              2.48
+            ],
+            [
+              "2006-12-14",
+              2.42
+            ],
+            [
+              "2007-01-19",
+              2.37
+            ],
+            [
+              "2007-02-22",
+              2.37
+            ],
+            [
+              "2007-03-27",
+              2.41
+            ],
+            [
+              "2007-04-27",
+              2.45
+            ],
+            [
+              "2007-05-31",
+              2.39
+            ],
+            [
+              "2007-07-03",
+              2.4
+            ],
+            [
+              "2007-08-06",
+              2.44
+            ],
+            [
+              "2007-09-07",
+              2.42
+            ],
+            [
+              "2007-10-11",
+              2.49
+            ],
+            [
+              "2007-11-14",
+              2.44
+            ],
+            [
+              "2007-12-18",
+              2.42
+            ],
+            [
+              "2008-01-23",
+              2.48
+            ],
+            [
+              "2008-02-26",
+              2.56
+            ],
+            [
+              "2008-03-31",
+              2.49
+            ],
+            [
+              "2008-05-01",
+              2.25
+            ],
+            [
+              "2008-06-04",
+              2.46
+            ],
+            [
+              "2008-07-08",
+              2.4
+            ],
+            [
+              "2008-08-08",
+              2.4
+            ],
+            [
+              "2008-09-11",
+              2.43
+            ],
+            [
+              "2008-10-15",
               1.91
             ],
             [
-              "2019-01-14",
+              "2008-11-18",
+              2.55
+            ],
+            [
+              "2008-12-22",
+              0.67
+            ],
+            [
+              "2009-01-27",
+              1.49
+            ],
+            [
+              "2009-03-02",
+              1.3
+            ],
+            [
+              "2009-04-02",
+              1.92
+            ],
+            [
+              "2009-05-06",
+              1.95
+            ],
+            [
+              "2009-06-09",
+              2.21
+            ],
+            [
+              "2009-07-13",
+              2.02
+            ],
+            [
+              "2009-08-13",
+              2.34
+            ],
+            [
+              "2009-09-16",
+              2.2
+            ],
+            [
+              "2009-10-20",
+              2.39
+            ],
+            [
+              "2009-11-23",
+              2.52
+            ],
+            [
+              "2009-12-28",
+              2.62
+            ],
+            [
+              "2010-02-01",
+              2.79
+            ],
+            [
+              "2010-03-05",
+              2.53
+            ],
+            [
+              "2010-04-07",
+              2.64
+            ],
+            [
+              "2010-05-10",
+              2.63
+            ],
+            [
+              "2010-06-11",
+              2.25
+            ],
+            [
+              "2010-07-15",
+              2.15
+            ],
+            [
+              "2010-08-17",
               1.98
             ],
             [
-              "2019-01-25",
-              1.94
+              "2010-09-20",
+              2.32
             ],
             [
-              "2019-02-06",
+              "2010-10-22",
+              2.62
+            ],
+            [
+              "2010-11-26",
+              2.64
+            ],
+            [
+              "2010-12-30",
+              2.78
+            ],
+            [
+              "2011-02-02",
+              2.71
+            ],
+            [
+              "2011-03-08",
+              2.79
+            ],
+            [
+              "2011-04-08",
+              2.9
+            ],
+            [
+              "2011-05-12",
+              2.66
+            ],
+            [
+              "2011-06-15",
+              2.49
+            ],
+            [
+              "2011-07-19",
+              2.72
+            ],
+            [
+              "2011-08-19",
+              2.4
+            ],
+            [
+              "2011-09-22",
+              1.93
+            ],
+            [
+              "2011-10-26",
+              2.33
+            ],
+            [
+              "2011-11-30",
+              2.34
+            ],
+            [
+              "2012-01-04",
+              2.45
+            ],
+            [
+              "2012-02-07",
+              2.47
+            ],
+            [
+              "2012-03-12",
+              2.5
+            ],
+            [
+              "2012-04-12",
+              2.69
+            ],
+            [
+              "2012-05-15",
+              2.32
+            ],
+            [
+              "2012-06-18",
+              2.41
+            ],
+            [
+              "2012-07-20",
+              2.55
+            ],
+            [
+              "2012-08-22",
+              2.64
+            ],
+            [
+              "2012-09-25",
+              2.73
+            ],
+            [
+              "2012-10-29",
+              2.85
+            ],
+            [
+              "2012-12-04",
+              2.86
+            ],
+            [
+              "2013-01-08",
+              2.83
+            ],
+            [
+              "2013-02-11",
+              2.88
+            ],
+            [
+              "2013-03-15",
+              2.82
+            ],
+            [
+              "2013-04-18",
+              2.54
+            ],
+            [
+              "2013-05-21",
+              2.57
+            ],
+            [
+              "2013-06-24",
+              2.24
+            ],
+            [
+              "2013-07-26",
+              2.47
+            ],
+            [
+              "2013-08-28",
+              2.45
+            ],
+            [
+              "2013-10-01",
+              2.63
+            ],
+            [
+              "2013-11-04",
+              2.55
+            ],
+            [
+              "2013-12-09",
+              2.61
+            ],
+            [
+              "2014-01-13",
+              2.83
+            ],
+            [
+              "2014-02-14",
+              2.65
+            ],
+            [
+              "2014-03-20",
+              2.51
+            ],
+            [
+              "2014-04-23",
+              2.44
+            ],
+            [
+              "2014-05-27",
+              2.47
+            ],
+            [
+              "2014-06-27",
+              2.51
+            ],
+            [
+              "2014-07-31",
+              2.61
+            ],
+            [
+              "2014-09-03",
+              2.57
+            ],
+            [
+              "2014-10-06",
+              2.31
+            ],
+            [
+              "2014-11-07",
+              2.29
+            ],
+            [
+              "2014-12-12",
+              2.08
+            ],
+            [
+              "2015-01-16",
               2.01
             ],
             [
-              "2019-02-19",
-              1.98
+              "2015-02-20",
+              2.13
             ],
             [
-              "2019-03-01",
-              2.07
-            ],
-            [
-              "2019-03-13",
-              2
-            ],
-            [
-              "2019-03-25",
-              1.99
-            ],
-            [
-              "2019-04-04",
-              1.99
-            ],
-            [
-              "2019-04-16",
+              "2015-03-25",
               2.06
             ],
             [
-              "2019-04-29",
-              2.06
+              "2015-04-27",
+              2.11
             ],
             [
-              "2019-05-09",
-              1.97
+              "2015-05-29",
+              2.03
             ],
             [
-              "2019-05-21",
-              1.94
+              "2015-07-01",
+              2.18
             ],
             [
-              "2019-06-03",
+              "2015-08-04",
+              2.11
+            ],
+            [
+              "2015-09-04",
+              1.88
+            ],
+            [
+              "2015-10-08",
               1.9
             ],
             [
-              "2019-06-13",
-              1.85
+              "2015-11-12",
+              1.84
             ],
             [
-              "2019-06-25",
+              "2015-12-16",
+              1.72
+            ],
+            [
+              "2016-01-21",
+              1.48
+            ],
+            [
+              "2016-02-24",
+              1.57
+            ],
+            [
+              "2016-03-29",
+              1.75
+            ],
+            [
+              "2016-04-29",
               1.82
             ],
             [
-              "2019-07-08",
-              1.85
+              "2016-06-02",
+              1.6
             ],
             [
-              "2019-07-18",
-              1.98
+              "2016-07-06",
+              1.45
             ],
             [
-              "2019-07-30",
-              1.98
+              "2016-08-08",
+              1.68
             ],
             [
-              "2019-08-09",
-              1.88
+              "2016-09-09",
+              1.68
+            ],
+            [
+              "2016-10-13",
+              1.76
+            ],
+            [
+              "2016-11-16",
+              2
+            ],
+            [
+              "2016-12-20",
+              2
+            ],
+            [
+              "2017-01-25",
+              2.2
+            ],
+            [
+              "2017-02-28",
+              2.15
+            ],
+            [
+              "2017-03-31",
+              2.17
+            ],
+            [
+              "2017-05-04",
+              2
+            ],
+            [
+              "2017-06-07",
+              1.87
+            ],
+            [
+              "2017-07-11",
+              1.89
+            ],
+            [
+              "2017-08-11",
+              1.94
+            ],
+            [
+              "2017-09-14",
+              2
+            ],
+            [
+              "2017-10-18",
+              1.99
+            ],
+            [
+              "2017-11-20",
+              1.96
+            ],
+            [
+              "2017-12-22",
+              2.06
+            ],
+            [
+              "2018-01-29",
+              2.26
+            ],
+            [
+              "2018-03-02",
+              2.21
+            ],
+            [
+              "2018-04-05",
+              2.23
+            ],
+            [
+              "2018-05-08",
+              2.22
+            ],
+            [
+              "2018-06-11",
+              2.18
+            ],
+            [
+              "2018-07-13",
+              2.15
+            ],
+            [
+              "2018-08-15",
+              2.19
+            ],
+            [
+              "2018-09-18",
+              2.25
+            ],
+            [
+              "2018-10-22",
+              2.24
+            ],
+            [
+              "2018-11-26",
+              2.14
+            ],
+            [
+              "2018-12-31",
+              1.91
+            ],
+            [
+              "2019-02-04",
+              2.02
+            ],
+            [
+              "2019-03-08",
+              2
+            ],
+            [
+              "2019-04-10",
+              2.05
+            ],
+            [
+              "2019-05-14",
+              1.97
+            ],
+            [
+              "2019-06-17",
+              1.77
+            ],
+            [
+              "2019-07-19",
+              2
             ],
             [
               "2019-08-21",
               1.74
             ],
             [
-              "2019-09-03",
-              1.71
+              "2019-09-24",
+              1.77
             ],
             [
-              "2019-09-13",
-              1.88
-            ],
-            [
-              "2019-09-25",
-              1.79
-            ],
-            [
-              "2019-10-07",
+              "2019-10-28",
               1.75
             ],
             [
-              "2019-10-18",
-              1.68
-            ],
-            [
-              "2019-10-30",
-              1.67
-            ],
-            [
-              "2019-11-12",
-              1.8
-            ],
-            [
-              "2019-11-22",
-              1.71
-            ],
-            [
-              "2019-12-05",
-              1.79
-            ],
-            [
-              "2019-12-17",
-              1.85
-            ],
-            [
-              "2019-12-30",
-              1.84
-            ],
-            [
-              "2020-01-10",
-              1.85
-            ],
-            [
-              "2020-01-23",
+              "2019-12-02",
               1.76
             ],
             [
-              "2020-02-04",
-              1.7
+              "2020-01-06",
+              1.81
             ],
             [
-              "2020-02-14",
-              1.68
+              "2020-02-07",
+              1.71
             ],
             [
-              "2020-02-27",
-              1.58
+              "2020-03-12",
+              1.21
             ],
             [
-              "2020-03-10",
-              1.23
-            ],
-            [
-              "2020-03-20",
-              1.19
-            ],
-            [
-              "2020-04-01",
-              1.26
-            ],
-            [
-              "2020-04-14",
-              1.64
-            ],
-            [
-              "2020-04-24",
-              1.5
-            ],
-            [
-              "2020-05-06",
-              1.49
+              "2020-04-15",
+              1.51
             ],
             [
               "2020-05-18",
               1.5
             ],
             [
-              "2020-05-29",
-              1.47
-            ],
-            [
-              "2020-06-10",
+              "2020-06-19",
               1.54
             ],
             [
-              "2020-06-22",
-              1.57
-            ],
-            [
-              "2020-07-02",
+              "2020-07-23",
               1.61
             ],
             [
-              "2020-07-15",
-              1.54
-            ],
-            [
-              "2020-07-27",
-              1.66
-            ],
-            [
-              "2020-08-06",
-              1.73
-            ],
-            [
-              "2020-08-18",
-              1.81
-            ],
-            [
-              "2020-08-28",
-              1.86
-            ],
-            [
-              "2020-09-10",
-              1.84
-            ],
-            [
-              "2020-09-22",
-              1.74
-            ],
-            [
-              "2020-10-02",
+              "2020-08-25",
               1.8
             ],
             [
-              "2020-10-15",
-              1.86
+              "2020-09-28",
+              1.74
             ],
             [
-              "2020-10-27",
-              1.78
+              "2020-10-30",
+              1.81
             ],
             [
-              "2020-11-06",
-              1.76
+              "2020-12-04",
+              1.95
             ],
             [
-              "2020-11-19",
-              1.78
-            ],
-            [
-              "2020-12-02",
-              1.94
-            ],
-            [
-              "2020-12-14",
-              1.92
-            ],
-            [
-              "2020-12-24",
-              2.02
-            ],
-            [
-              "2021-01-07",
-              2.09
-            ],
-            [
-              "2021-01-20",
-              2.09
-            ],
-            [
-              "2021-02-01",
-              2.04
+              "2021-01-08",
+              2.05
             ],
             [
               "2021-02-11",
               2.08
             ],
             [
-              "2021-02-24",
-              1.96
+              "2021-03-17",
+              2.02
             ],
             [
-              "2021-03-08",
-              2
+              "2021-04-19",
+              2.12
             ],
             [
-              "2021-03-18",
-              2.04
-            ],
-            [
-              "2021-03-30",
-              2.18
-            ],
-            [
-              "2021-04-09",
-              2.11
-            ],
-            [
-              "2021-04-21",
-              2.13
-            ],
-            [
-              "2021-05-03",
-              2.24
-            ],
-            [
-              "2021-05-13",
-              2.37
-            ],
-            [
-              "2021-05-25",
-              2.21
-            ],
-            [
-              "2021-06-07",
-              2.27
-            ],
-            [
-              "2021-06-17",
+              "2021-05-20",
               2.23
             ],
             [
-              "2021-06-29",
-              2.18
-            ],
-            [
-              "2021-07-12",
-              2.18
-            ],
-            [
-              "2021-07-22",
-              2.1
-            ],
-            [
-              "2021-08-03",
-              2.25
-            ],
-            [
-              "2021-08-13",
-              2.22
-            ],
-            [
-              "2021-08-25",
+              "2021-06-23",
               2.19
             ],
             [
-              "2021-09-07",
+              "2021-07-27",
               2.21
             ],
             [
-              "2021-09-17",
-              2.15
+              "2021-08-27",
+              2.25
             ],
             [
-              "2021-09-29",
-              2.22
-            ],
-            [
-              "2021-10-12",
-              2.34
-            ],
-            [
-              "2021-10-22",
-              2.37
+              "2021-09-30",
+              2.23
             ],
             [
               "2021-11-03",
               2.2
             ],
             [
-              "2021-11-16",
-              2.29
+              "2021-12-08",
+              2.16
             ],
             [
-              "2021-11-29",
-              2.17
+              "2022-01-11",
+              2.21
             ],
             [
-              "2021-12-09",
-              2.14
-            ],
-            [
-              "2021-12-21",
-              2.19
-            ],
-            [
-              "2022-01-03",
-              2.25
-            ],
-            [
-              "2022-01-13",
-              2.09
-            ],
-            [
-              "2022-01-26",
-              2.01
-            ],
-            [
-              "2022-02-07",
+              "2022-02-14",
               2.05
             ],
             [
-              "2022-02-17",
-              1.99
+              "2022-03-18",
+              2.24
             ],
             [
-              "2022-03-02",
-              2.19
+              "2022-04-21",
+              2.67
             ],
             [
-              "2022-03-14",
-              2.36
+              "2022-05-24",
+              2.23
             ],
             [
-              "2022-03-24",
-              2.27
-            ],
-            [
-              "2022-04-05",
-              2.37
-            ],
-            [
-              "2022-04-18",
-              2.48
-            ],
-            [
-              "2022-04-28",
-              2.55
-            ],
-            [
-              "2022-05-10",
-              2.38
-            ],
-            [
-              "2022-05-20",
-              2.22
-            ],
-            [
-              "2022-06-02",
-              2.35
-            ],
-            [
-              "2022-06-14",
-              2.32
-            ],
-            [
-              "2022-06-27",
-              2.31
-            ],
-            [
-              "2022-07-08",
-              2.12
-            ],
-            [
-              "2022-07-20",
-              2.09
+              "2022-06-28",
+              2.23
             ],
             [
               "2022-08-01",
               2.3
             ],
             [
-              "2022-08-11",
-              2.27
+              "2022-09-01",
+              2.38
             ],
             [
-              "2022-08-23",
-              2.39
-            ],
-            [
-              "2022-09-02",
-              2.39
-            ],
-            [
-              "2022-09-15",
-              2.29
-            ],
-            [
-              "2022-09-27",
-              2.31
-            ],
-            [
-              "2022-10-07",
+              "2022-10-05",
               2.18
             ],
             [
-              "2022-10-20",
-              2.37
+              "2022-11-08",
+              2.39
             ],
             [
-              "2022-11-01",
-              2.37
-            ],
-            [
-              "2022-11-14",
-              2.32
-            ],
-            [
-              "2022-11-25",
-              2.3
-            ],
-            [
-              "2022-12-07",
-              2.19
-            ],
-            [
-              "2022-12-19",
-              2.11
-            ],
-            [
-              "2022-12-30",
-              2.27
-            ],
-            [
-              "2023-01-12",
-              2.21
-            ],
-            [
-              "2023-01-25",
-              2.3
-            ],
-            [
-              "2023-02-06",
+              "2022-12-13",
               2.17
             ],
             [
-              "2023-02-16",
-              2.22
+              "2023-01-18",
+              2.15
             ],
             [
-              "2023-03-01",
-              2.29
+              "2023-02-21",
+              2.26
             ],
             [
-              "2023-03-13",
-              2.22
-            ],
-            [
-              "2023-03-23",
-              2.12
-            ],
-            [
-              "2023-04-04",
-              2.18
-            ],
-            [
-              "2023-04-14",
-              2.29
+              "2023-03-24",
+              2.23
             ],
             [
               "2023-04-26",
               2.24
             ],
             [
-              "2023-05-08",
-              2.24
-            ],
-            [
-              "2023-05-18",
-              2.3
-            ],
-            [
-              "2023-05-31",
-              2.29
-            ],
-            [
-              "2023-06-12",
-              2.25
-            ],
-            [
-              "2023-06-23",
-              2.26
-            ],
-            [
-              "2023-07-06",
+              "2023-05-30",
               2.32
             ],
             [
-              "2023-07-18",
-              2.33
-            ],
-            [
-              "2023-07-28",
-              2.48
-            ],
-            [
-              "2023-08-09",
-              2.45
-            ],
-            [
-              "2023-08-21",
-              2.43
-            ],
-            [
-              "2023-08-31",
-              2.33
-            ],
-            [
-              "2023-09-13",
-              2.42
-            ],
-            [
-              "2023-09-25",
-              2.49
-            ],
-            [
-              "2023-10-05",
-              2.48
-            ],
-            [
-              "2023-10-18",
-              2.53
-            ],
-            [
-              "2023-10-30",
-              2.48
-            ],
-            [
-              "2023-11-09",
-              2.36
-            ],
-            [
-              "2023-11-21",
-              2.31
-            ],
-            [
-              "2023-12-04",
+              "2023-07-03",
               2.29
             ],
             [
-              "2023-12-14",
-              2.26
+              "2023-08-04",
+              2.5
             ],
             [
-              "2023-12-27",
-              2.18
+              "2023-09-07",
+              2.4
             ],
             [
-              "2024-01-09",
+              "2023-10-11",
+              2.44
+            ],
+            [
+              "2023-11-13",
+              2.33
+            ],
+            [
+              "2023-12-15",
               2.27
             ],
             [
@@ -14065,351 +15964,123 @@
               2.35
             ],
             [
-              "2024-02-01",
-              2.21
-            ],
-            [
-              "2024-02-13",
-              2.25
-            ],
-            [
-              "2024-02-26",
+              "2024-02-23",
               2.26
             ],
             [
-              "2024-03-07",
-              2.22
+              "2024-03-27",
+              2.27
             ],
             [
-              "2024-03-19",
-              2.22
+              "2024-04-30",
+              2.39
             ],
             [
-              "2024-04-01",
-              2.29
-            ],
-            [
-              "2024-04-11",
-              2.32
-            ],
-            [
-              "2024-04-23",
-              2.38
-            ],
-            [
-              "2024-05-03",
+              "2024-06-03",
               2.35
             ],
             [
-              "2024-05-15",
-              2.33
-            ],
-            [
-              "2024-05-28",
-              2.35
-            ],
-            [
-              "2024-06-07",
+              "2024-07-08",
               2.32
             ],
             [
-              "2024-06-20",
-              2.29
+              "2024-08-08",
+              2.26
             ],
             [
-              "2024-07-02",
-              2.34
-            ],
-            [
-              "2024-07-15",
-              2.34
-            ],
-            [
-              "2024-07-25",
-              2.43
-            ],
-            [
-              "2024-08-06",
-              2.28
-            ],
-            [
-              "2024-08-16",
-              2.19
-            ],
-            [
-              "2024-08-28",
-              2.31
-            ],
-            [
-              "2024-09-10",
+              "2024-09-11",
               2.18
-            ],
-            [
-              "2024-09-20",
-              2.28
-            ],
-            [
-              "2024-10-02",
-              2.32
             ],
             [
               "2024-10-15",
               2.34
             ],
             [
-              "2024-10-25",
-              2.26
-            ],
-            [
-              "2024-11-06",
-              2.3
-            ],
-            [
-              "2024-11-19",
+              "2024-11-18",
               2.27
             ],
             [
-              "2024-12-02",
-              2.19
-            ],
-            [
-              "2024-12-12",
-              2.25
-            ],
-            [
-              "2024-12-24",
-              2.31
-            ],
-            [
-              "2025-01-07",
-              2.32
-            ],
-            [
-              "2025-01-17",
-              2.3
-            ],
-            [
-              "2025-01-30",
-              2.26
-            ],
-            [
-              "2025-02-11",
-              2.28
-            ],
-            [
-              "2025-02-24",
-              2.23
-            ],
-            [
-              "2025-03-06",
-              2.15
-            ],
-            [
-              "2025-03-18",
-              2.14
-            ],
-            [
-              "2025-03-28",
-              2.16
-            ],
-            [
-              "2025-04-09",
-              2.09
-            ],
-            [
-              "2025-04-22",
+              "2024-12-20",
               2.24
             ],
             [
-              "2025-05-02",
-              2.23
+              "2025-01-27",
+              2.31
             ],
             [
-              "2025-05-14",
-              2.3
+              "2025-02-28",
+              2.18
             ],
             [
-              "2025-05-27",
-              2.23
+              "2025-04-02",
+              2.13
             ],
             [
-              "2025-06-06",
-              2.27
+              "2025-05-06",
+              2.18
             ],
             [
-              "2025-06-18",
-              2.26
-            ],
-            [
-              "2025-07-01",
-              2.26
+              "2025-06-09",
+              2.28
             ],
             [
               "2025-07-14",
               2.33
             ],
             [
-              "2025-07-24",
-              2.4
-            ],
-            [
-              "2025-08-05",
-              2.31
-            ],
-            [
-              "2025-08-15",
-              2.34
-            ],
-            [
-              "2025-08-27",
-              2.36
-            ],
-            [
-              "2025-09-09",
-              2.29
-            ],
-            [
-              "2025-09-19",
+              "2025-08-14",
               2.35
             ],
             [
-              "2025-10-01",
-              2.31
+              "2025-09-17",
+              2.33
             ],
             [
-              "2025-10-14",
-              2.27
+              "2025-10-21",
+              2.26
             ],
             [
-              "2025-10-24",
-              2.18
+              "2025-11-24",
+              2.16
             ],
             [
-              "2025-11-05",
+              "2025-12-29",
               2.21
             ],
             [
-              "2025-11-18",
+              "2026-02-02",
               2.18
             ],
             [
-              "2025-12-01",
-              2.17
-            ],
-            [
-              "2025-12-11",
-              2.18
-            ],
-            [
-              "2025-12-23",
-              2.24
-            ],
-            [
-              "2026-01-06",
-              2.24
-            ],
-            [
-              "2026-01-16",
-              2.27
-            ],
-            [
-              "2026-01-29",
-              2.18
-            ],
-            [
-              "2026-02-10",
-              2.17
-            ],
-            [
-              "2026-02-23",
-              2.12
-            ],
-            [
-              "2026-03-05",
-              2.11
-            ],
-            [
-              "2026-03-17",
-              2.12
-            ],
-            [
-              "2026-03-27",
-              2.06
+              "2026-03-06",
+              2.14
             ],
             [
               "2026-04-08",
               2.1
             ],
             [
-              "2026-04-20",
-              2.13
-            ],
-            [
-              "2026-04-30",
-              2.25
-            ],
-            [
-              "2026-05-12",
-              2.25
-            ],
-            [
-              "2026-05-22",
-              2.26
-            ],
-            [
-              "2026-06-04",
-              2.24
-            ],
-            [
-              "2026-06-16",
-              2.22
-            ],
-            [
-              "2026-06-29",
-              2.2
-            ],
-            [
-              "2026-07-10",
-              2.2
-            ],
-            [
-              "2026-07-22",
-              2.26
-            ],
-            [
-              "2026-08-03",
-              2.31
-            ],
-            [
-              "2026-08-13",
+              "2026-05-11",
               2.27
             ],
             [
-              "2026-08-25",
-              2.33
+              "2026-06-12",
+              2.23
             ],
             [
-              "2026-09-04",
-              2.33
+              "2026-07-17",
+              2.21
             ],
             [
-              "2026-09-17",
-              2.34
-            ],
-            [
-              "2026-09-29",
-              2.36
-            ],
-            [
-              "2026-10-09",
+              "2026-08-19",
               2.32
             ],
             [
-              "2026-10-22",
-              2.19
+              "2026-09-22",
+              2.34
             ],
             [
-              "2026-11-03",
+              "2026-10-26",
               2.21
             ],
             [
@@ -17319,9 +18990,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-05T16:48:08.975Z",
+    "ran_at": "2026-11-05T17:06:33.437Z",
     "isolated": true,
-    "context_sha256": "ec78334d39f560bc9020fa936c0775d130fcb7d34d57ee0db563a2d5e651625e",
+    "context_sha256": "ffc2c334f40635b41be697712558fd782ae9e7d4bd3dc37bfe8b803d2b723117",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -17330,7 +19001,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 34,
+        "duration_ms": 39,
         "isolated": true,
         "report": {
           "status": "info",
@@ -17360,7 +19031,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-05T16:48:09.124Z",
+    "ran_at": "2026-11-05T17:06:33.612Z",
     "all_caught": true,
     "attacks": [
       {
@@ -17385,7 +19056,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 9 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 10 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -17468,6 +19139,22 @@
   },
   "packets": [
     {
+      "id": "DATA_PROBLEM-0212750d0a",
+      "type": "DATA_PROBLEM",
+      "severity": "review",
+      "title": "Data problem: CURRENCY",
+      "what_happened": "Latest CURRCIR observation is 2025-10-01 (400 days old)",
+      "what_the_rule_says": "Stale inputs are disclosed; monthly payments of an allowance already fixed continue; no first issuance occurs without a verified target (Ch. 7).",
+      "who_decides": "Inspector general (inputs); money authority (disclosure)",
+      "evidence": {
+        "id": "CURRENCY",
+        "check": "fresh",
+        "status": "warn",
+        "last": "2025-10-01",
+        "detail": "Latest CURRCIR observation is 2025-10-01 (400 days old)"
+      }
+    },
+    {
       "id": "SENTINEL-32f737650c",
       "type": "SENTINEL",
       "severity": "review",
@@ -17527,12 +19214,12 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "14 entries; head 2114a8349c54de41…"
+        "detail": "15 entries; head aeeb1036b0682c09…"
       },
       {
         "name": "input-fingerprints",
         "status": "ok",
-        "detail": "21 raw files match the ledger"
+        "detail": "28 raw files match the ledger"
       },
       {
         "name": "rule-fingerprint",
@@ -17606,7 +19293,7 @@
       "group": "Integrity",
       "name": "Freshness checker",
       "job": "Flag missing or stale inputs; disclose, never fill.",
-      "status": "ok"
+      "status": "warn"
     },
     {
       "tier": 1,
@@ -17761,6 +19448,13 @@
       "name": "Publisher",
       "job": "Publish the dashboard data and the full record.",
       "status": "ok"
+    },
+    {
+      "tier": 7,
+      "group": "Reporters",
+      "name": "Head-to-head analyst",
+      "job": "Put the rule and today's Fed side by side: goals, money, costs.",
+      "status": "ok"
     }
   ],
   "sources": [
@@ -17859,9 +19553,9 @@
       "series": "DTWEXBGS",
       "agency": "Federal Reserve Board (H.10)",
       "title": "Nominal broad U.S. dollar index",
-      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2019-01-01",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2006-01-01",
       "file": "data/inputs/DOLLAR_INDEX.csv",
-      "sha256": "d7fe8e0346092b7e50ae7d6aa261e6aba0e60d7c34351e0eade14ee3c4d9ab21",
+      "sha256": "908a19a96d1ba529ef51ae559b8bc384bf8af4d4013185426e5ee9c3cca4213f",
       "last": {
         "date": "2026-10-30",
         "value": 121.6656
@@ -17979,9 +19673,9 @@
       "series": "WRESBAL",
       "agency": "Federal Reserve Board (H.4.1)",
       "title": "Bank reserve balances at the Federal Reserve, week average",
-      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WRESBAL&cosd=2007-01-01",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WRESBAL&cosd=2002-12-01",
       "file": "data/inputs/RESERVES.csv",
-      "sha256": "e749246922d98479f0d676ea2f65a0803f22f0da7d70d227f7c4743d4eec789d",
+      "sha256": "aced7bef4acab598d39436c5bf9649cffe5ebaa1cf8d5d9fe21825139656917f",
       "last": {
         "date": "2026-10-28",
         "value": 2893770
@@ -18024,9 +19718,9 @@
       "series": "T5YIFR",
       "agency": "Federal Reserve Bank of St. Louis (from Treasury yields)",
       "title": "Market inflation expectation for the five years starting five years from now",
-      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T5YIFR&cosd=2019-01-01",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T5YIFR&cosd=2003-01-01",
       "file": "data/inputs/EXPECT_5Y5Y.csv",
-      "sha256": "9a633fa4cd452974ea5320828ca87e4f17feabcec218be8ce27c80f532b50064",
+      "sha256": "5f728cd9ebc867b7c500555abb607d77a4e76eccef87995f2fc7c9996f9aa9db",
       "last": {
         "date": "2026-11-04",
         "value": 2.22
@@ -18078,18 +19772,734 @@
       },
       "ok": true,
       "error": null
+    },
+    {
+      "id": "BASE",
+      "series": "BOGMBASE",
+      "agency": "Federal Reserve Board (H.3)",
+      "title": "Monetary base: currency plus bank reserves at the Fed (the Fed's own public money)",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BOGMBASE&cosd=1999-01-01",
+      "file": "data/inputs/BASE.csv",
+      "sha256": "cbf77890eb47d0e884b3d57f8702f433fed7acd30c7387f67373d752dee87565",
+      "last": {
+        "date": "2026-09-01",
+        "value": 5449.8
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "CURRENCY",
+      "series": "CURRCIR",
+      "agency": "Federal Reserve Board (H.4.1)",
+      "title": "Currency in circulation",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CURRCIR&cosd=1999-01-01",
+      "file": "data/inputs/CURRENCY.csv",
+      "sha256": "f12971c5cccce9ecd40f1e11dbdafecbaa2bf50763185ef47c56b5f1a194b719",
+      "last": {
+        "date": "2025-10-01",
+        "value": 2415.653
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "NGDP",
+      "series": "GDP",
+      "agency": "Bureau of Economic Analysis",
+      "title": "Gross domestic product (nominal, seasonally adjusted annual rate)",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GDP&cosd=1999-01-01",
+      "file": "data/inputs/NGDP.csv",
+      "sha256": "1fb6c8bcdfa342bcb30eed979658bcb83686ae8fa1acf50dbff06ccdaa3ae7e3",
+      "last": {
+        "date": "2026-07-01",
+        "value": 33010.036
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "POPULATION",
+      "series": "POPTHM",
+      "agency": "Bureau of Economic Analysis",
+      "title": "Population",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=POPTHM&cosd=1999-01-01",
+      "file": "data/inputs/POPULATION.csv",
+      "sha256": "f8fd1a5ec941ccac2b10696b5b44e7a412adb2d8062c8475fe7f2c04c1d72056",
+      "last": {
+        "date": "2026-09-01",
+        "value": 343105
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "PRODUCTIVITY",
+      "series": "OPHNFB",
+      "agency": "Bureau of Labor Statistics",
+      "title": "Output per hour, nonfarm business sector",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=OPHNFB&cosd=1999-01-01",
+      "file": "data/inputs/PRODUCTIVITY.csv",
+      "sha256": "d1b6196370de1d597771ae63b2f7835a44c5a6dad118985bb8ac88b671b82c63",
+      "last": {
+        "date": "2026-07-01",
+        "value": 121.922
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "IOER",
+      "series": "IOER",
+      "agency": "Federal Reserve Board",
+      "title": "Interest rate on excess reserves (replaced by IORB in July 2021)",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=IOER&cosd=2008-10-01",
+      "file": "data/inputs/IOER.csv",
+      "sha256": "7e00dee924a8e5cc956302ca5aaf802a40341251a248a95d4860960df22e3292",
+      "last": {
+        "date": "2021-07-28",
+        "value": 0.15
+      },
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "FED_REMIT",
+      "series": "RESPPLLOPNWW",
+      "agency": "Federal Reserve Board (H.4.1)",
+      "title": "Earnings remittances due to the Treasury (negative = the Fed's deferred asset, i.e. losses not yet recouped)",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=RESPPLLOPNWW&cosd=2007-01-01",
+      "file": "data/inputs/FED_REMIT.csv",
+      "sha256": "5e187b2d2f8b83796532876979782c8a334422ef98d71ff1628f402434f93351",
+      "last": {
+        "date": "2026-10-28",
+        "value": -232521
+      },
+      "ok": true,
+      "error": null
     }
   ],
   "report": {
     "source": "ai",
     "model": "claude-haiku-5-5",
     "verified": true,
-    "headline": "Quarter 2026-Q2 result: price gap is zero, and no brake was needed.",
+    "usage": {
+      "input_tokens": 1860,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 370,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "headline": "Three calculators agree this quarter: no price-gap correction, brake not needed",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, called The People's Watch. Nothing is executed. It is a practice run that shows what the rule would have done, and no real money is issued or changed.",
-      "For the latest quarter, 2026-Q2, the price gap was zero. Think of the gap like a thermostat reading: zero means the room is at the set temperature. The allowed growth path is 2.47 percent per year, and the step for each quarter is 0.611 percent. Three separate calculators checked the work and all three agreed. The brake, which is a safety pause, is off because it was not needed.",
-      "Some signals are being watched. One measure of foreign holdings of Treasury securities is marked 'watch,' and it has an open human review. The broader dollar measures are mostly calm. The next calculation is set for 2026-11-15, for quarter 2026-Q3, using July, August, and September data.",
-      "These results do not prove the design keeps prices stable. The tests that would show that have not been run, so no conclusion about whether it works should be drawn from this run."
+      "This is an unofficial shadow run of The People's Money issuance rule, run by The People's Watch. Nothing is executed, and no real money or official figures are changed. Think of it as a practice drill that checks what the rule would have said.",
+      "For 2026-Q2, the latest quarter, all three separately written calculators agreed. The price gap was zero, so there was no gap to correct. The allowed growth path is 2.47% per year, which works out to a step of 0.611% per quarter. The brake, a safety stop that slows issuance when prices drift too far, is off because it is not needed.",
+      "Some readings need a closer look. A data problem about currency is still open for human review. One item, the change in Treasury securities held in custody for foreign official accounts, is marked as a watch item. The next computation is set for 2026-11-15 and will use the July, August and September data for 2026-Q3.",
+      "Keep in mind that the tests of whether this design keeps prices stable have not been run. These results only show what the rule would say on these numbers."
     ]
+  },
+  "head_to_head": {
+    "available": true,
+    "as_of": "2026-09-01",
+    "caveat": "Side-by-side comparison of the rule and today's Federal Reserve. Published figures are audited numbers with their sources; other figures are computed each run from the stored public data. This compares what the Fed did with what the rule's formula would have said, not outcomes: had the rule been in charge, the economy would have behaved differently.",
+    "goals": {
+      "fed": "Its goal is prices rising 2% a year, measured by PCE prices (a goal it adopted in January 2012). At that pace prices double about every 35 years.",
+      "rule": "A flat price level: a dollar that buys about the same decades from now. Untested."
+    },
+    "now": {
+      "rule_allowed_pct": 2.47,
+      "rule_quarter": "2026-Q2",
+      "rule_brake": "off",
+      "fed_base_growth_12m_pct": -0.5,
+      "fed_base_as_of": "2026-09-01",
+      "prices_12m_pct": 3.6,
+      "prices_as_of": "2026-09-01",
+      "fed_rate_on_reserves_pct": 3.9,
+      "deferred_asset_b": 232.5,
+      "deferred_as_of": "2026-10-28"
+    },
+    "starts": [
+      {
+        "start": "2000-01-01",
+        "dollar_now_cents": 50,
+        "fed_target_dollar_cents": 59,
+        "rule_target_dollar_cents": 100,
+        "prices_vs_fed_target_pct": 6.9,
+        "prices_vs_flat_pct": 81.3,
+        "years": 26.7
+      },
+      {
+        "start": "2008-01-01",
+        "dollar_now_cents": 63,
+        "fed_target_dollar_cents": 69,
+        "rule_target_dollar_cents": 100,
+        "prices_vs_fed_target_pct": 3.6,
+        "prices_vs_flat_pct": 49.9,
+        "years": 18.7
+      },
+      {
+        "start": "2020-01-01",
+        "dollar_now_cents": 77,
+        "fed_target_dollar_cents": 88,
+        "rule_target_dollar_cents": 100,
+        "prices_vs_fed_target_pct": 10.9,
+        "prices_vs_flat_pct": 26.6,
+        "years": 6.7
+      }
+    ],
+    "price_series": [
+      {
+        "year": 2000,
+        "through": "2000-12",
+        "actual": 102.2,
+        "fed_target_path": 101.8,
+        "rule_target": 100
+      },
+      {
+        "year": 2001,
+        "through": "2001-12",
+        "actual": 103.3,
+        "fed_target_path": 103.9,
+        "rule_target": 100
+      },
+      {
+        "year": 2002,
+        "through": "2002-12",
+        "actual": 105.5,
+        "fed_target_path": 105.9,
+        "rule_target": 100
+      },
+      {
+        "year": 2003,
+        "through": "2003-12",
+        "actual": 107.7,
+        "fed_target_path": 108.1,
+        "rule_target": 100
+      },
+      {
+        "year": 2004,
+        "through": "2004-12",
+        "actual": 110.7,
+        "fed_target_path": 110.2,
+        "rule_target": 100
+      },
+      {
+        "year": 2005,
+        "through": "2005-12",
+        "actual": 113.9,
+        "fed_target_path": 112.4,
+        "rule_target": 100
+      },
+      {
+        "year": 2006,
+        "through": "2006-12",
+        "actual": 116.5,
+        "fed_target_path": 114.7,
+        "rule_target": 100
+      },
+      {
+        "year": 2007,
+        "through": "2007-12",
+        "actual": 120.6,
+        "fed_target_path": 117,
+        "rule_target": 100
+      },
+      {
+        "year": 2008,
+        "through": "2008-12",
+        "actual": 120.7,
+        "fed_target_path": 119.3,
+        "rule_target": 100
+      },
+      {
+        "year": 2009,
+        "through": "2009-12",
+        "actual": 123.3,
+        "fed_target_path": 121.7,
+        "rule_target": 100
+      },
+      {
+        "year": 2010,
+        "through": "2010-12",
+        "actual": 125.1,
+        "fed_target_path": 124.1,
+        "rule_target": 100
+      },
+      {
+        "year": 2011,
+        "through": "2011-12",
+        "actual": 128.3,
+        "fed_target_path": 126.6,
+        "rule_target": 100
+      },
+      {
+        "year": 2012,
+        "through": "2012-12",
+        "actual": 130.3,
+        "fed_target_path": 129.1,
+        "rule_target": 100
+      },
+      {
+        "year": 2013,
+        "through": "2013-12",
+        "actual": 132.1,
+        "fed_target_path": 131.7,
+        "rule_target": 100
+      },
+      {
+        "year": 2014,
+        "through": "2014-12",
+        "actual": 133.1,
+        "fed_target_path": 134.4,
+        "rule_target": 100
+      },
+      {
+        "year": 2015,
+        "through": "2015-12",
+        "actual": 133.6,
+        "fed_target_path": 137,
+        "rule_target": 100
+      },
+      {
+        "year": 2016,
+        "through": "2016-12",
+        "actual": 135.8,
+        "fed_target_path": 139.8,
+        "rule_target": 100
+      },
+      {
+        "year": 2017,
+        "through": "2017-12",
+        "actual": 138.2,
+        "fed_target_path": 142.6,
+        "rule_target": 100
+      },
+      {
+        "year": 2018,
+        "through": "2018-12",
+        "actual": 140.8,
+        "fed_target_path": 145.4,
+        "rule_target": 100
+      },
+      {
+        "year": 2019,
+        "through": "2019-12",
+        "actual": 143,
+        "fed_target_path": 148.3,
+        "rule_target": 100
+      },
+      {
+        "year": 2020,
+        "through": "2020-12",
+        "actual": 144.9,
+        "fed_target_path": 151.3,
+        "rule_target": 100
+      },
+      {
+        "year": 2021,
+        "through": "2021-12",
+        "actual": 153.6,
+        "fed_target_path": 154.3,
+        "rule_target": 100
+      },
+      {
+        "year": 2022,
+        "through": "2022-12",
+        "actual": 162.2,
+        "fed_target_path": 157.4,
+        "rule_target": 100
+      },
+      {
+        "year": 2023,
+        "through": "2023-12",
+        "actual": 166.9,
+        "fed_target_path": 160.6,
+        "rule_target": 100
+      },
+      {
+        "year": 2024,
+        "through": "2024-12",
+        "actual": 171.3,
+        "fed_target_path": 163.8,
+        "rule_target": 100
+      },
+      {
+        "year": 2025,
+        "through": "2025-12",
+        "actual": 176.1,
+        "fed_target_path": 167.1,
+        "rule_target": 100
+      },
+      {
+        "year": 2026,
+        "through": "2026-09",
+        "actual": 181.3,
+        "fed_target_path": 169.6,
+        "rule_target": 100
+      }
+    ],
+    "money": [
+      {
+        "year": 2000,
+        "fed_base_growth_pct": -2.3,
+        "rule_allowed_pct": 2.72,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 3.6
+      },
+      {
+        "year": 2001,
+        "fed_base_growth_pct": 8.8,
+        "rule_allowed_pct": 1.74,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 3.98
+      },
+      {
+        "year": 2002,
+        "fed_base_growth_pct": 7.4,
+        "rule_allowed_pct": 1.13,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 3.84
+      },
+      {
+        "year": 2003,
+        "fed_base_growth_pct": 5.7,
+        "rule_allowed_pct": 0.04,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 6.47
+      },
+      {
+        "year": 2004,
+        "fed_base_growth_pct": 5,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.59
+      },
+      {
+        "year": 2005,
+        "fed_base_growth_pct": 3.5,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.61
+      },
+      {
+        "year": 2006,
+        "fed_base_growth_pct": 2.9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.99
+      },
+      {
+        "year": 2007,
+        "fed_base_growth_pct": 1.3,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 3.3
+      },
+      {
+        "year": 2008,
+        "fed_base_growth_pct": 99,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.12
+      },
+      {
+        "year": 2009,
+        "fed_base_growth_pct": 21.6,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 7.41
+      },
+      {
+        "year": 2010,
+        "fed_base_growth_pct": -0.5,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.23
+      },
+      {
+        "year": 2011,
+        "fed_base_growth_pct": 29.9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 0.4
+      },
+      {
+        "year": 2012,
+        "fed_base_growth_pct": 2.1,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.12
+      },
+      {
+        "year": 2013,
+        "fed_base_growth_pct": 38.9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.69
+      },
+      {
+        "year": 2014,
+        "fed_base_growth_pct": 5.8,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.12
+      },
+      {
+        "year": 2015,
+        "fed_base_growth_pct": -2.5,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.51
+      },
+      {
+        "year": 2016,
+        "fed_base_growth_pct": -7.9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.27
+      },
+      {
+        "year": 2017,
+        "fed_base_growth_pct": 9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.42
+      },
+      {
+        "year": 2018,
+        "fed_base_growth_pct": -11.7,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1
+      },
+      {
+        "year": 2019,
+        "fed_base_growth_pct": 0.8,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 4.08
+      },
+      {
+        "year": 2020,
+        "fed_base_growth_pct": 51.9,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 5.46
+      },
+      {
+        "year": 2021,
+        "fed_base_growth_pct": 23.2,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 1.43
+      },
+      {
+        "year": 2022,
+        "fed_base_growth_pct": -15.7,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": -0.72
+      },
+      {
+        "year": 2023,
+        "fed_base_growth_pct": 7.8,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 4.35
+      },
+      {
+        "year": 2024,
+        "fed_base_growth_pct": -3.8,
+        "rule_allowed_pct": 0,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 3.35
+      },
+      {
+        "year": 2025,
+        "fed_base_growth_pct": -4.1,
+        "rule_allowed_pct": null,
+        "friedman_k_pct": 3,
+        "pop_plus_productivity_pct": 2.83
+      }
+    ],
+    "money_summary": {
+      "fed": {
+        "average_pct": 10.6,
+        "largest_pct": 99,
+        "smallest_pct": -15.7,
+        "swing_sd": 23.5
+      },
+      "rule": {
+        "average_pct": 0.23,
+        "largest_pct": 2.72,
+        "smallest_pct": 0,
+        "swing_sd": 0.66
+      }
+    },
+    "targets": [
+      {
+        "rule": "Flat price level (this book)",
+        "largest_gap_lp": 59.5,
+        "largest_gap_pct": 81.3
+      },
+      {
+        "rule": "Prices rising 2% a year (the Fed’s target)",
+        "largest_gap_lp": 6.7,
+        "largest_gap_pct": 6.9
+      },
+      {
+        "rule": "Total spending growing 4% a year (a nominal-GDP path)",
+        "largest_gap_lp": 15.5,
+        "largest_gap_pct": 16.7
+      }
+    ],
+    "costs": [
+      {
+        "year": 2008,
+        "interest_to_banks_estimate_b": 0.9,
+        "inflation_on_cash_b": -0.2
+      },
+      {
+        "year": 2009,
+        "interest_to_banks_estimate_b": 2.2,
+        "inflation_on_cash_b": 24.7
+      },
+      {
+        "year": 2010,
+        "interest_to_banks_estimate_b": 2.7,
+        "inflation_on_cash_b": 13.3
+      },
+      {
+        "year": 2011,
+        "interest_to_banks_estimate_b": 3.7,
+        "inflation_on_cash_b": 30
+      },
+      {
+        "year": 2012,
+        "interest_to_banks_estimate_b": 3.8,
+        "inflation_on_cash_b": 18.8
+      },
+      {
+        "year": 2013,
+        "interest_to_banks_estimate_b": 5.1,
+        "inflation_on_cash_b": 17.5
+      },
+      {
+        "year": 2014,
+        "interest_to_banks_estimate_b": 6.7,
+        "inflation_on_cash_b": 8
+      },
+      {
+        "year": 2015,
+        "interest_to_banks_estimate_b": 6.7,
+        "inflation_on_cash_b": 8.5
+      },
+      {
+        "year": 2016,
+        "interest_to_banks_estimate_b": 11.7,
+        "inflation_on_cash_b": 29
+      },
+      {
+        "year": 2017,
+        "interest_to_banks_estimate_b": 24.7,
+        "inflation_on_cash_b": 31.9
+      },
+      {
+        "year": 2018,
+        "interest_to_banks_estimate_b": 36.6,
+        "inflation_on_cash_b": 32.1
+      },
+      {
+        "year": 2019,
+        "interest_to_banks_estimate_b": 33.5,
+        "inflation_on_cash_b": 39.6
+      },
+      {
+        "year": 2020,
+        "interest_to_banks_estimate_b": 7.6,
+        "inflation_on_cash_b": 23.7
+      },
+      {
+        "year": 2021,
+        "interest_to_banks_estimate_b": 5,
+        "inflation_on_cash_b": 148.5
+      },
+      {
+        "year": 2022,
+        "interest_to_banks_estimate_b": 55.2,
+        "inflation_on_cash_b": 142.4
+      },
+      {
+        "year": 2023,
+        "interest_to_banks_estimate_b": 165.1,
+        "inflation_on_cash_b": 76.2
+      },
+      {
+        "year": 2024,
+        "interest_to_banks_estimate_b": 176.2,
+        "inflation_on_cash_b": 67
+      },
+      {
+        "year": 2025,
+        "interest_to_banks_estimate_b": 139.5,
+        "inflation_on_cash_b": 62.7
+      }
+    ],
+    "published": {
+      "source": "Federal Reserve Banks, Combined Financial Statements as of and for the Years Ended December 31, 2025 and 2024 (audited by KPMG), pp. 3-5",
+      "url": "https://www.federalreserve.gov/aboutthefed/files/combinedfinstmt2025.pdf",
+      "year": "2025",
+      "interest_income": 155.299,
+      "interest_paid_deposits": 147.662,
+      "interest_paid_reverse_repo": 19.719,
+      "operating_expenses": 9.8,
+      "board_and_currency": 2.702,
+      "cfpb": 0.245,
+      "dividends": 1.688,
+      "net_loss": 18.747,
+      "deferred_asset_end": 243.481,
+      "previous": {
+        "interest_income": 158.756,
+        "interest_paid_deposits": 186.478,
+        "interest_paid_reverse_repo": 40.288,
+        "operating_expenses": 9.894,
+        "board_and_currency": 2.68,
+        "cfpb": 0.663,
+        "dividends": 1.623,
+        "net_loss": 77.606,
+        "deferred_asset_end": 215.955
+      }
+    },
+    "rule_costs": {
+      "ai_per_run_usd": 0.0004,
+      "ai_per_month_usd": 0.01,
+      "ai_tokens_last_run": {
+        "input_tokens": 1860,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 370,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      },
+      "compute": "GitHub Actions runs public projects free.",
+      "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."
+    }
   }
 }
