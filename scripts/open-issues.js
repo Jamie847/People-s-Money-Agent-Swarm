@@ -14,7 +14,12 @@ if (!process.env.GH_TOKEN) { console.log(`${packets.length} new packet(s); no GH
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 try { gh(['label', 'create', 'human-gate', '--color', 'B22234', '--description', 'A swarm decision packet waiting for a person', '--force']); } catch (e) { console.log('label:', e.message.split('\n')[0]); }
 
+// Never open a second issue for a packet that already has one (e.g. after a re-run).
+let existing = '';
+try { existing = gh(['issue', 'list', '--state', 'all', '--label', 'human-gate', '--limit', '200', '--json', 'body', '--jq', '.[].body']); } catch (e) { console.log('list:', e.message.split('\n')[0]); }
+
 for (const p of packets) {
+  if (existing.includes(p.id)) { console.log(`Issue already exists for ${p.id}`); continue; }
   const body = [
     `**Packet** \`${p.id}\` · severity **${p.severity}**`,
     '',

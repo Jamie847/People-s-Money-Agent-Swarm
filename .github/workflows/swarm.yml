@@ -19,7 +19,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      # Always build on the CURRENT record, even when an old run is re-run from the Actions page.
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -40,8 +44,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
           git commit -m "Swarm run $(date -u +%F)" || echo "Nothing to commit"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Open GitHub issues for new human-gate packets
         env:
