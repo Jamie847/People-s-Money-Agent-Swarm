@@ -97,6 +97,7 @@ export function runSentinels(sensorById, cfgGroup, ctx) {
       direction: cfg.direction ?? 'up',
       status,
       note: cfg.note,
+      calibration: cfg.calibration ?? null,
       history: thin(cfg.metric === 'spread_vs' ? spreadSeries(s.observations, ctx.byId?.[cfg.other]) : s.observations),
     });
   }

@@ -1,30 +1,70 @@
 {
-  "_about": "Watch levels for the sentinel agents. These thresholds are PROVISIONAL choices made for this shadow run so the dashboard can say calm / watch / stress. They are not in the book or the Design Paper and should be reviewed. Sentinels never act; they only report and raise packets for humans.",
+  "_about": "Watch levels for the sentinel agents. These thresholds are PROVISIONAL choices made for this shadow run so the dashboard can say calm / watch / stress. They are not in the book or the Design Paper and should be reviewed. Sentinels never act; they only report and raise packets for humans. Each thresholded sentinel carries a 'calibration' block computed by scripts/calibrate.py: the share of past readings (since 2007, or since the stored series starts) that would have been at watch-or-worse and at stress, and the years stress was reached.",
   "global_dollar": {
     "SWAPS": {
       "metric": "level_billions",
       "watch": 10,
       "stress": 50,
-      "note": "Peaks: about $583B (Dec 2008) and $449B (May 2020)."
+      "note": "Peaks: about $583B (Dec 2008) and $449B (May 2020).",
+      "calibration": {
+        "since": "2007-01-03",
+        "readings": 1035,
+        "watch_rate_pct": 18.9,
+        "stress_rate_pct": 11.1,
+        "stress_periods": [
+          "2008",
+          "2009",
+          "2011",
+          "2012",
+          "2020"
+        ]
+      }
     },
     "FIMA_REPO": {
       "metric": "level_billions",
       "watch": 1,
       "stress": 10,
-      "note": "Usage above zero means foreign official holders needed dollars against their Treasuries."
+      "note": "Usage above zero means foreign official holders needed dollars against their Treasuries.",
+      "calibration": {
+        "since": "2007-01-03",
+        "readings": 1035,
+        "watch_rate_pct": 2.8,
+        "stress_rate_pct": 0.5,
+        "stress_periods": [
+          "2023"
+        ]
+      }
     },
     "FOREIGN_CUSTODY": {
       "metric": "pct_change_13w",
       "watch": -3,
-      "stress": -6,
+      "stress": -4.5,
       "direction": "down",
-      "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries."
+      "note": "A fast fall means foreign official holders are selling or repo-ing Treasuries.",
+      "calibration": {
+        "since": "2007-10-03",
+        "readings": 996,
+        "watch_rate_pct": 4.3,
+        "stress_rate_pct": 0.1,
+        "stress_periods": [
+          "2014"
+        ]
+      }
     },
     "DOLLAR_INDEX": {
       "metric": "pct_change_21d",
       "watch": 3,
       "stress": 5,
-      "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze."
+      "note": "A sharp dollar rise is the classic sign of an offshore dollar squeeze.",
+      "calibration": {
+        "since": "2019-02-04",
+        "readings": 1935,
+        "watch_rate_pct": 2.8,
+        "stress_rate_pct": 0.6,
+        "stress_periods": [
+          "2020"
+        ]
+      }
     },
     "OFFSHORE_CREDIT": {
       "metric": "pct_change_4q",
@@ -38,13 +78,35 @@
       "metric": "level",
       "watch": 1,
       "stress": 2,
-      "note": "Stand-in for the design's payment-stress index, which is not yet specified."
+      "note": "Stand-in for the design's payment-stress index, which is not yet specified.",
+      "calibration": {
+        "since": "2007-01-05",
+        "readings": 1035,
+        "watch_rate_pct": 10.6,
+        "stress_rate_pct": 4.3,
+        "stress_periods": [
+          "2007",
+          "2008",
+          "2009",
+          "2020"
+        ]
+      }
     },
     "STRESS_CHI": {
       "metric": "level",
       "watch": 0.5,
       "stress": 1,
-      "note": "Stand-in for the design's payment-stress index."
+      "note": "Stand-in for the design's payment-stress index.",
+      "calibration": {
+        "since": "2007-01-05",
+        "readings": 1035,
+        "watch_rate_pct": 7.5,
+        "stress_rate_pct": 3.6,
+        "stress_periods": [
+          "2008",
+          "2009"
+        ]
+      }
     },
     "BANK_CREDIT": {
       "metric": "pct_change_52w",
@@ -65,7 +127,16 @@
       "other": "IORB",
       "watch": 0.1,
       "stress": 0.25,
-      "note": "Funding strain: when overnight Treasury-backed borrowing costs rise well above the rate on reserves, cash is getting scarce (as in September 2019)."
+      "note": "Funding strain: when overnight Treasury-backed borrowing costs rise well above the rate on reserves, cash is getting scarce (as in September 2019).",
+      "calibration": {
+        "since": "2021-07-29",
+        "readings": 1315,
+        "watch_rate_pct": 1.8,
+        "stress_rate_pct": 0.1,
+        "stress_periods": [
+          "2025"
+        ]
+      }
     },
     "RESERVES": {
       "metric": "level_billions",
@@ -89,7 +160,14 @@
       "metric": "level",
       "watch": 3.0,
       "stress": 3.5,
-      "note": "If markets expect inflation far above target years ahead, trust in the measuring stick is slipping."
+      "note": "If markets expect inflation far above target years ahead, trust in the measuring stick is slipping.",
+      "calibration": {
+        "since": "2019-01-02",
+        "readings": 1962,
+        "watch_rate_pct": 0.0,
+        "stress_rate_pct": 0.0,
+        "stress_periods": []
+      }
     },
     "EXPECT_MICH": {
       "metric": "level",

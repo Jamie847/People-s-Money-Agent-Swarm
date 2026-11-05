@@ -11,7 +11,7 @@
     "run": "node scripts/run.js",
     "run:offline": "node scripts/run.js --offline",
     "build": "node scripts/build-site.js",
-    "test": "node --test test/*.test.js",
-    "check": "node --test test/*.test.js && node scripts/audit.js"
+    "test": "node --check dashboard/app.js && node --test test/*.test.js",
+    "check": "node --check dashboard/app.js && node --test test/*.test.js && node scripts/audit.js"
   }
 }
