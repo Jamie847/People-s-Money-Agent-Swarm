@@ -53,6 +53,14 @@ jobs:
           SWARM_REPORTER_MODEL: claude-haiku-5-5   # low-cost model; the reporter makes one short call per run
         run: node scripts/run.js || echo "SWARM_AUDIT_FAILED=1" >> "$GITHUB_ENV"
 
+      - name: Draft the monthly newsletter (once a month, on or after the 16th)
+        id: newsletter
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SWARM_REPORTER_MODEL: claude-haiku-5-5
+        run: node scripts/newsletter.js --auto
+
       - name: Checkpoint the ledger
         id: cp
         run: node scripts/witness.js prepare
@@ -100,6 +108,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/open-issues.js
+
+      - name: Tell a person the newsletter draft is ready
+        if: steps.newsletter.outputs.drafted != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MONTH: ${{ steps.newsletter.outputs.drafted }}
+        run: |
+          gh label create newsletter --color C9A54C --description "Monthly newsletter draft waiting for a person" --force || true
+          gh issue create --label newsletter --title "Newsletter draft ready: ${MONTH}" --body "The monthly issue for ${MONTH} was drafted from this month's sealed record: [data/newsletter/${MONTH}.json](https://github.com/${GITHUB_REPOSITORY}/blob/main/data/newsletter/${MONTH}.json).
+
+          It is loaded into beehiiv as a **draft**. Nothing is sent automatically: a person reads it, edits if needed, and presses send. Close this issue once it has gone out."
 
       - name: Build dashboard
         run: node scripts/build-site.js
