@@ -107,3 +107,13 @@ test('community: report rules', () => {
   assert.ok(validateReport({ status: 'ok', headline: 'x'.repeat(200) }).length);
   assert.ok(validateReport({ status: 'ok', headline: 'x', findings: Array(13).fill({ label: 'a' }) }).length);
 });
+
+import { parseReport } from '../src/agents/reporter.js';
+test('reporter: reads JSON, fenced JSON and plain text replies', () => {
+  assert.equal(parseReport('{"headline":"H","paragraphs":["a"]}').headline, 'H');
+  assert.equal(parseReport('```json\n{"headline":"H2","paragraphs":["a","b"]}\n```').paragraphs.length, 2);
+  const p = parseReport('# Rule allows 2.47% growth\n\nPrices are at target.\n\nNothing is executed.');
+  assert.equal(p.headline, 'Rule allows 2.47% growth');
+  assert.equal(p.paragraphs.length, 2);
+  assert.equal(parseReport(''), null);
+});

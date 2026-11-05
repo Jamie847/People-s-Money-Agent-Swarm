@@ -81,6 +81,21 @@ export function verifyNumbers(text, allowed) {
   return { ok: bad.length === 0, unverified: [...new Set(bad)] };
 }
 
+// Accept the requested JSON, JSON inside a code fence, or plain text (first line = headline). Numbers are checked either way.
+export function parseReport(text) {
+  if (!text) return null;
+  const i = text.indexOf('{'); const j = text.lastIndexOf('}');
+  if (i >= 0 && j > i) {
+    try {
+      const o = JSON.parse(text.slice(i, j + 1));
+      if (typeof o.headline === 'string' && Array.isArray(o.paragraphs) && o.paragraphs.length) return { headline: o.headline.trim(), paragraphs: o.paragraphs.map((x) => String(x).trim()).filter(Boolean) };
+    } catch { /* fall through to plain text */ }
+  }
+  const lines = text.replace(/```[a-z]*|```/g, '').split(/\n+/).map((l) => l.replace(/^#+\s*|^\*\*|\*\*$/g, '').trim()).filter(Boolean);
+  if (lines.length < 2) return null;
+  return { headline: lines[0].slice(0, 140), paragraphs: lines.slice(1, 5) };
+}
+
 const SYSTEM = `You are the Reporter agent in an open-source, unofficial shadow run of "The People's Money" issuance rule.
 Write for ordinary readers: plain words, short sentences, no jargon (explain any term with a simple everyday comparison, like a thermostat).
 Hard rules:
@@ -97,13 +112,13 @@ export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_K
     const res = await fetchImpl('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: 700, system: SYSTEM, messages: [{ role: 'user', content: `Facts for this run:\n${JSON.stringify(facts, null, 2)}` }] }),
+      body: JSON.stringify({ model, max_tokens: 1000, system: SYSTEM, messages: [{ role: 'user', content: `Facts for this run:\n${JSON.stringify(facts, null, 2)}` }] }),
     });
     if (!res.ok) throw new Error(`Anthropic API HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const body = await res.json();
-    const text = (body.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('');
-    const json = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
-    if (typeof json.headline !== 'string' || !Array.isArray(json.paragraphs) || !json.paragraphs.length) throw new Error('Reporter returned the wrong shape');
+    const text = (body.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('').trim();
+    const json = parseReport(text);
+    if (!json) return { source: 'template', reason: `AI reply could not be read (stop: ${body.stop_reason || 'n/a'})`, model, raw_excerpt: text.slice(0, 400), ...template };
     const check = verifyNumbers([json.headline, ...json.paragraphs].join(' '), allowedNumbers(facts));
     if (!check.ok) {
       return { source: 'template', reason: `AI text rejected: numbers not found in the facts (${check.unverified.join(', ')})`, model, rejected_ai_text: json, ...template };
