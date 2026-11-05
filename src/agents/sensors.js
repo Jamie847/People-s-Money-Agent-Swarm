@@ -84,7 +84,7 @@ export async function runSensors(sources, { inputsDir, offline = false }) {
   for (const src of sources) {
     const url = sourceUrl(src);
     const file = join(inputsDir, `${src.id}.csv`);
-    const out = { id: src.id, series: src.series, agency: src.agency, title: src.title, role: src.role, freq: src.freq, units: src.units, url, file: `data/inputs/${src.id}.csv` };
+    const out = { id: src.id, series: src.series, agency: src.agency, title: src.title, role: src.role, freq: src.freq, historical: !!src.historical, units: src.units, url, file: `data/inputs/${src.id}.csv` };
     try {
       let text;
       if (offline) {

@@ -130,7 +130,7 @@ export async function runReporter(latest, { apiKey = process.env.ANTHROPIC_API_K
     if (!check.ok) {
       return { source: 'template', reason: `AI text rejected: numbers not found in the facts (${check.unverified.join(', ')})`, model, rejected_ai_text: json, ...template };
     }
-    return { source: 'ai', model, verified: true, headline: json.headline, paragraphs: json.paragraphs };
+    return { source: 'ai', model, verified: true, usage: body.usage || null, headline: json.headline, paragraphs: json.paragraphs };
   } catch (err) {
     return { source: 'template', reason: `Reporter error: ${String(err.message || err).slice(0, 200)}`, model, ...template };
   }

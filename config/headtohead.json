@@ -1,0 +1,47 @@
+{
+  "_about": "Side-by-side comparison of the rule and today's Federal Reserve. Published figures are audited numbers with their sources; other figures are computed each run from the stored public data. This compares what the Fed did with what the rule's formula would have said, not outcomes: had the rule been in charge, the economy would have behaved differently.",
+  "fed_target_inflation_pct": 2.0,
+  "fed_target_adopted": "January 2012 (PCE prices)",
+  "comparison_starts": [
+    "2000-01-01",
+    "2008-01-01",
+    "2020-01-01"
+  ],
+  "friedman_k_pct": 3.0,
+  "ngdp_path_pct": 4.0,
+  "published": {
+    "source": "Federal Reserve Banks, Combined Financial Statements as of and for the Years Ended December 31, 2025 and 2024 (audited by KPMG), pp. 3-5",
+    "url": "https://www.federalreserve.gov/aboutthefed/files/combinedfinstmt2025.pdf",
+    "years": {
+      "2024": {
+        "interest_income": 158.756,
+        "interest_paid_deposits": 186.478,
+        "interest_paid_reverse_repo": 40.288,
+        "operating_expenses": 9.894,
+        "board_and_currency": 2.68,
+        "cfpb": 0.663,
+        "dividends": 1.623,
+        "net_loss": 77.606,
+        "deferred_asset_end": 215.955
+      },
+      "2025": {
+        "interest_income": 155.299,
+        "interest_paid_deposits": 147.662,
+        "interest_paid_reverse_repo": 19.719,
+        "operating_expenses": 9.8,
+        "board_and_currency": 2.702,
+        "cfpb": 0.245,
+        "dividends": 1.688,
+        "net_loss": 18.747,
+        "deferred_asset_end": 243.481
+      }
+    }
+  },
+  "ai_price_per_million": {
+    "model": "claude-haiku-5-5",
+    "input": 0.1,
+    "output": 0.5,
+    "source": "Anthropic API pricing (prompts up to 100,000 tokens)"
+  },
+  "runs_per_month": 30
+}

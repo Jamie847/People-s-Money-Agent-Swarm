@@ -18,6 +18,7 @@ import { buildPackets } from '../src/agents/governance.js';
 import { appendLedger } from '../src/agents/ledger.js';
 import { runAudit } from '../src/agents/auditor.js';
 import { runReporter } from '../src/agents/reporter.js';
+import { runHeadToHead } from '../src/agents/headtohead.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const P = (...p) => join(root, ...p);
@@ -171,6 +172,14 @@ const latest = {
 // ---- Tier 7: reporter ----
 latest.report = await runReporter(latest);
 latest.agents.find((a) => a.name === 'Reporter (AI)').status = latest.report.source === 'ai' ? 'ok' : 'warn';
+
+// ---- Tier 7: head-to-head (the rule and today's Fed, side by side) ----
+try {
+  latest.head_to_head = runHeadToHead({ byId, replays, live: latest.live, cfg: readJSON(P('config', 'headtohead.json')), aiUsage: latest.report.usage });
+} catch (err) {
+  latest.head_to_head = { available: false, reason: String(err.message || err).slice(0, 200) };
+}
+latest.agents.push({ tier: 7, group: 'Reporters', name: 'Head-to-head analyst', job: 'Put the rule and today\'s Fed side by side: goals, money, costs.', status: latest.head_to_head.available ? 'ok' : 'warn' });
 
 writeJSON(P('data', 'latest.json'), latest);
 writeJSON(P('data', 'packets.json'), packets);

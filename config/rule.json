@@ -14,6 +14,8 @@
   "annual_gdp_available_from_month_day": "05-01",
   "live_epoch_quarter": "2026-Q2",
   "replay_epochs": [
+    "2000-Q1",
+    "2008-Q1",
     "2020-Q1"
   ],
   "interpretations_pending_review": [

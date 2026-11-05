@@ -9,6 +9,7 @@ const STALE_AFTER_DAYS = { daily: 10, weekly: 21, monthly: 75, quarterly: 200, a
 export function checkSources(sensorResults, today) {
   return sensorResults.map((s) => {
     if (!s.ok) return { id: s.id, check: 'fetched', status: 'fail', detail: `Could not read ${s.series}: ${s.error}` };
+    if (s.historical) return { id: s.id, check: 'fresh', status: 'ok', detail: `Historical series (discontinued); ${s.observations.length} observations; sha256 ${s.sha256.slice(0, 12)}…` };
     const age = daysBetween(s.last.date, today);
     const limit = STALE_AFTER_DAYS[s.freq] ?? 60;
     // Observation dates mark the START of the period, so allow one period of lag on top.

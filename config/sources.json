@@ -71,7 +71,7 @@
       "id": "DOLLAR_INDEX",
       "series": "DTWEXBGS",
       "transport": "fred",
-      "start": "2019-01-01",
+      "start": "2006-01-01",
       "role": "global-dollar",
       "freq": "daily",
       "agency": "Federal Reserve Board (H.10)",
@@ -159,7 +159,7 @@
       "id": "RESERVES",
       "series": "WRESBAL",
       "transport": "fred",
-      "start": "2007-01-01",
+      "start": "2002-12-01",
       "role": "plumbing",
       "freq": "weekly",
       "agency": "Federal Reserve Board (H.4.1)",
@@ -192,7 +192,7 @@
       "id": "EXPECT_5Y5Y",
       "series": "T5YIFR",
       "transport": "fred",
-      "start": "2019-01-01",
+      "start": "2003-01-01",
       "role": "expectations",
       "freq": "daily",
       "agency": "Federal Reserve Bank of St. Louis (from Treasury yields)",
@@ -231,6 +231,84 @@
       "agency": "Bureau of Labor Statistics",
       "title": "Unemployment rate (the book's goal includes supporting employment)",
       "units": "percent"
+    },
+    {
+      "id": "BASE",
+      "series": "BOGMBASE",
+      "transport": "fred",
+      "start": "1999-01-01",
+      "role": "comparison",
+      "freq": "monthly",
+      "agency": "Federal Reserve Board (H.3)",
+      "title": "Monetary base: currency plus bank reserves at the Fed (the Fed's own public money)",
+      "units": "billions of dollars"
+    },
+    {
+      "id": "CURRENCY",
+      "series": "CURRCIR",
+      "transport": "fred",
+      "start": "1999-01-01",
+      "role": "comparison",
+      "freq": "monthly",
+      "agency": "Federal Reserve Board (H.4.1)",
+      "title": "Currency in circulation",
+      "units": "billions of dollars"
+    },
+    {
+      "id": "NGDP",
+      "series": "GDP",
+      "transport": "fred",
+      "start": "1999-01-01",
+      "role": "comparison",
+      "freq": "quarterly",
+      "agency": "Bureau of Economic Analysis",
+      "title": "Gross domestic product (nominal, seasonally adjusted annual rate)",
+      "units": "billions of dollars"
+    },
+    {
+      "id": "POPULATION",
+      "series": "POPTHM",
+      "transport": "fred",
+      "start": "1999-01-01",
+      "role": "comparison",
+      "freq": "monthly",
+      "agency": "Bureau of Economic Analysis",
+      "title": "Population",
+      "units": "thousands"
+    },
+    {
+      "id": "PRODUCTIVITY",
+      "series": "OPHNFB",
+      "transport": "fred",
+      "start": "1999-01-01",
+      "role": "comparison",
+      "freq": "quarterly",
+      "agency": "Bureau of Labor Statistics",
+      "title": "Output per hour, nonfarm business sector",
+      "units": "index 2017=100"
+    },
+    {
+      "id": "IOER",
+      "series": "IOER",
+      "transport": "fred",
+      "start": "2008-10-01",
+      "role": "comparison",
+      "freq": "daily",
+      "historical": true,
+      "agency": "Federal Reserve Board",
+      "title": "Interest rate on excess reserves (replaced by IORB in July 2021)",
+      "units": "percent"
+    },
+    {
+      "id": "FED_REMIT",
+      "series": "RESPPLLOPNWW",
+      "transport": "fred",
+      "start": "2007-01-01",
+      "role": "comparison",
+      "freq": "weekly",
+      "agency": "Federal Reserve Board (H.4.1)",
+      "title": "Earnings remittances due to the Treasury (negative = the Fed's deferred asset, i.e. losses not yet recouped)",
+      "units": "millions of dollars"
     }
   ]
 }

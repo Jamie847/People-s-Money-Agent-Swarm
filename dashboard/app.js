@@ -54,13 +54,23 @@
     var min = opts.min != null ? opts.min : Math.min.apply(null, all);
     var max = opts.max != null ? opts.max : Math.max.apply(null, all);
     if (min === max) { min -= 1; max += 1; }
-    if (opts.min == null && opts.max == null) { var pad = (max - min) * 0.08; min -= pad; max += pad; }
+    var step = null;
+    if (opts.max == null) {
+      var raw = (max - min) / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / mag;
+      step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * mag;
+      if (opts.min == null) min = Math.floor(min / step) * step;
+      max = Math.ceil(max / step) * step;
+      if (max === min) max = min + step;
+    }
     var count = series[0].points.length;
     var x = function (i) { return L + (count <= 1 ? 0 : (i * (W - L - R)) / (count - 1)); };
     var y = function (v) { return T + (H - T - B) * (1 - (v - min) / (max - min)); };
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || 'chart') + '">';
-    for (var k = 0; k <= 4 && !opts.noAxis; k++) {
-      var v = min + ((max - min) * k) / 4; var yy = y(v);
+    var ticks = [];
+    if (step) { for (var tv = min; tv <= max + step / 1000; tv += step) ticks.push(tv); }
+    else { for (var k = 0; k <= 4; k++) ticks.push(min + ((max - min) * k) / 4); }
+    for (var ti = 0; ti < ticks.length && !opts.noAxis; ti++) {
+      var v = ticks[ti]; var yy = y(v);
       svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#eceef4"/>';
       svg += '<text x="' + (L - 6) + '" y="' + (yy + 4) + '" font-size="11" text-anchor="end" fill="#7a8193">' + n(v, opts.yDigits == null ? 1 : opts.yDigits) + '</text>';
     }
@@ -112,6 +122,57 @@
   h += '</div></section>';
 
   // ---- The calculation ----
+  // ---- Side by side: the rule and today's Fed ----
+  var HH = D.head_to_head;
+  if (HH && HH.available) {
+    var nw = HH.now, pub = HH.published, rc = HH.rule_costs, s20 = (HH.starts || []).filter(function (s) { return s.start.slice(0, 4) === '2020'; })[0], s00 = HH.starts[0];
+    var fedMoney = HH.money.map(function (m) { return m.fed_base_growth_pct; }).filter(function (x) { return x != null; });
+    var lastCost = HH.costs.filter(function (c) { return c.inflation_on_cash_b != null; }).slice(-1)[0];
+    h += '<section id="side-by-side"><h2>Side by side: the rule and today’s Fed</h2><p class="sub">Two ways to run a currency, on the same public data. The left column is what the book’s rule would say and what it costs to run it in public. The right column is what the Federal Reserve is doing and what it costs, from its own audited statements.</p>';
+    h += '<div class="grid g2 h2h">';
+    h += '<div class="card h2h-rule"><div class="h2h-tag">The rule</div><div class="h2h-q">What it would do</div>';
+    h += '<div class="h2h-big">' + n(nw.rule_allowed_pct, 2) + '%<span> a year</span></div><p>Public money may grow ' + n(nw.rule_allowed_pct, 2) + '% a year (' + esc(nw.rule_quarter) + ' reading), brake ' + esc(nw.rule_brake || 'off') + '. Its goal: prices that stay flat, so a dollar keeps its value. Whatever happens, its money growth stays between 0% and 4% a year, by a formula published in advance.</p>';
+    h += '<div class="h2h-q">What it costs to run in public</div><div class="h2h-big">' + (rc.ai_per_month_usd != null ? '$' + n(rc.ai_per_month_usd, 2) : 'pennies') + '<span> a month</span></div><p>AI fees for the plain-English report' + (rc.ai_per_run_usd != null ? ' ($' + n(rc.ai_per_run_usd, 4) + ' a run)' : '') + '. ' + esc(rc.compute) + ' This is the cost of computing and publishing the rule, not of running a money authority: ' + esc(rc.not_estimated) + '</p></div>';
+    h += '<div class="card h2h-fed"><div class="h2h-tag">Today’s Fed</div><div class="h2h-q">What it is doing</div>';
+    h += '<div class="h2h-big">' + n(nw.prices_12m_pct, 1) + '%<span> price rise (PCE), past 12 months</span></div><p>' + esc(HH.goals.fed) + (s20 ? ' Since January 2020 prices have risen ' + n(s20.prices_vs_flat_pct, 1) + '%, which is ' + n(s20.prices_vs_fed_target_pct, 1) + '% above even its own 2% path.' : '') + ' Its own public money (the monetary base) has grown as much as ' + n(Math.max.apply(null, fedMoney), 0) + '% and shrunk as much as ' + n(-Math.min.apply(null, fedMoney), 0) + '% in a single year since ' + HH.money[0].year + '. It now pays banks ' + n(nw.fed_rate_on_reserves_pct, 2) + '% on their reserves.</p>';
+    h += '<div class="h2h-q">What it costs (' + esc(pub.year) + ', audited)</div><div class="h2h-big">$' + n(pub.interest_paid_deposits + pub.interest_paid_reverse_repo + pub.operating_expenses + pub.dividends, 0) + 'B<span> paid out, against $' + n(pub.interest_income, 0) + 'B earned</span></div><ul class="h2h-list">';
+    h += '<li>$' + n(pub.interest_paid_deposits, 1) + 'B interest to banks and others on their deposits at the Fed</li><li>$' + n(pub.interest_paid_reverse_repo, 1) + 'B interest on reverse repos (mostly money-market funds)</li><li>$' + n(pub.operating_expenses, 1) + 'B to run the system, including $' + n(pub.board_and_currency, 1) + 'B for the Board and printing currency</li><li>$' + n(pub.dividends, 1) + 'B in dividends to member banks</li>';
+    h += '<li>Result: a $' + n(pub.net_loss, 1) + 'B operating loss; losses not yet recouped stand at $' + n(nw.deferred_asset_b, 1) + 'B (as of ' + esc(fmtDate(nw.deferred_as_of)) + '), so nothing goes back to the Treasury until they are</li>';
+    if (lastCost) h += '<li>Separately, inflation cut the buying power of the cash people hold by about $' + n(lastCost.inflation_on_cash_b, 0) + 'B in ' + lastCost.year + '</li>';
+    h += '</ul><p class="meta">The Fed also earned $' + n(pub.interest_income, 1) + 'B in interest in ' + esc(pub.year) + '. Until 2022 it earned more than it paid out and sent its profits to the Treasury. Source: <a href="' + esc(pub.url) + '">' + esc(pub.source) + '</a>.</p></div>';
+    h += '</div>';
+    // chart 1: prices since 2000 vs each goal
+    var ps = HH.price_series;
+    var lab1 = []; ps.forEach(function (p, i) { if (p.year % 5 === 0) lab1.push({ i: i, text: String(p.year) }); });
+    h += '<div class="card chart"><div class="h2h-ct">Prices since January ' + ps[0].year + ' (PCE, ' + ps[0].year + ' = 100): what happened, the Fed’s goal and the rule’s goal</div>' + lineChart([
+      { points: ps.map(function (p) { return [p.year, p.actual]; }), color: '#b22234' },
+      { points: ps.map(function (p) { return [p.year, p.fed_target_path]; }), color: '#7a8193', width: 1.6 },
+      { points: ps.map(function (p) { return [p.year, p.rule_target]; }), color: '#c9a227' }], { label: 'prices versus goals', height: 200, xLabels: lab1, yDigits: 0 });
+    h += '<div class="legend"><span><i style="background:#b22234"></i>actual prices</span><span><i style="background:#7a8193"></i>Fed goal: +2% a year</span><span><i style="background:#c9a227"></i>rule goal: flat</span></div>';
+    h += '<p class="meta">A dollar from January ' + s00.start.slice(0, 4) + ' buys about ' + s00.dollar_now_cents + '¢ today. Had prices risen exactly 2% a year, it would buy ' + s00.fed_target_dollar_cents + '¢. The rule aims for 100¢.</p></div>';
+    // chart 2: money growth
+    var mm = HH.money; var lab2 = []; mm.forEach(function (m, i) { if (m.year % 5 === 0) lab2.push({ i: i, text: String(m.year) }); });
+    var rp20 = (D.replays || []).filter(function (r) { return r.epoch === '2020-Q1'; })[0];
+    var r20 = {}; if (rp20) { var prev = 100; rp20.rows.forEach(function (r) { if (r.quarter.slice(-2) === 'Q4') { r20[r.quarter.slice(0, 4)] = 100 * (r.path_index / prev - 1); prev = r.path_index; } }); }
+    h += '<div class="card chart"><div class="h2h-ct">Growth of public money each year: the Fed’s monetary base versus the rule’s 0–4% band</div>' + lineChart([
+      { points: mm.map(function (m) { return [m.year, m.fed_base_growth_pct]; }), color: '#b22234' },
+      { points: mm.map(function (m) { return [m.year, r20[m.year] != null ? r20[m.year] : null]; }), color: '#c9a227', width: 3 },
+      { points: mm.map(function (m) { return [m.year, m.pop_plus_productivity_pct]; }), color: '#2e7d32', width: 1.4 }], { label: 'money growth', height: 200, xLabels: lab2, yDigits: 0, bands: [{ y: 4, label: 'rule ceiling 4%', color: '#c9a227' }, { y: 0, label: 'rule floor 0%', color: '#c9a227', below: true }] });
+    h += '<div class="legend"><span><i style="background:#b22234"></i>Fed: monetary base, % change in the year</span><span><i style="background:#c9a227"></i>rule’s formula, started in 2020</span><span><i style="background:#2e7d32"></i>population + productivity growth</span></div>';
+    h += '<p class="meta">Friedman’s fixed rule would be ' + HH.money[0].friedman_k_pct + '% every year. The rule’s line is what its formula would have said given the prices that actually happened under the Fed; it is not what prices would have done under the rule.</p></div>';
+    // chart 3: costs over time
+    var cc = HH.costs; var lab3 = []; cc.forEach(function (c, i) { if (c.year % 4 === 0) lab3.push({ i: i, text: String(c.year) }); });
+    h += '<div class="card chart"><div class="h2h-ct">Two costs of today’s system, $ billions a year</div>' + lineChart([
+      { points: cc.map(function (c) { return [c.year, c.interest_to_banks_estimate_b]; }), color: '#13235b' },
+      { points: cc.map(function (c) { return [c.year, c.inflation_on_cash_b]; }), color: '#b22234' }], { label: 'costs', height: 180, xLabels: lab3, yDigits: 0, min: 0 });
+    h += '<div class="legend"><span><i style="background:#13235b"></i>interest the Fed pays banks on reserves (estimated weekly from public data; audited totals above)</span><span><i style="background:#b22234"></i>buying power inflation took from cash in circulation</span></div></div>';
+    // other rules
+    h += '<div class="card"><div class="h2h-ct">How far the economy ran from each goal since ' + HH.money[0].year + ' (largest gap)</div><table><thead><tr><th>Goal</th><th class="num">Largest gap from the goal</th></tr></thead><tbody>';
+    HH.targets.forEach(function (t) { h += '<tr><td>' + esc(t.rule) + '</td><td class="num">' + (t.largest_gap_pct > 0 ? '+' : '') + n(t.largest_gap_pct, 1) + '%</td></tr>'; });
+    h += '</tbody></table><p class="meta">Each row measures actual history against a different goal. Prices ran far above a flat level because the Fed aims for 2% a year, not zero.</p></div>';
+    h += '<p class="caveat"><strong>What this does and does not show.</strong> ' + esc(HH.caveat) + ' Whether the rule would keep prices steady, keep credit affordable or survive the switch has not been tested; those tests are in Chapter 9 of the book.</p></section>';
+  }
+
   h += '<section><h2>Three calculators, one answer</h2><p class="sub">Nothing is published unless the calculators agree: two in JavaScript using different arithmetic, and one in Python that re-reads the raw files on its own. If one cannot run, the reading needs the other two to agree and the gap is flagged for a person. All three are written from the same specification, so they catch coding mistakes, not mistakes in the specification itself; a slot is open for an outside economist to add a calculator written from the book alone. Anyone can run the Python one.</p>';
   if (latest && latest.calculators) {
     var keys = [['trend_growth_pct', 'Trend real growth, % a year', 4], ['gap_cpi_lp', 'CPI-U gap, log points', 4], ['gap_pce_lp', 'PCE gap, log points', 4], ['gap_lp', 'Price gap (average)', 4], ['allowance_raw_pct', 'Path growth before limits, %', 4], ['allowance_pct', 'Path growth allowed, %', 4], ['quarterly_step_pct', 'Quarterly step, %', 5]];
@@ -184,8 +245,9 @@
   (D.replays || []).forEach(function (rp) {
     var rows = rp.rows;
     var shade = []; rows.forEach(function (r, i) { if (r.brake === 'engaged') shade.push(i); });
-    var labels = []; rows.forEach(function (r, i) { if (r.quarter.slice(5) === 'Q1') labels.push({ i: i, text: r.quarter.slice(0, 4) }); });
-    h += '<section><h2>' + esc(rp.label) + '</h2><p class="sub">If the rule had started in ' + esc(rp.epoch) + ', how far would prices have drifted from its flat target, and when would the brake have come on? First brake: <strong>' + esc(rp.summary.first_brake_engaged || 'never') + '</strong>. Largest gap: <strong>' + n(rp.summary.max_gap_lp, 1) + ' log points</strong>.</p>';
+    var every = rows.length > 48 ? 5 : rows.length > 24 ? 2 : 1;
+    var labels = []; rows.forEach(function (r, i) { if (r.quarter.slice(5) === 'Q1' && +r.quarter.slice(0, 4) % every === 0) labels.push({ i: i, text: r.quarter.slice(0, 4) }); });
+    h += '<section><h2>' + esc(rp.label) + '</h2><p class="sub">The rule’s flat target set in ' + esc(rp.epoch) + ', fed the prices that actually happened under the Fed. The dark line is how far those prices sat from the flat target; shaded quarters are when the rule’s brake would have been on; the gold line is the money growth its formula would have allowed. First brake: <strong>' + esc(rp.summary.first_brake_engaged || 'never') + '</strong>. Largest gap: <strong>' + n(rp.summary.max_gap_lp, 1) + ' log points</strong>. These prices came from a central bank aiming for 2% a year, so they show how far apart the two goals are, not what prices would have done under the rule.</p>';
     h += '<div class="card chart">' + lineChart([{ points: rows.map(function (r) { return [r.quarter, r.gap_lp]; }), color: '#13235b' }], { label: 'price gap replay', bands: [{ y: 3, label: 'brake trigger (3)', color: '#b22234' }, { y: 1, label: 'release (1)', color: '#2e7d32', anchor: 'start', below: false }, { y: 0, label: 'target (0)', color: '#7a8193', below: true }], shade: shade, xLabels: labels });
     h += '<div class="legend"><span><i style="background:#13235b"></i>price gap, log points</span><span><i style="background:#b22234;opacity:.3;height:10px"></i>brake engaged</span></div>';
     h += lineChart([{ points: rows.map(function (r) { return [r.quarter, r.allowance_pct]; }), color: '#c9a227' }], { label: 'path growth replay', min: 0, max: 4, height: 160, xLabels: labels });

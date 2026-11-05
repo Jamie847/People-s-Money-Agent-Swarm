@@ -84,3 +84,10 @@ pre { white-space: pre-wrap; word-break: break-all; }
 /* Embedded on peoplesmoneyproject.org: the host page supplies its own header and footer. */
 .embed header.top, .embed footer { display: none; }
 .embed main section:first-child { padding-top: 12px; }
+.h2h .card{border-top:4px solid #c9a227}.h2h .h2h-fed{border-top-color:#b22234}
+.h2h-tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7a8193}
+.h2h-q{font-weight:700;margin:14px 0 2px;color:#13235b}
+.h2h-big{font-size:34px;font-weight:800;line-height:1.1;margin:4px 0 6px;color:#13235b}.h2h-big span{font-size:14px;font-weight:600;color:#7a8193;margin-left:6px}
+.h2h-fed .h2h-big{color:#8a1c2b}
+.h2h-list{margin:6px 0 8px;padding-left:18px}.h2h-list li{margin:3px 0}
+.h2h-ct{font-weight:700;margin-bottom:8px;color:#13235b}
