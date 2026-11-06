@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-06",
-    "started_at": "2026-11-06T13:20:33.343Z",
-    "finished_at": "2026-11-06T13:20:51.838Z",
+    "started_at": "2026-11-06T14:20:08.915Z",
+    "finished_at": "2026-11-06T14:20:27.482Z",
     "mode": "live",
-    "ledger_seq": 22,
-    "ledger_hash": "f3c16aadbb46e2df661ac4efcbea36dbfe4e8b0b2802b59b6a404095c96e8867"
+    "ledger_seq": 23,
+    "ledger_hash": "145894253dfe41313bdfae6e6116cd45cec060f3dd7b4a09baf3634e971b7f23"
   },
   "fred_api": {
     "key_present": true,
@@ -19423,9 +19423,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-06T13:20:33.030Z",
+    "ran_at": "2026-11-06T14:20:08.619Z",
     "isolated": true,
-    "context_sha256": "d659048c394939752adc5083cedb8590b9185bf165dd0f58805aaafbe4a46775",
+    "context_sha256": "d5cea9bb35643b72b88e7cab99288eead2e85e4dda1b9725c80f9461dca47e7d",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -19434,7 +19434,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 61,
+        "duration_ms": 52,
         "isolated": true,
         "report": {
           "status": "info",
@@ -19464,7 +19464,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-06T13:20:33.280Z",
+    "ran_at": "2026-11-06T14:20:08.856Z",
     "all_caught": true,
     "attacks": [
       {
@@ -19489,7 +19489,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 18 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 19 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -19631,7 +19631,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "23 entries; head f3c16aadbb46e2df…"
+        "detail": "24 entries; head 145894253dfe4131…"
       },
       {
         "name": "input-fingerprints",
@@ -20308,7 +20308,7 @@
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 476,
+      "output_tokens": 431,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -20316,12 +20316,11 @@
       "inference_geo": "global",
       "speed": "standard"
     },
-    "headline": "Quarter 2026-Q2 checked: price gap is zero, no brake needed, three calculators agree",
+    "headline": "Quarter 2026-Q2 checked: prices on track, no brake needed, unofficial shadow run only",
     "paragraphs": [
-      "This is an unofficial shadow run of The People's Money issuance rule, run under the name The People's Watch. Nothing is executed. No money is issued, and no real decision depends on these results. Think of it as a practice drill that checks what the rule would have done.",
-      "For the latest quarter, 2026-Q2, the price gap is zero. The gap is how far prices have drifted from where the rule wants them, a little like a room's temperature compared with the thermostat setting. Here the room is exactly on target. The brake, a tool that slows issuance when prices run hot, is off because it is not needed. The three separate calculators all agree on this result. The allowed growth path is 2.47% per year, which is about 0.611% per quarter.",
-      "Market and money-flow checks are mostly calm. Stress and financial-conditions gauges sit below their normal levels. One item, a measure of Treasury securities held in custody for foreign official accounts, is marked as a watch and has an open human review. The next computation, for 2026-Q3, is set for 2026-11-15, using July, August, and September data.",
-      "These results are only a snapshot. The tests of whether this design would keep prices stable have not been run, so no claim is made that it works. Past replays of the rule show large gaps during earlier periods, and that history is a reason for caution, not confidence."
+      "This is an unofficial shadow run of The People's Money issuance rule. Nothing is executed, and no real money is issued or changed. The People's Watch simply tracks what the rule would do. For the latest quarter, 2026-Q2, the result is plain: prices sit where the path expects them, and the brake is not needed. Three separate calculators were run and all three agreed. The gap between actual prices and the target path is zero.",
+      "Think of the brake like a thermostat. It only switches on when a room gets too hot or too cold. Here the room is at the set temperature, so the thermostat stays off. The allowed growth is 2.47% per year, which works out to a step of 0.611% per quarter. The next check is for 2026-Q3, scheduled for 2026-11-15, using the July, August, and September readings from CPI and PCE.",
+      "Several warning lights are tracked as well. Most readings are calm, including financial stress and dollar measures. One item, the value of Treasury securities held in custody for foreign official accounts, is on watch and has an open note for a person to review. The tests of whether this design keeps prices stable have not been run, so none of these results should be read as proof that it works."
     ]
   },
   "head_to_head": {
@@ -20901,7 +20900,7 @@
       "ai_per_month_usd": 0.01,
       "ai_tokens_last_run": {
         "input": 1845,
-        "output": 476
+        "output": 431
       },
       "compute": "GitHub Actions runs public projects free.",
       "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."
