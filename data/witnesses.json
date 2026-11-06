@@ -439,9 +439,10 @@
       "ledger_entry_hash": "f3c16aadbb46e2df661ac4efcbea36dbfe4e8b0b2802b59b6a404095c96e8867",
       "run_date": "2026-11-06",
       "bitcoin": {
-        "status": "pending",
+        "status": "confirmed",
+        "block_height": 974817,
         "ots_file": "data/checkpoints/000022-2026-11-06.json.ots",
-        "submitted": "2026-11-06T13:21:02.274Z"
+        "explorer": "https://mempool.space/block/974817"
       },
       "sigstore": {
         "attestation_url": "https://github.com/Jamie847/peoples-money-watch/attestations/64500443",
@@ -462,9 +463,10 @@
       "ledger_entry_hash": "145894253dfe41313bdfae6e6116cd45cec060f3dd7b4a09baf3634e971b7f23",
       "run_date": "2026-11-06",
       "bitcoin": {
-        "status": "pending",
+        "status": "confirmed",
+        "block_height": 974817,
         "ots_file": "data/checkpoints/000023-2026-11-06.json.ots",
-        "submitted": "2026-11-06T14:20:35.694Z"
+        "explorer": "https://mempool.space/block/974817"
       },
       "sigstore": {
         "attestation_url": "https://github.com/Jamie847/peoples-money-watch/attestations/64522487",
@@ -478,6 +480,24 @@
         "lookup": "https://web.archive.org/web/*/https://raw.githubusercontent.com/Jamie847/peoples-money-watch/d2adb0d71805dc5ce276396eb468fff147e46352/data/checkpoints/000023-2026-11-06.json",
         "status": "saved"
       }
+    },
+    {
+      "file": "data/checkpoints/000024-2026-11-06.json",
+      "ledger_seq": 24,
+      "ledger_entry_hash": "c3e0d5e76aa291ad8ef4f4c541ad9dbe607ed277a9b1fbfeee99e9e8db2daff0",
+      "run_date": "2026-11-06",
+      "bitcoin": {
+        "status": "pending",
+        "ots_file": "data/checkpoints/000024-2026-11-06.json.ots",
+        "submitted": "2026-11-06T15:26:58.502Z"
+      },
+      "sigstore": {
+        "attestation_url": "https://github.com/Jamie847/peoples-money-watch/attestations/64547037",
+        "rekor_log_index": 3720217798,
+        "rekor_search": "https://search.sigstore.dev/?logIndex=3720217798",
+        "verify": "gh attestation verify data/checkpoints/000024-2026-11-06.json --repo Jamie847/peoples-money-watch"
+      },
+      "wayback": null
     }
   ]
 }
