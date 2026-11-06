@@ -12,23 +12,41 @@ export const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\
   && Number.isFinite(Date.parse(`${value}T00:00:00Z`))
   && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
 
-// A prior live comparison must certify this exact series/start and adapter version.
+// A prior live comparison must certify this exact series/start and comparison method.
 // Same-day results do not unlock the API. Source changes, missing/malformed proof,
-// failed comparisons, and differing bytes all fail closed to the existing CSV route.
+// failed or mismatched comparisons all fail closed to the existing CSV route.
 const HEX64 = /^[a-f0-9]{64}$/;
+
+// The date of the matching comparison that qualifies `src` today, or null. A certificate renewed earlier
+// today keeps the earlier day's match in prior_checked_on, so a same-day rerun stays eligible.
+export function evidenceQualifyingDate(src, evidence, today) {
+  if (!evidence || typeof evidence !== 'object' || !validDate(today)) return null;
+  const common = evidence.series === src.series && evidence.start === src.start
+    && validDate(evidence.checked_on) && evidence.checked_on <= today
+    && HEX64.test(evidence.api_sha256 ?? '') && HEX64.test(evidence.csv_sha256 ?? '');
+  const identical = evidence.schema === 1 && evidence.status === 'identical' && evidence.api_sha256 === evidence.csv_sha256;
+  const equivalent = evidence.schema === 2 && evidence.status === 'equivalent' && evidence.method === EQUIVALENCE_METHOD
+    && Number.isInteger(evidence.observations) && evidence.observations > 0;
+  const prior = evidence.prior_checked_on;
+  const priorOk = prior === undefined || (validDate(prior) && prior < evidence.checked_on);
+  if (!common || !(identical || equivalent) || !priorOk) return null;
+  if (evidence.checked_on < today) return evidence.checked_on;
+  return prior !== undefined && prior < today ? prior : null;
+}
+
+// When a check is renewed, keep the earlier qualifying day so later runs on the same day stay eligible.
+export function carryPriorQualification(next, previous, src, today) {
+  const q = evidenceQualifyingDate(src, previous, today);
+  return q && q < today ? { ...next, prior_checked_on: q } : next;
+}
 
 export function fredApiGate(src, { today, useFrom, evidence } = {}) {
   if (!validDate(today) || !validDate(useFrom)) return 'invalid or missing cutover date';
   if (today < FRED_API_NOT_BEFORE) return 'November 15 reading protected';
   if (today < useFrom) return 'before configured cutover date';
-  const common = evidence && evidence.series === src.series && evidence.start === src.start
-    && validDate(evidence.checked_on) && evidence.checked_on < today
-    && HEX64.test(evidence.api_sha256 ?? '') && HEX64.test(evidence.csv_sha256 ?? '');
-  const identical = evidence?.schema === 1 && evidence.status === 'identical' && evidence.api_sha256 === evidence.csv_sha256;
-  const equivalent = evidence?.schema === 2 && evidence.status === 'equivalent' && evidence.method === EQUIVALENCE_METHOD
-    && Number.isInteger(evidence.observations) && evidence.observations > 0;
-  if (!common || !(identical || equivalent)) return 'no valid prior-day parity for this source';
-  if (ageDays(evidence.checked_on, today) > FRED_PARITY_MAX_AGE_DAYS) return `parity evidence older than ${FRED_PARITY_MAX_AGE_DAYS} days`;
+  const q = evidenceQualifyingDate(src, evidence, today);
+  if (!q) return 'no valid prior-day parity for this source';
+  if (ageDays(q, today) > FRED_PARITY_MAX_AGE_DAYS) return `parity evidence older than ${FRED_PARITY_MAX_AGE_DAYS} days`;
   return null;
 }
 
@@ -53,34 +71,45 @@ const canonicalDecimal = (v) => {
   return neg && body !== '0' ? `-${body}` : body;
 };
 
-const valuedRows = (text) => {
+// Strict check of one series in fredgraph layout, used only for the API/CSV comparison. The general
+// parser (parseFredCsv, also used for ALFRED vintages) is deliberately left as it was.
+// Requires: header exactly "observation_date,<series>", two columns per row, real calendar dates in
+// strictly increasing order, and values that are plain decimals or the official missing markers.
+export function validateFredCsv(text, series) {
+  if (typeof text !== 'string' || typeof series !== 'string' || !series) return { ok: false, reason: 'no text or series' };
   const lines = text.trim().split(/\r?\n/);
-  if (!/^observation_date,/i.test(lines[0] ?? '')) return null;
-  const rows = [];
-  for (const line of lines.slice(1)) {
-    const parts = line.split(',');
-    if (parts.length !== 2) return null;
-    const [date, raw] = parts.map((x) => x.trim());
-    if (!validDate(date)) return null;
+  if (lines[0] !== `observation_date,${series}`) return { ok: false, reason: 'header is not observation_date,' + series, line: 1 };
+  const rows = []; let prev = '';
+  for (let i = 1; i < lines.length; i++) {
+    const parts = lines[i].split(',');
+    if (parts.length !== 2) return { ok: false, reason: 'row does not have two columns', line: i + 1 };
+    const [date, raw] = parts;
+    if (!validDate(date)) return { ok: false, reason: 'invalid date', line: i + 1 };
+    if (date <= prev) return { ok: false, reason: 'dates not strictly increasing', line: i + 1 };
+    prev = date;
     if (raw === '' || raw === '.') continue;
     const c = canonicalDecimal(raw);
-    if (c === null) return null;
+    if (c === null) return { ok: false, reason: 'unsupported value', line: i + 1 };
     rows.push([date, c]);
   }
-  return rows;
-};
+  if (!rows.length) return { ok: false, reason: 'no valued observations' };
+  return { ok: true, rows };
+}
 
-export function fredValuesEquivalent(apiText, csvText) {
-  const a = valuedRows(apiText); const c = valuedRows(csvText);
-  if (!a || !c) return { equivalent: false, reason: 'unparseable layout' };
-  const n = Math.max(a.length, c.length);
+// `unavailable: true` means one side is not a valid file for this series, so there is no comparison at all
+// (treated as a failed check, never as evidence of a real disagreement).
+export function fredValuesEquivalent(apiText, csvText, series) {
+  const a = validateFredCsv(apiText, series); const c = validateFredCsv(csvText, series);
+  if (!c.ok) return { equivalent: false, unavailable: true, reason: `CSV check file invalid: ${c.reason}${c.line ? ` (line ${c.line})` : ''}` };
+  if (!a.ok) return { equivalent: false, unavailable: true, reason: `API text invalid: ${a.reason}${a.line ? ` (line ${a.line})` : ''}` };
+  const n = Math.max(a.rows.length, c.rows.length);
   for (let i = 0; i < n; i++) {
-    if (!a[i] || !c[i] || a[i][0] !== c[i][0] || a[i][1] !== c[i][1]) {
-      return { equivalent: false, reason: 'value or date differs', at: { api: a[i] ? a[i].join(',') : null, csv: c[i] ? c[i].join(',') : null, index: i } };
+    const x = a.rows[i]; const y = c.rows[i];
+    if (!x || !y || x[0] !== y[0] || x[1] !== y[1]) {
+      return { equivalent: false, reason: 'value or date differs', at: { api: x ? x.join(',') : null, csv: y ? y.join(',') : null, index: i } };
     }
   }
-  if (!a.length) return { equivalent: false, reason: 'no valued observations' };
-  return { equivalent: true, observations: a.length };
+  return { equivalent: true, observations: a.rows.length };
 }
 
 export function fredEquivalenceEvidence(src, today, apiDigest, csvDigest, observations) {
