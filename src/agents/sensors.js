@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { sha256, writeText } from '../lib/util.js';
-import { FRED_API_COMPARISON_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence, fredValuesEquivalent, fredEquivalenceEvidence } from '../lib/fred-api-policy.js';
+import { FRED_API_COMPARISON_TIMEOUT_MS, FRED_CSV_CHECK_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence, fredValuesEquivalent, fredEquivalenceEvidence } from '../lib/fred-api-policy.js';
 
 export const sourceUrl = (src) => {
   if (src.transport === 'fred') {
@@ -107,7 +107,8 @@ export const parseBisCsv = (text) => {
 //  - each attempt: curl up to perAttemptMs (90 s, as before), then Node fetch up to perAttemptMs
 //    (before the safeguards, fetch had no time limit at all);
 //  - up to `attempts` attempts (3, as before) with backoff of backoffMs × attempt between them (2 s, 4 s, as before);
-//  - one overall cap, timeoutMs, over everything (276 s for normal downloads; 5 s for comparison-only API calls).
+//  - one overall cap, timeoutMs, over everything (276 s for normal downloads; 5 s for comparison-only API calls;
+//    30 s for the CSV check that continues after a source has switched to the API).
 // So a normal download behaves as before when curl answers, and can no longer hang without limit when it doesn't.
 export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000, perAttemptMs = 90000,
   backoffMs = 2000, exec = execFileSync, fetchImpl = globalThis.fetch } = {}) => {
@@ -147,6 +148,24 @@ export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000
   throw new Error(`download failed after ${tried} attempts: ${reason}`);
 };
 
+// Compare the two routes and record the result on `out`. Returns 'identical' | 'equivalent' | 'different'.
+function compareRoutes(src, today, apiText, csvText, out) {
+  const eq = apiText === csvText ? null : fredValuesEquivalent(apiText, csvText);
+  out.api_parity = apiText === csvText ? 'identical' : eq.equivalent ? 'equivalent' : 'different';
+  if (out.api_parity === 'identical') out.api_parity_evidence = fredParityEvidence(src, today, sha256(csvText));
+  else if (out.api_parity === 'equivalent') {
+    out.api_parity_evidence = fredEquivalenceEvidence(src, today, sha256(apiText), sha256(csvText), eq.observations);
+  } else {
+    delete out.api_parity_evidence;
+    out.api_value_difference = eq.at ?? eq.reason;
+    const a = apiText.split('\n'); const c = csvText.split('\n');
+    let i = 0;
+    while (i < Math.max(a.length, c.length) && a[i] === c[i]) i++;
+    out.api_first_difference = { line: i + 1, api: (a[i] ?? '').slice(0, 60), csv: (c[i] ?? '').slice(0, 60), api_lines: a.length, csv_lines: c.length };
+  }
+  return out.api_parity;
+}
+
 async function fetchFred(src, url, key, useApi, out, { downloadFn, today, evidence }) {
   let apiText = null;
   try {
@@ -157,25 +176,33 @@ async function fetchFred(src, url, key, useApi, out, { downloadFn, today, eviden
     out.api_error = scrub(err.message || err, key).slice(0, 200);
   }
   if (useApi && apiText !== null) {
-    out.via = 'fred-api'; out.api_parity_evidence = evidence;
+    // Switched: the API is authoritative, but the CSV is still checked on every run.
+    let csvText = null;
+    try {
+      csvText = await downloadFn(url, { attempts: 1, timeoutMs: FRED_CSV_CHECK_TIMEOUT_MS });
+    } catch (err) {
+      out.csv_check_error = scrub(err.message || err, key).slice(0, 200);
+    }
+    if (csvText !== null) {
+      let usable = false;
+      try { usable = parseFredCsv(csvText).length > 0; } catch { usable = false; }
+      if (!usable) { out.csv_check_error = 'CSV check returned no usable observations'; csvText = null; }
+    }
+    if (csvText === null) {
+      // Check unavailable today: keep the API data; the old evidence is carried unchanged and expires.
+      out.via = 'fred-api'; out.api_parity_evidence = evidence;
+      return apiText;
+    }
+    if (compareRoutes(src, today, apiText, csvText, out) === 'different') {
+      out.via = 'fredgraph-csv (API differed)'; // fail closed to the long-standing route
+      return csvText;
+    }
+    out.via = 'fred-api';
     return apiText;
   }
   const csvText = await downloadFn(url);
   out.via = useApi ? 'fredgraph-csv (API fallback)' : 'fredgraph-csv';
-  if (apiText !== null) {
-    const eq = apiText === csvText ? null : fredValuesEquivalent(apiText, csvText);
-    out.api_parity = apiText === csvText ? 'identical' : eq.equivalent ? 'equivalent' : 'different';
-    if (out.api_parity === 'identical') out.api_parity_evidence = fredParityEvidence(src, today, sha256(csvText));
-    else if (out.api_parity === 'equivalent') {
-      out.api_parity_evidence = fredEquivalenceEvidence(src, today, sha256(apiText), sha256(csvText), eq.observations);
-    } else {
-      out.api_value_difference = eq.at ?? eq.reason;
-      const a = apiText.split('\n'); const c = csvText.split('\n');
-      let i = 0;
-      while (i < Math.max(a.length, c.length) && a[i] === c[i]) i++;
-      out.api_first_difference = { line: i + 1, api: (a[i] ?? '').slice(0, 60), csv: (c[i] ?? '').slice(0, 60), api_lines: a.length, csv_lines: c.length };
-    }
-  }
+  if (apiText !== null) compareRoutes(src, today, apiText, csvText, out);
   return csvText;
 }
 

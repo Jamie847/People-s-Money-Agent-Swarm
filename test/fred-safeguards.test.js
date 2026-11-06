@@ -57,8 +57,10 @@ test('the date alone never switches; a successful comparison only unlocks a late
   assert.equal(sameDay.result.via, 'fredgraph-csv');
   const nextDay = await sensor(t, { fredParity: proof, today: '2026-11-17' });
   assert.equal(nextDay.result.via, 'fred-api');
-  assert.equal(nextDay.calls.length, 1);
-  assert.deepEqual(summary(nextDay.results).parity_evidence, proof);
+  // After the switch the CSV is still checked on every run, and the evidence is refreshed.
+  assert.equal(nextDay.calls.length, 2);
+  assert.deepEqual(nextDay.calls[1].opts, { attempts: 1, timeoutMs: 30000 });
+  assert.equal(summary(nextDay.results).parity_evidence.CPI.checked_on, '2026-11-17');
 });
 
 test('a later configured date remains a gate after the hard floor', async (t) => {

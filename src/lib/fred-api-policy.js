@@ -1,5 +1,11 @@
 // Transport rollout only. This module never changes monetary-rule inputs or arithmetic.
 export const FRED_API_NOT_BEFORE = '2026-11-16';
+// Parity evidence is only trusted for a few days. Daily runs refresh it (before and after the switch);
+// the margin covers a skipped or failed scheduled run. Older evidence sends the source back to the CSV.
+export const FRED_PARITY_MAX_AGE_DAYS = 3;
+// After the switch the CSV is still fetched once per run as a check, with a modest budget.
+export const FRED_CSV_CHECK_TIMEOUT_MS = 30000;
+const ageDays = (from, to) => Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
 export const FRED_API_COMPARISON_TIMEOUT_MS = 5000;
 
 export const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -22,6 +28,7 @@ export function fredApiGate(src, { today, useFrom, evidence } = {}) {
   const equivalent = evidence?.schema === 2 && evidence.status === 'equivalent' && evidence.method === EQUIVALENCE_METHOD
     && Number.isInteger(evidence.observations) && evidence.observations > 0;
   if (!common || !(identical || equivalent)) return 'no valid prior-day parity for this source';
+  if (ageDays(evidence.checked_on, today) > FRED_PARITY_MAX_AGE_DAYS) return `parity evidence older than ${FRED_PARITY_MAX_AGE_DAYS} days`;
   return null;
 }
 
@@ -94,7 +101,8 @@ export function summarizeFredApi(sensors, { keyPresent, offline, useFrom }) {
     via_csv: fred.filter((s) => s.via?.startsWith('fredgraph-csv')).length,
     parity_identical: fred.filter((s) => s.api_parity === 'identical').length,
     parity_equivalent: fred.filter((s) => s.api_parity === 'equivalent').length,
-    parity_different: fred.filter((s) => s.api_parity === 'different').map((s) => ({ id: s.id, first_difference: s.api_first_difference })),
+    parity_different: fred.filter((s) => s.api_parity === 'different').map((s) => ({ id: s.id, value_difference: s.api_value_difference ?? null, first_difference: s.api_first_difference ?? null })),
+    csv_check_errors: fred.filter((s) => s.csv_check_error).map((s) => ({ id: s.id, error: s.csv_check_error })),
     api_errors: fred.filter((s) => s.api_error).map((s) => ({ id: s.id, error: s.api_error })),
     cutover_blocked: fred.filter((s) => s.api_cutover_blocked).map((s) => ({ id: s.id, reason: s.api_cutover_blocked })),
     parity_evidence: Object.fromEntries(fred.filter((s) => s.ok && s.api_parity_evidence).map((s) => [s.id, s.api_parity_evidence])),
