@@ -96,12 +96,14 @@ export function validateFredCsv(text, series) {
   return { ok: true, rows };
 }
 
-// `unavailable: true` means one side is not a valid file for this series, so there is no comparison at all
-// (treated as a failed check, never as evidence of a real disagreement).
+// The API side is checked first. `apiInvalid: true` means the API text is not a valid file for this series:
+// the caller treats it as a failed API response (never used). `unavailable: true` means only the CSV is
+// invalid: there is no comparison at all (a failed check, never evidence of a real disagreement).
 export function fredValuesEquivalent(apiText, csvText, series) {
-  const a = validateFredCsv(apiText, series); const c = validateFredCsv(csvText, series);
+  const a = validateFredCsv(apiText, series);
+  if (!a.ok) return { equivalent: false, apiInvalid: true, reason: `API text invalid: ${a.reason}${a.line ? ` (line ${a.line})` : ''}` };
+  const c = validateFredCsv(csvText, series);
   if (!c.ok) return { equivalent: false, unavailable: true, reason: `CSV check file invalid: ${c.reason}${c.line ? ` (line ${c.line})` : ''}` };
-  if (!a.ok) return { equivalent: false, unavailable: true, reason: `API text invalid: ${a.reason}${a.line ? ` (line ${a.line})` : ''}` };
   const n = Math.max(a.rows.length, c.rows.length);
   for (let i = 0; i < n; i++) {
     const x = a.rows[i]; const y = c.rows[i];

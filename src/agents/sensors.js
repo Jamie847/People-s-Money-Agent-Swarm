@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { sha256, writeText } from '../lib/util.js';
-import { FRED_API_COMPARISON_TIMEOUT_MS, FRED_CSV_CHECK_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence, fredValuesEquivalent, fredEquivalenceEvidence, carryPriorQualification } from '../lib/fred-api-policy.js';
+import { FRED_API_COMPARISON_TIMEOUT_MS, FRED_CSV_CHECK_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence, fredValuesEquivalent, fredEquivalenceEvidence, carryPriorQualification, validateFredCsv } from '../lib/fred-api-policy.js';
 
 export const sourceUrl = (src) => {
   if (src.transport === 'fred') {
@@ -38,7 +38,9 @@ export const fredJsonToCsv = (series, json) => {
   for (const o of body.observations) {
     if (!o || !validDate(o.date) || o.date <= previous) throw new Error('Invalid or unordered FRED observation date');
     const value = o.value;
-    if (value !== '.' && (typeof value !== 'string' || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value) || !Number.isFinite(Number(value)))) {
+    // Plain decimals only (no scientific notation): the same form the comparison accepts, so the API
+    // can never be authoritative with a value the parity check could not compare.
+    if (value !== '.' && (typeof value !== 'string' || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) || !Number.isFinite(Number(value)))) {
       throw new Error('Invalid FRED observation value');
     }
     if (value !== '.') usable++;
@@ -149,10 +151,12 @@ export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000
 };
 
 // Compare the two routes and record the result on `out`.
-// Returns 'identical' | 'equivalent' | 'different', or 'unavailable' when the CSV is not a valid file for
-// this series (a failed check: no evidence is issued and nothing is treated as a real disagreement).
+// Returns 'identical' | 'equivalent' | 'different'; 'api-invalid' when the API text itself fails the strict
+// check (treated as a failed API response: never used, evidence dropped); or 'unavailable' when only the
+// CSV is not a valid file for this series (a failed check: no evidence, not a real disagreement).
 function compareRoutes(src, today, apiText, csvText, out, previous) {
   const eq = fredValuesEquivalent(apiText, csvText, src.series);
+  if (eq.apiInvalid) { out.api_error = eq.reason; delete out.api_parity_evidence; return 'api-invalid'; }
   if (eq.unavailable) { out.csv_check_error = eq.reason; return 'unavailable'; }
   out.api_parity = apiText === csvText ? 'identical' : eq.equivalent ? 'equivalent' : 'different';
   if (out.api_parity === 'identical') {
@@ -189,6 +193,11 @@ async function fetchFred(src, url, key, useApi, out, { downloadFn, today, eviden
       out.csv_check_error = scrub(err.message || err, key).slice(0, 200);
     }
     const result = csvText === null ? 'unavailable' : compareRoutes(src, today, apiText, csvText, out, evidence);
+    if (result === 'api-invalid') {
+      // Same as a failed API response: the normal CSV fallback, and the certificate is removed.
+      out.via = 'fredgraph-csv (API fallback)';
+      return validateFredCsv(csvText, src.series).ok ? csvText : await downloadFn(url);
+    }
     if (result === 'unavailable') {
       // Check failed or file invalid: keep the API data; the old evidence is carried unchanged and expires.
       out.via = 'fred-api'; out.api_parity_evidence = evidence;
