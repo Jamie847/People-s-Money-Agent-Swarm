@@ -47,7 +47,7 @@ test('after the switch, two bad inputs (API failed or invalid, CSV fallback malf
       assert.equal(stored, archived, label);              // archive untouched
       assert.equal(r.sha256, undefined, label);           // nothing new enters the ledger
       assert.equal(r.rejected_sha256, sha256(csvReply), label);
-      assert.match(r.error, /switched source: file failed the strict check/, label);
+      assert.match(r.error, /file failed the strict check/, label);
       assert.equal(s.parity_evidence.CPI, undefined, label);
     }
   }
@@ -77,4 +77,45 @@ test('before the switch the protected CSV route is unchanged (it keeps the gener
   assert.equal(r.via, 'fredgraph-csv');
   assert.equal(r.ok, true);
   assert.equal(stored, bad['wrong series']);
+});
+
+// Review round 6 (dot): after both inputs are rejected the certificate is gone, so the next run takes the CSV
+// route of a non-eligible source. From Nov 16 that route is strictly checked too, so the bad file still can't
+// replace the archive, on the same day or later, with or without a key.
+test('sequential: bad API + bad backup rejected, then reruns with the saved (empty) evidence still refuse the bad file', async (t) => {
+  const badCsv = bad['wrong series'];
+  const inputsDir = mkdtempSync(join(tmpdir(), 'fred-seq-'));
+  t.after(() => rmSync(inputsDir, { recursive: true, force: true }));
+  writeFileSync(join(inputsDir, 'CPI.csv'), archived);
+  const downloadFn = async (url) => { if (url.includes('api.stlouisfed.org')) throw new Error('HTTP 500'); return badCsv; };
+  const step = async (today, evidence, fredKey = key) => {
+    const results = await runSensors([src], { inputsDir, fredKey, today, fredApiFrom: '2026-11-16', fredParity: evidence ? { CPI: evidence } : {}, downloadFn });
+    const s = summarizeFredApi(results, { keyPresent: !!fredKey, offline: false, useFrom: '2026-11-16' });
+    return { r: results[0], saved: s.parity_evidence.CPI };
+  };
+  const first = await step('2026-11-20', ev);
+  assert.equal(first.r.ok, false);
+  assert.equal(first.saved, undefined);                         // certificate removed
+  for (const [today, fredKey] of [['2026-11-20', key], ['2026-11-21', key], ['2026-11-22', '']]) {
+    const next = await step(today, first.saved, fredKey);
+    assert.ok(fredKey ? next.r.api_cutover_blocked : true, today); // no longer API-eligible
+    assert.equal(next.r.ok, false, today);
+    assert.match(next.r.error, /failed the strict check/, today);
+    assert.equal(next.r.rejected_sha256, sha256(badCsv), today);
+    assert.equal(next.r.sha256, undefined, today);
+  }
+  assert.equal(readFileSync(join(inputsDir, 'CPI.csv'), 'utf8'), archived);
+});
+
+test('numbers too large for the parser are rejected by both readers', async (t) => {
+  const huge = '1' + '0'.repeat(400);
+  const { validateFredCsv } = await import('../src/lib/fred-api-policy.js');
+  const { fredJsonToCsv } = await import('../src/agents/sensors.js');
+  assert.equal(validateFredCsv(`observation_date,CPIAUCSL\n2026-08-01,${huge}\n`, 'CPIAUCSL').reason, 'value out of range');
+  assert.equal(validateFredCsv(`observation_date,CPIAUCSL\n2026-08-01,-${huge}.5\n`, 'CPIAUCSL').ok, false);
+  assert.throws(() => fredJsonToCsv('CPIAUCSL', JSON.stringify({ count: 1, offset: 0, observations: [{ date: '2026-08-01', value: huge }] })), /Invalid FRED observation value/);
+  const { r, stored } = await run(t, { api: new Error('HTTP 500'), csvReply: `observation_date,CPIAUCSL\n2026-08-01,321.25\n2026-09-01,${huge}\n` });
+  assert.equal(r.ok, false);
+  assert.match(r.error, /value out of range/);
+  assert.equal(stored, archived);
 });

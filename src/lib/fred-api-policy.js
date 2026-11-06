@@ -74,7 +74,7 @@ const canonicalDecimal = (v) => {
 // Strict check of one series in fredgraph layout, used only for the API/CSV comparison. The general
 // parser (parseFredCsv, also used for ALFRED vintages) is deliberately left as it was.
 // Requires: header exactly "observation_date,<series>", two columns per row, real calendar dates in
-// strictly increasing order, and values that are plain decimals or the official missing markers.
+// strictly increasing order, and values that are finite plain decimals or the official missing markers.
 export function validateFredCsv(text, series) {
   if (typeof text !== 'string' || typeof series !== 'string' || !series) return { ok: false, reason: 'no text or series' };
   const lines = text.trim().split(/\r?\n/);
@@ -90,6 +90,7 @@ export function validateFredCsv(text, series) {
     if (raw === '' || raw === '.') continue;
     const c = canonicalDecimal(raw);
     if (c === null) return { ok: false, reason: 'unsupported value', line: i + 1 };
+    if (!Number.isFinite(Number(raw))) return { ok: false, reason: 'value out of range', line: i + 1 };
     rows.push([date, c]);
   }
   if (!rows.length) return { ok: false, reason: 'no valued observations' };

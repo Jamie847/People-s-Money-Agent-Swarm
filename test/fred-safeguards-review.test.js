@@ -43,14 +43,19 @@ test('the saved source record keeps a refused download visible but out of the in
   const dir = mkdtempSync(join(tmpdir(), 'rec-'));
   writeFileSync(join(dir, 'CPI.csv'), GOOD);
   const bad = '<html>Service temporarily unavailable</html>';
-  const sensors = await runSensors(SRC, { inputsDir: dir, fredKey: '', downloadFn: async () => bad });
-  const saved = JSON.parse(JSON.stringify(sensors.map(sourceRecord)));  // exactly what run.js writes to latest.json
-  assert.equal(saved[0].sha256, null);
-  assert.equal(saved[0].rejected_sha256, sha256(bad));
-  assert.equal(saved[0].ok, false);
-  assert.match(saved[0].error, /Not a FRED CSV/);
-  const inputs = Object.fromEntries(sensors.map((s) => [s.id, s.sha256 ?? null])); // exactly what run.js seals
-  assert.deepEqual(inputs, { CPI: null });
+  // Pinned dates: before Nov 16 the general parser refuses it; from Nov 16 the strict check does. Same outcome.
+  for (const [today, message] of [['2026-11-10', /Not a FRED CSV/], ['2026-12-01', /failed the strict check/]]) {
+    writeFileSync(join(dir, 'CPI.csv'), GOOD);
+    const sensors = await runSensors(SRC, { inputsDir: dir, fredKey: '', today, downloadFn: async () => bad });
+    const saved = JSON.parse(JSON.stringify(sensors.map(sourceRecord)));  // exactly what run.js writes to latest.json
+    assert.equal(saved[0].sha256, null, today);
+    assert.equal(saved[0].rejected_sha256, sha256(bad), today);
+    assert.equal(saved[0].ok, false, today);
+    assert.match(saved[0].error, message, today);
+    const inputs = Object.fromEntries(sensors.map((s) => [s.id, s.sha256 ?? null])); // exactly what run.js seals
+    assert.deepEqual(inputs, { CPI: null }, today);
+    assert.equal(readFileSync(join(dir, 'CPI.csv'), 'utf8'), GOOD, today);
+  }
 });
 
 test('the saved record of a good download has no rejected field, so normal output is unchanged', async () => {
