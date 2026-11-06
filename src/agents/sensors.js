@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { sha256, writeText } from '../lib/util.js';
-import { FRED_API_COMPARISON_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence } from '../lib/fred-api-policy.js';
+import { FRED_API_COMPARISON_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence, fredValuesEquivalent, fredEquivalenceEvidence } from '../lib/fred-api-policy.js';
 
 export const sourceUrl = (src) => {
   if (src.transport === 'fred') {
@@ -163,9 +163,13 @@ async function fetchFred(src, url, key, useApi, out, { downloadFn, today, eviden
   const csvText = await downloadFn(url);
   out.via = useApi ? 'fredgraph-csv (API fallback)' : 'fredgraph-csv';
   if (apiText !== null) {
-    out.api_parity = apiText === csvText ? 'identical' : 'different';
+    const eq = apiText === csvText ? null : fredValuesEquivalent(apiText, csvText);
+    out.api_parity = apiText === csvText ? 'identical' : eq.equivalent ? 'equivalent' : 'different';
     if (out.api_parity === 'identical') out.api_parity_evidence = fredParityEvidence(src, today, sha256(csvText));
-    else {
+    else if (out.api_parity === 'equivalent') {
+      out.api_parity_evidence = fredEquivalenceEvidence(src, today, sha256(apiText), sha256(csvText), eq.observations);
+    } else {
+      out.api_value_difference = eq.at ?? eq.reason;
       const a = apiText.split('\n'); const c = csvText.split('\n');
       let i = 0;
       while (i < Math.max(a.length, c.length) && a[i] === c[i]) i++;
