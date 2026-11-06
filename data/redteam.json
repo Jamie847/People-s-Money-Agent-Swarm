@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-11-06T15:45:39.979Z",
+  "ran_at": "2026-11-06T18:26:25.440Z",
   "all_caught": true,
   "attacks": [
     {
@@ -24,7 +24,7 @@
       "id": "rewrite-entire-ledger",
       "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
       "caught": true,
-      "detail": "chain re-sealed perfectly, but 21 witnessed checkpoint(s) expose it"
+      "detail": "chain re-sealed perfectly, but 22 witnessed checkpoint(s) expose it"
     },
     {
       "id": "edit-frozen-reading",

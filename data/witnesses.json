@@ -526,6 +526,24 @@
         "lookup": "https://web.archive.org/web/*/https://raw.githubusercontent.com/Jamie847/peoples-money-watch/fe5359a9e62f99f8fd0acddcbd751d3149a7168e/data/checkpoints/000025-2026-11-06.json",
         "status": "saved"
       }
+    },
+    {
+      "file": "data/checkpoints/000026-2026-11-06.json",
+      "ledger_seq": 26,
+      "ledger_entry_hash": "ea3b48c4f6de59bf3ff64300026abd8bb4b815f809e8276e61077619ccb23f92",
+      "run_date": "2026-11-06",
+      "bitcoin": {
+        "status": "pending",
+        "ots_file": "data/checkpoints/000026-2026-11-06.json.ots",
+        "submitted": "2026-11-06T18:26:51.946Z"
+      },
+      "sigstore": {
+        "attestation_url": "https://github.com/Jamie847/peoples-money-watch/attestations/64614367",
+        "rekor_log_index": 3723214366,
+        "rekor_search": "https://search.sigstore.dev/?logIndex=3723214366",
+        "verify": "gh attestation verify data/checkpoints/000026-2026-11-06.json --repo Jamie847/peoples-money-watch"
+      },
+      "wayback": null
     }
   ]
 }
