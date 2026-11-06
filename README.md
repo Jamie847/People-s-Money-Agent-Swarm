@@ -14,7 +14,7 @@ Every day, a network of small automated agents reads public data, applies the ru
 - **It is** a working demonstration of how the design's replacement for the Federal Reserve could be run in the open: rule-based, recomputable, audited, with humans at the gates.
 - **It is not** the design's formal 18-month rehearsal. It executes nothing and publishes **no national dollar issuance figure**: the book withholds one until a reconciled model release supports it (Ch. 10).
 - **It does not test** whether the rule would keep prices stable. That needs the economic stress tests described in Chapter 9.
-- Each live reading after the starting quarter uses the rule's inputs **as published on its computation date** (ALFRED vintages, archived in `data/inputs/vintages/`), so later revisions never change it. The starting quarter (2026-Q2) was read from data as published at launch; see interpretation 8 in `config/rule.json`. All data come through the St. Louis Fed's FRED/ALFRED, which republish BLS, BEA and Federal Reserve figures. The replay and the sentinels use current revised data.
+- Each live reading after the starting quarter uses the rule's inputs **as published on its computation date** (ALFRED vintages, fingerprinted in the record), so later revisions never change it. The starting quarter (2026-Q2) was read from data as published at launch; see interpretation 8 in `config/rule.json`. All data come through the St. Louis Fed's FRED/ALFRED, which republish BLS, BEA and Federal Reserve figures. The replay and the sentinels use current revised data.
 
 ## The agents, tier by tier
 
@@ -56,16 +56,22 @@ Details the book leaves open are listed in `config/rule.json` → `interpretatio
 ## Check it yourself
 
 ```bash
-python3 scripts/recompute.py          # independent recompute of the latest live quarter (no installs)
+python3 scripts/recompute.py --fetch  # independent recompute of the latest live quarter (no installs; downloads the FRED files for you)
 node scripts/audit.js                 # verify the ledger chain, fingerprints and frozen readings
 npm test                              # unit tests, including the book's three worked examples
 ```
+
+### Why the FRED files aren't in this repository
+
+FRED replied to our request (November 2026) that its terms don't allow keeping data downloaded through FRED in a public archive. So every run still downloads the files, fingerprints them, checks them and seals the fingerprints in the ledger, but the files themselves are no longer committed (older copies remain in the history for now while we ask FRED how its terms apply to them). The automatic switch to the FRED API is on hold for the same reason.
+
+To check a run yourself, `recompute.py --fetch` downloads the same series from FRED for your own use. A dated ALFRED snapshot (used for each live reading) is fixed, so its fingerprint should match the record exactly; the latest files match until FRED adds or revises data. The plan is to move to the agencies' own sources (BLS, BEA, Treasury, Federal Reserve) where their terms allow a full public archive. The BIS file is still kept.
 
 ## Run it
 
 ```bash
 node scripts/run.js            # fetch live data, run every tier, seal the run, write data/latest.json
-node scripts/run.js --offline  # reuse data/inputs/ (no network)
+node scripts/run.js --offline  # reuse files from your own earlier run in data/inputs/ (no network; FRED files are not in the repo)
 node scripts/build-site.js     # build the dashboard into _site/
 ```
 
@@ -84,7 +90,7 @@ Node 20+ and Python 3. No dependencies.
 - `config/`: rule parameters, data sources, sentinel watch levels, transition backstop **proposal**
 - `src/agents/`: one file per agent family
 - `scripts/`: orchestrator, auditor, independent Python recompute, site builder, issue opener
-- `data/inputs/`: raw files exactly as downloaded · `data/ledger.jsonl`: hash-chained record of every run · `data/live-history.json`: frozen live readings · `data/latest.json`: what the dashboard reads
+- `data/inputs/`: raw files as downloaded during a run (FRED files are not committed; their fingerprints are in the ledger) · `data/ledger.jsonl`: hash-chained record of every run · `data/live-history.json`: frozen live readings · `data/latest.json`: what the dashboard reads
 - `dashboard/`: the public page
 
 ## License

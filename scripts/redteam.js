@@ -8,7 +8,7 @@
 // Optional: with ANTHROPIC_API_KEY set, once a week (Mondays) a low-cost model suggests new attacks for humans
 // to consider. Suggestions are advisory text only; nothing they say is executed.
 
-import { mkdtempSync, cpSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, cpSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -43,7 +43,9 @@ const hasLedger = existsSync(join(root, 'data', 'ledger.jsonl')) && readLedger(j
 attack('edit-raw-input', 'Change one digit in a raw input file after it was sealed', () => {
   const d = scratchCopy();
   const p = join(d, 'data', 'inputs', 'CPI.csv');
-  writeFileSync(p, readFileSync(p, 'utf8').replace(/(\d)(\r?\n)$/, (m, a, b) => `${(Number(a) + 1) % 10}${b}`));
+  // FRED files are not published, so a fresh copy may not have one: then plant a forged file instead.
+  if (existsSync(p)) writeFileSync(p, readFileSync(p, 'utf8').replace(/(\d)(\r?\n)$/, (m, a, b) => `${(Number(a) + 1) % 10}${b}`));
+  else { mkdirSync(join(d, 'data', 'inputs'), { recursive: true }); writeFileSync(p, 'observation_date,CPIAUCSL\n2026-09-01,999.999\n'); }
   const caught = auditFails(d, 'input-fingerprints'); rmSync(d, { recursive: true, force: true });
   return [caught, caught ? 'auditor: input fingerprint mismatch' : 'auditor did not notice the edited input'];
 });

@@ -3,3 +3,8 @@ node_modules/
 __pycache__/
 *.pyc
 .DS_Store
+
+# FRED's terms (reply received Nov 6, 2026) don't allow keeping data retrieved through FRED/ALFRED in a
+# public archive. Runs still download, fingerprint and seal these files; they are no longer committed.
+data/inputs/*
+!data/inputs/OFFSHORE_CREDIT.csv

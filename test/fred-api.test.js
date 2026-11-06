@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fredJsonToCsv, fredApiUrl, scrub, parseFredCsv } from '../src/agents/sensors.js';
 
 test('FRED API JSON becomes exactly the fredgraph.csv layout, missing values included', () => {
@@ -12,7 +12,9 @@ test('FRED API JSON becomes exactly the fredgraph.csv layout, missing values inc
   assert.equal(fredJsonToCsv('CPIAUCSL', json), 'observation_date,CPIAUCSL\n2025-09-01,324.245\n2025-10-01,\n2025-11-01,325.063\n');
 });
 
-test('the converted text parses to the same observations as the stored file', () => {
+// The real FRED files are not published (FRED's terms); this runs after a download (npm run test:inputs).
+const HAVE_CPI = existsSync(new URL('../data/inputs/CPI.csv', import.meta.url));
+test('the converted text parses to the same observations as the stored file', { skip: !HAVE_CPI && 'FRED files not present (not published); runs after a download' }, () => {
   const stored = readFileSync(new URL('../data/inputs/CPI.csv', import.meta.url), 'utf8');
   const rows = stored.trim().split('\n').slice(1).map((l) => { const [date, value] = l.split(','); return { date, value: value === '' ? '.' : value }; });
   const rebuilt = fredJsonToCsv('CPIAUCSL', JSON.stringify({ observations: rows }));

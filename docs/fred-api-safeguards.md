@@ -1,5 +1,7 @@
 # FRED transport safeguards
 
+> **On hold (November 6, 2026).** FRED replied that its terms do not allow keeping its downloaded data in a public archive. The project has stopped committing FRED files and set `use_from` to 2099-12-31, so no source switches to the API; comparisons still run. The safeguards below remain in place for any later switch.
+
 These safeguards change transport selection, validation and diagnostics only. The monetary rule, calculators, vintage-selection logic and frozen-reading logic are unchanged.
 
 ## Switching routes

@@ -21,11 +21,21 @@ export function runAudit(root) {
   const last = entries[entries.length - 1];
 
   if (last) {
+    // Files retrieved through FRED are not published (FRED's terms). During a run they are on disk and are
+    // checked like any other file; in a copy of the repo they are simply absent, which is expected. A file that
+    // is present must always match its seal, and a missing file from any other source is a failure.
+    let fredIds = new Set();
+    try { fredIds = new Set(JSON.parse(readFileSync(join(root, 'config', 'sources.json'), 'utf8')).sources.filter((s) => s.transport === 'fred').map((s) => s.id)); } catch { /* no config: treat every file as published */ }
+    const unpublished = [];
     const mismatched = Object.entries(last.inputs_sha256 || {}).filter(([id, h]) => {
+      if (!h) return false;
       const p = join(root, 'data', 'inputs', `${id}.csv`);
-      return h && (!existsSync(p) || sha256(readFileSync(p, 'utf8')) !== h);
+      if (!existsSync(p)) { if (fredIds.has(id)) { unpublished.push(id); return false; } return true; }
+      return sha256(readFileSync(p, 'utf8')) !== h;
     });
-    add('input-fingerprints', mismatched.length === 0, mismatched.length ? `Changed since sealed: ${mismatched.map((m) => m[0]).join(', ')}` : `${Object.keys(last.inputs_sha256 || {}).length} raw files match the ledger`);
+    const sealed = Object.values(last.inputs_sha256 || {}).filter(Boolean).length;
+    add('input-fingerprints', mismatched.length === 0, mismatched.length ? `Changed since sealed: ${mismatched.map((m) => m[0]).join(', ')}`
+      : `${sealed - unpublished.length} raw files match the ledger` + (unpublished.length ? `; ${unpublished.length} FRED files are not published in this copy (FRED's terms) and were checked during the run` : ''));
     const rulePath = join(root, 'config', 'rule.json');
     add('rule-fingerprint', sha256(readFileSync(rulePath, 'utf8')) === last.rule_sha256, 'config/rule.json matches the ledger');
     const histText = existsSync(join(root, 'data', 'live-history.json')) ? readFileSync(join(root, 'data', 'live-history.json'), 'utf8') : '[]\n';

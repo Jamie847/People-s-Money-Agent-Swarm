@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, writeFileSync, rmSync, cpSync, mkdirSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, rmSync, cpSync, mkdirSync, existsSync } from 'node:fs';
+// The real FRED files are not published (FRED's terms). Tests that need them run after a download (npm run test:inputs).
+const HAVE_INPUTS = (() => { try { const r = fileURLToPath(new URL('..', import.meta.url)); return JSON.parse(readFileSync(join(r, 'config/sources.json'), 'utf8')).sources.every((s) => existsSync(join(r, 'data/inputs', `${s.id}.csv`))); } catch { return false; } })();
+const NEEDS_INPUTS = { skip: !HAVE_INPUTS && 'FRED files not present (not published); runs after a download' };
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -233,7 +236,7 @@ test('download rejects invalid budgets and does not sleep after its final attemp
   assert.equal(errorSignal.aborted, true, 'Unconsumed HTTP error bodies must be closed');
 });
 
-test('all archived FRED fixtures retain identical bytes across comparison and approved API mode', async (t) => {
+test('all archived FRED fixtures retain identical bytes across comparison and approved API mode', NEEDS_INPUTS, async (t) => {
   const root = fileURLToPath(new URL('..', import.meta.url));
   const { sources } = JSON.parse(readFileSync(join(root, 'config/sources.json'), 'utf8'));
   const inputsDir = work(t);
@@ -262,7 +265,7 @@ test('all archived FRED fixtures retain identical bytes across comparison and ap
   }
 });
 
-test('a Nov 15 reading remains frozen after later inputs change; monetary configuration is untouched', async (t) => {
+test('a Nov 15 reading remains frozen after later inputs change; monetary configuration is untouched', NEEDS_INPUTS, async (t) => {
   const original = fileURLToPath(new URL('..', import.meta.url));
   const root = work(t);
   for (const dir of ['config', 'src', 'scripts']) cpSync(join(original, dir), join(root, dir), { recursive: true });

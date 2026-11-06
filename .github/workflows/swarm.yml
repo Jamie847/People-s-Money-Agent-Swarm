@@ -54,6 +54,12 @@ jobs:
           SWARM_REPORTER_MODEL: claude-haiku-5-5   # low-cost model; the reporter makes one short call per run
         run: node scripts/run.js || echo "SWARM_AUDIT_FAILED=1" >> "$GITHUB_ENV"
 
+      # The real FRED files are downloaded by the run but not committed (FRED's terms), so the tests that
+      # need them run here, while they are on disk. Never blocks the run or its commit.
+      - name: Tests that need the downloaded FRED files
+        continue-on-error: true
+        run: npm run test:inputs
+
       - name: Draft the monthly newsletter (once a month, on or after the 16th)
         id: newsletter
         continue-on-error: true

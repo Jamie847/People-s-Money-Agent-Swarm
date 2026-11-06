@@ -21,6 +21,11 @@ jobs:
       - name: Tests and audit of the committed record
         run: npm run check
       - name: Recompute the latest live quarter independently (Python)
-        run: python3 scripts/recompute.py
+        # Exit 3 means the FRED files are not in the repo (FRED's terms); the daily run recomputes with them.
+        run: |
+          set +e
+          python3 scripts/recompute.py; s=$?
+          if [ "$s" -eq 3 ]; then echo "FRED files are not published; skipped here (checked in every daily run)."; exit 0; fi
+          exit $s
       - name: Community agents run in the sandbox and return valid reports
         run: node scripts/community.js --isolate --validate

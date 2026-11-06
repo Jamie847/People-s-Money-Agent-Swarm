@@ -12,7 +12,7 @@ It reads the archived raw files in data/inputs/ (exactly what the sensors downlo
 in data/ledger.jsonl) and the parameters in config/rule.json. It prepares its own inputs and uses
 high-precision decimal arithmetic, so it does not share code with calculators A and B.
 """
-import argparse, csv, datetime, hashlib, json, os, sys
+import argparse, csv, datetime, hashlib, json, os, sys, urllib.request
 from decimal import Decimal, getcontext
 
 getcontext().prec = 40
@@ -105,6 +105,8 @@ def compute(epoch, quarter, rule, inputs_dir=None, base_file=None):
 
 
 def latest_live_quarter(rule):
+    if not all(os.path.exists(os.path.join(ROOT, 'data', 'inputs', f'{k}.csv')) for k in ('CPI', 'PCE')):
+        return None
     cpi, pce = read_series('CPI'), read_series('PCE')
     today = datetime.date.today().isoformat()
     y, q = parse_q(rule['live_epoch_quarter'])
@@ -118,6 +120,32 @@ def latest_live_quarter(rule):
     return best
 
 
+SERIES = {'CPI': ('CPIAUCSL', '1998-01-01'), 'PCE': ('PCEPI', '1998-01-01'), 'GDP': ('GDPCA', '1980-01-01')}
+NOT_PUBLISHED = (
+    "The FRED files this check reads are not in the repository: FRED's terms don't allow this project to keep\n"
+    "its downloaded data in a public archive. Run again with --fetch to download them from FRED yourself.")
+
+
+def fetch_inputs(inputs_dir):
+    # Download CPI, PCE and GDP from FRED (or the dated ALFRED snapshot, if inputs_dir is a vintage folder)
+    # for your own use. Nothing is uploaded anywhere.
+    folder = inputs_dir or os.path.join(ROOT, 'data', 'inputs')
+    vintage = os.path.basename(os.path.normpath(folder)) if os.path.basename(os.path.dirname(os.path.normpath(folder))) == 'vintages' else None
+    os.makedirs(folder, exist_ok=True)
+    for name, (series, start) in SERIES.items():
+        path = os.path.join(folder, f'{name}.csv')
+        if os.path.exists(path):
+            continue
+        url = (f'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id={series}&cosd={start}&vintage_date={vintage}' if vintage
+               else f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}&cosd={start}')
+        req = urllib.request.Request(url, headers={'User-Agent': 'peoples-money-recompute'})
+        with urllib.request.urlopen(req, timeout=90) as resp:
+            data = resp.read()
+        with open(path, 'wb') as f:
+            f.write(data)
+        print(f'Downloaded {name} from {url}', file=sys.stderr)
+
+
 def main():
     with open(os.path.join(ROOT, 'config', 'rule.json')) as f:
         rule = json.load(f)
@@ -127,6 +155,7 @@ def main():
     ap.add_argument('--json', action='store_true')
     ap.add_argument('--inputs-dir', help='folder of CPI/PCE/GDP files (default: data/inputs)')
     ap.add_argument('--base-file', help='live-history.json holding the frozen starting quarter')
+    ap.add_argument('--fetch', action='store_true', help='download missing CPI/PCE/GDP files from FRED for your own use')
     a = ap.parse_args()
     inputs_dir, base_file, quarter = a.inputs_dir, a.base_file, a.quarter
     if not quarter:
@@ -144,8 +173,19 @@ def main():
                 base_file = hist_path
         else:
             quarter = latest_live_quarter(rule)
+    if not quarter and a.fetch:
+        fetch_inputs(inputs_dir)
+        quarter = latest_live_quarter(rule)
+    if not quarter and not os.path.exists(os.path.join(ROOT, 'data', 'inputs', 'CPI.csv')):
+        print(json.dumps({'error': 'inputs not published'}) if a.json else NOT_PUBLISHED)
+        sys.exit(3)
     if not quarter:
         sys.exit('No completed live quarter yet.')
+    if a.fetch:
+        fetch_inputs(inputs_dir)
+    if not all(os.path.exists(os.path.join(inputs_dir or os.path.join(ROOT, 'data', 'inputs'), f'{k}.csv')) for k in SERIES):
+        print(json.dumps({'error': 'inputs not published'}) if a.json else NOT_PUBLISHED)
+        sys.exit(3)
     try:
         r = compute(a.epoch, quarter, rule, inputs_dir, base_file)
     except KeyError as e:
@@ -165,7 +205,8 @@ def main():
     print('  Input fingerprints (SHA-256):')
     for k, v in r['input_sha256'].items():
         print(f'    {k}: {v}')
-    print('Compare these with data/latest.json or the dashboard. They should match.')
+    print('Compare these with data/latest.json or the dashboard. They match when your files are the same')
+    print('ones the run used: a dated snapshot always is; the latest FRED files match until FRED adds or revises data.')
 
 
 if __name__ == '__main__':
