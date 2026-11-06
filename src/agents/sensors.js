@@ -245,6 +245,14 @@ export async function runSensors(sources, { inputsDir, offline = false, fredKey 
         text = await downloadFn(url);
       }
       digest = sha256(text);
+      // Once a source has switched to the API, whatever is about to be archived (API data, or the CSV used
+      // as a fallback or after a mismatch) must pass the strict check for this exact series. Failing text is
+      // rejected and the archive is left as it was. The pre-switch CSV route and ALFRED vintages are not
+      // affected (protected November 15 path).
+      if (out.api_attempted && out.api_cutover_blocked === null) {
+        const v = validateFredCsv(text, src.series);
+        if (!v.ok) throw new Error(`switched source: file failed the strict check (${v.reason}${v.line ? `, line ${v.line}` : ''})`);
+      }
       out.observations = src.transport === 'bis' ? parseBisCsv(text) : parseFredCsv(text);
       out.ok = out.observations.length > 0;
       out.last = out.ok ? out.observations[out.observations.length - 1] : null;
