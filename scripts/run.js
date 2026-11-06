@@ -32,7 +32,21 @@ const sentinelCfg = readJSON(P('config', 'sentinels.json'));
 const proposal = readJSON(P('config', 'backstop-proposal.json'));
 
 // ---- Tier 1: sensors and integrity ----
-const sensors = await runSensors(sources, { inputsDir: P('data', 'inputs'), offline });
+const fredCfg = readJSON(P('config', 'sources.json')).fred_api || {};
+const sensors = await runSensors(sources, { inputsDir: P('data', 'inputs'), offline, today, fredApiFrom: fredCfg.use_from || '9999-12-31' });
+const fredApi = (() => {
+  const fred = sensors.filter((s) => s.via);
+  if (!fred.length) return { key_present: false, note: 'No FRED API key set; series fetched keyless.' };
+  return {
+    key_present: true,
+    use_from: fredCfg.use_from || null,
+    via_api: fred.filter((s) => s.via === 'fred-api').length,
+    via_csv: fred.filter((s) => s.via !== 'fred-api').length,
+    parity_identical: fred.filter((s) => s.api_parity === 'identical').length,
+    parity_different: fred.filter((s) => s.api_parity === 'different').map((s) => ({ id: s.id, first_difference: s.api_first_difference })),
+    api_errors: fred.filter((s) => s.api_error).map((s) => ({ id: s.id, error: s.api_error })),
+  };
+})();
 const byId = Object.fromEntries(sensors.map((s) => [s.id, s]));
 const sourceChecks = checkSources(sensors, today);
 const ruleInputsOk = ['CPI', 'PCE', 'GDP'].every((id) => byId[id]?.ok);
@@ -145,6 +159,7 @@ const latest = {
   title: "The People's Watch — shadow run of The People's Money rule",
   disclaimer: "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   run: { date: today, started_at: startedAt, finished_at: new Date().toISOString(), mode: offline ? 'offline' : 'live', ledger_seq: ledgerEntry.seq, ledger_hash: ledgerEntry.hash },
+  fred_api: fredApi,
   rule: { version: rule.design_paper_version, parameters: { feedback_strength: rule.feedback_strength, floor_pct: rule.path_growth_floor_pct, ceiling_pct: rule.path_growth_ceiling_pct, trend_years: rule.trend_growth_years, brake_trigger_lp: rule.brake_trigger_log_points, brake_release_lp: rule.brake_release_log_points }, interpretations_pending_review: rule.interpretations_pending_review },
   live: {
     epoch: rule.live_epoch_quarter,

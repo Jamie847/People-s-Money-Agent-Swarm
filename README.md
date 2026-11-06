@@ -75,6 +75,7 @@ Node 20+ and Python 3. No dependencies.
 
 1. **Settings → Pages → Build and deployment → Source: GitHub Actions.** The dashboard then publishes on every run.
 2. **Settings → Secrets and variables → Actions → New repository secret:** `ANTHROPIC_API_KEY` (for the AI reporter). Without it, the reporter uses a plain template.
+   Also add `FRED_API_KEY` (a free key from fredaccount.stlouisfed.org). With it, FRED series are fetched through the FRED API as FRED's terms require; until the date in `config/sources.json` → `fred_api.use_from` (Nov 16, 2026) both routes are fetched and compared, and the result is recorded in `data/latest.json` → `fred_api`. Copyrighted series are credited to their owners on the dashboard.
 3. **Actions → The People's Watch daily run → Run workflow** to start the first scheduled run. After that it runs daily.
 4. On peoplesmoneyproject.org, link to or embed the Pages URL, e.g. `<iframe src="https://jamie847.github.io/peoples-money-watch/" style="width:100%;height:2400px;border:0"></iframe>`.
 

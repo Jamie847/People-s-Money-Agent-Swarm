@@ -50,6 +50,7 @@ jobs:
       - name: Run the agents (all tiers)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}   # optional; without it, FRED series are fetched keyless as before
           SWARM_REPORTER_MODEL: claude-haiku-5-5   # low-cost model; the reporter makes one short call per run
         run: node scripts/run.js || echo "SWARM_AUDIT_FAILED=1" >> "$GITHUB_ENV"
 
