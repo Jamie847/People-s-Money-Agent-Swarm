@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-06",
-    "started_at": "2026-11-06T15:26:26.332Z",
-    "finished_at": "2026-11-06T15:26:50.022Z",
+    "started_at": "2026-11-06T15:45:40.030Z",
+    "finished_at": "2026-11-06T15:45:57.437Z",
     "mode": "live",
-    "ledger_seq": 24,
-    "ledger_hash": "c3e0d5e76aa291ad8ef4f4c541ad9dbe607ed277a9b1fbfeee99e9e8db2daff0"
+    "ledger_seq": 25,
+    "ledger_hash": "8f712040f41cc53f0644ceb46c24e1de230480cd041489521bdbccaa030a4e8d"
   },
   "fred_api": {
     "key_present": true,
@@ -348,8 +348,8 @@
         "series": "UNRATE",
         "start": "2007-01-01",
         "checked_on": "2026-11-06",
-        "api_sha256": "58a12b1907d06680e85b34da42529f7f86bb16727e15314c16e0e004588ec727",
-        "csv_sha256": "58a12b1907d06680e85b34da42529f7f86bb16727e15314c16e0e004588ec727"
+        "api_sha256": "8b3c92b016132da7e8a8414facb75fa79b5aaf4e39971e0f02e309429404420a",
+        "csv_sha256": "8b3c92b016132da7e8a8414facb75fa79b5aaf4e39971e0f02e309429404420a"
       },
       "BASE": {
         "schema": 1,
@@ -2585,7 +2585,7 @@
         "id": "UNEMPLOYMENT",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-09-01; 236 observations; sha256 58a12b1907d0…"
+        "detail": "Latest 2026-10-01; 237 observations; sha256 8b3c92b01613…"
       },
       {
         "id": "BASE",
@@ -18460,12 +18460,12 @@
           "id": "UNEMPLOYMENT",
           "title": "Unemployment rate (the book's goal includes supporting employment)",
           "agency": "Bureau of Labor Statistics",
-          "as_of": "2026-09-01",
-          "latest": 4.2,
+          "as_of": "2026-10-01",
+          "latest": 4.1,
           "units": "percent",
           "metric": "level",
           "metric_label": "latest level",
-          "value": 4.2,
+          "value": 4.1,
           "watch": null,
           "stress": null,
           "direction": "up",
@@ -19416,6 +19416,10 @@
             [
               "2026-09-01",
               4.2
+            ],
+            [
+              "2026-10-01",
+              4.1
             ]
           ]
         }
@@ -19423,9 +19427,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-06T15:26:25.951Z",
+    "ran_at": "2026-11-06T15:45:39.783Z",
     "isolated": true,
-    "context_sha256": "8fad8ce097756185584ac2a050cb630d53e0d50d755084017f4dc925f1996bd8",
+    "context_sha256": "82625d71ec7ec20a626047bace64b665c3e7ebdb021db23c7e0853adc16a6698",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -19434,7 +19438,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 49,
+        "duration_ms": 47,
         "isolated": true,
         "report": {
           "status": "info",
@@ -19464,7 +19468,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-06T15:26:26.278Z",
+    "ran_at": "2026-11-06T15:45:39.979Z",
     "all_caught": true,
     "attacks": [
       {
@@ -19489,7 +19493,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 20 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 21 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -19631,7 +19635,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "25 entries; head c3e0d5e76aa291ad…"
+        "detail": "26 entries; head 8f712040f41cc53f…"
       },
       {
         "name": "input-fingerprints",
@@ -20182,10 +20186,10 @@
       "title": "Unemployment rate (the book's goal includes supporting employment)",
       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE&cosd=2007-01-01",
       "file": "data/inputs/UNEMPLOYMENT.csv",
-      "sha256": "58a12b1907d06680e85b34da42529f7f86bb16727e15314c16e0e004588ec727",
+      "sha256": "8b3c92b016132da7e8a8414facb75fa79b5aaf4e39971e0f02e309429404420a",
       "last": {
-        "date": "2026-09-01",
-        "value": 4.2
+        "date": "2026-10-01",
+        "value": 4.1
       },
       "ok": true,
       "error": null
@@ -20308,7 +20312,7 @@
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 431,
+      "output_tokens": 572,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -20316,12 +20320,12 @@
       "inference_geo": "global",
       "speed": "standard"
     },
-    "headline": "Quarter 2026-Q2 checked: no price gap, brake off, three calculators agree",
+    "headline": "Quarter 2026-Q2 check: all three calculators agree, no brake needed, prices on track.",
     "paragraphs": [
-      "This is an unofficial shadow run of \"The People's Money\" issuance rule, run by The People's Watch. Nothing is executed. No money is issued or changed. Think of it like a practice drill on paper.",
-      "For the latest quarter, 2026-Q2, the price gap was zero. Think of the gap like a room's thermostat reading: the room is exactly at the set point, so no correction is needed. The brake, which would slow things down if the gap grew, stayed off. All three separately written calculators agreed on the result. The trend growth allowance is 2.47% per year, which works out to a step of 0.611% per quarter.",
-      "Some signals are being watched closely. One Treasury holdings reading is marked \"watch\" and has an open human review. The overall global dollar reading is \"watch,\" while domestic financial stress and the plumbing measures are \"calm.\" Our replays of past periods show that gaps can grow large in hard times, but these replays do not prove the design works. Whether it keeps prices stable has not been tested.",
-      "The next computation is set for 2026-11-15 for quarter 2026-Q3, using July, August, and September data from the published CPI and PCE measures."
+      "This is an unofficial shadow run of The People's Money issuance rule, run under the name The People's Watch. Nothing is executed. No money is issued or changed, and no real policy is set by this report. Think of it as a practice drill that checks the arithmetic and the warning signals, the way a fire drill checks the alarms without starting a fire.",
+      "For the latest quarter, 2026-Q2, the three separate calculators gave the same answer. The price gap is 0 log points, which means prices are sitting right on the planned path. The planned path allows real growth of 2.47% per year, or a step of 0.611% per quarter. The brake, which is a safety device that slows the rule when prices run too far ahead, is off. The brake note says it is not needed.",
+      "The warning signals are mostly calm. The St. Louis Fed Financial Stress Index reads -0.522, where 0 means normal, so stress is low. The National Financial Conditions Index reads -0.459, where 0 means average, so conditions are slightly looser than average. One item is on watch: the value of Treasury securities held in custody for foreign official accounts fell 3.322% over 13 weeks. This has been passed to a human reviewer as an open packet. The global dollar picture overall is marked watch, with the rest of its readings calm or for context only.",
+      "The next computation is for 2026-Q3 and is scheduled for 2026-11-15. It will use price data for July, August, and September 2026. The team has not yet tested whether this design keeps prices stable. Past replays show how the rule would have behaved in earlier periods, but those replays are not proof that it works."
     ]
   },
   "head_to_head": {
@@ -20897,11 +20901,11 @@
       }
     },
     "rule_costs": {
-      "ai_per_run_usd": 0.0004,
+      "ai_per_run_usd": 0.0005,
       "ai_per_month_usd": 0.01,
       "ai_tokens_last_run": {
         "input": 1845,
-        "output": 431
+        "output": 572
       },
       "compute": "GitHub Actions runs public projects free.",
       "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."
