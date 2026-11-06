@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { sha256, writeText } from '../lib/util.js';
+import { FRED_API_COMPARISON_TIMEOUT_MS, validDate, fredApiGate, fredParityEvidence } from '../lib/fred-api-policy.js';
 
 export const sourceUrl = (src) => {
   if (src.transport === 'fred') {
@@ -21,18 +22,39 @@ export const sourceUrl = (src) => {
 // layout fredgraph.csv returns, so stored files, fingerprints and parsing are unchanged whichever route was used.
 const FRED_API = 'https://api.stlouisfed.org/fred/series/observations';
 export const fredApiUrl = (src, key) =>
-  `${FRED_API}?series_id=${encodeURIComponent(src.series)}&observation_start=${src.start}&file_type=json${key ? `&api_key=${key}` : ''}`;
+  `${FRED_API}?series_id=${encodeURIComponent(src.series)}&observation_start=${encodeURIComponent(src.start)}&file_type=json${key ? `&api_key=${encodeURIComponent(key)}` : ''}`;
 
 export const fredJsonToCsv = (series, json) => {
   const body = JSON.parse(json);
-  if (!Array.isArray(body.observations)) throw new Error('Not a FRED API response');
+  if (!body || !Array.isArray(body.observations)) throw new Error('Not a FRED API response');
+  if (!body.observations.length) throw new Error('FRED API returned no observations');
+  // A partial page must not silently replace the full archived time series.
+  if ((body.offset !== undefined && body.offset !== 0)
+      || (body.count !== undefined && (!Number.isInteger(body.count) || body.count !== body.observations.length))) {
+    throw new Error('Incomplete FRED API observations');
+  }
   const lines = [`observation_date,${series}`];
-  for (const o of body.observations) lines.push(`${o.date},${o.value === '.' ? '' : o.value}`);
+  let previous = ''; let usable = 0;
+  for (const o of body.observations) {
+    if (!o || !validDate(o.date) || o.date <= previous) throw new Error('Invalid or unordered FRED observation date');
+    const value = o.value;
+    if (value !== '.' && (typeof value !== 'string' || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value) || !Number.isFinite(Number(value)))) {
+      throw new Error('Invalid FRED observation value');
+    }
+    if (value !== '.') usable++;
+    lines.push(`${o.date},${value === '.' ? '' : value}`);
+    previous = o.date;
+  }
+  if (!usable) throw new Error('FRED API returned no usable observations');
   return `${lines.join('\n')}\n`;
 };
 
-// Never let a key reach a stored error message or log line.
-export const scrub = (msg, key) => (key ? String(msg).split(key).join('[key]') : String(msg));
+// Never let a key reach a stored error message or log line (including URL encoding).
+export const scrub = (msg, key) => {
+  let text = String(msg);
+  if (key) for (const secret of [key, encodeURIComponent(key)]) text = text.split(secret).join('[key]');
+  return text.replace(/([?&]api_key=)[^&\s'"<>]*/gi, '$1[key]');
+};
 
 export const parseFredCsv = (text) => {
   const lines = text.trim().split(/\r?\n/);
@@ -79,48 +101,74 @@ export const parseBisCsv = (text) => {
 };
 
 // curl first (present on GitHub runners and respects proxy settings); Node fetch as fallback.
-// Note: FRED rejects unfamiliar User-Agent strings, so curl's default is kept.
-export const download = async (url, { attempts = 3 } = {}) => {
-  let lastErr;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
+// One wall-clock budget includes curl, fetch headers AND body, retries, and backoff.
+// Comparison-only calls get a shorter budget so optional API work cannot stall a reading.
+export const download = async (url, { attempts = 3, timeoutMs = 90000,
+  exec = execFileSync, fetchImpl = globalThis.fetch } = {}) => {
+  if (!Number.isInteger(attempts) || attempts < 1 || !Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+    throw new Error('Invalid download budget');
+  }
+  const deadline = Date.now() + timeoutMs;
+  const remaining = () => Math.max(0, deadline - Date.now());
+  let lastErr; let tried = 0;
+  for (let attempt = 1; attempt <= attempts && remaining() > 0; attempt++) {
+    tried++;
     try {
-      return execFileSync('curl', ['-sS', '-f', '-L', '-m', '90', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+      const budget = Math.max(1, remaining());
+      return exec('curl', ['-sS', '-f', '-L', '-m', String(budget / 1000), url], {
+        encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+        timeout: budget, killSignal: 'SIGKILL',
+      });
     } catch (err) { lastErr = err; }
+    if (!remaining()) break;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), remaining());
     try {
-      const res = await fetch(url);
+      const res = await fetchImpl(url, { signal: controller.signal });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.text();
     } catch (err) { lastErr = err; }
-    await new Promise((r) => setTimeout(r, 2000 * attempt));
+    finally {
+      clearTimeout(timer);
+      controller.abort(); // Also close unconsumed error response bodies before a retry.
+    }
+    if (attempt < attempts && remaining() > 0) {
+      await new Promise((r) => setTimeout(r, Math.min(2000 * attempt, remaining())));
+    }
   }
-  throw new Error(`download failed after ${attempts} attempts: ${String(lastErr?.message || lastErr).split('\n')[0]}`);
+  const reason = remaining() <= 0 ? `timeout after ${timeoutMs}ms` : String(lastErr?.message || lastErr).split('\n')[0];
+  throw new Error(`download failed after ${tried} attempts: ${reason}`);
 };
 
-// With a key: before `fredApiFrom` both routes are fetched, the keyless file is still the one used,
-// and any difference is recorded (a parity check). From that date on the API is used, falling back to
-// the keyless file only if the API fails, and the fallback is recorded.
-async function fetchFred(src, url, key, useApi, out) {
+async function fetchFred(src, url, key, useApi, out, { downloadFn, today, evidence }) {
   let apiText = null;
   try {
-    apiText = fredJsonToCsv(src.series, await download(fredApiUrl(src, key), { attempts: useApi ? 3 : 1 }));
+    apiText = fredJsonToCsv(src.series, await downloadFn(fredApiUrl(src, key), {
+      attempts: useApi ? 3 : 1, timeoutMs: useApi ? 90000 : FRED_API_COMPARISON_TIMEOUT_MS,
+    }));
   } catch (err) {
     out.api_error = scrub(err.message || err, key).slice(0, 200);
   }
-  if (useApi && apiText !== null) { out.via = 'fred-api'; return apiText; }
-  const csvText = await download(url);
+  if (useApi && apiText !== null) {
+    out.via = 'fred-api'; out.api_parity_evidence = evidence;
+    return apiText;
+  }
+  const csvText = await downloadFn(url);
   out.via = useApi ? 'fredgraph-csv (API fallback)' : 'fredgraph-csv';
   if (apiText !== null) {
     out.api_parity = apiText === csvText ? 'identical' : 'different';
-    if (out.api_parity === 'different') {
+    if (out.api_parity === 'identical') out.api_parity_evidence = fredParityEvidence(src, today, sha256(csvText));
+    else {
       const a = apiText.split('\n'); const c = csvText.split('\n');
-      const i = a.findIndex((line, k) => line !== c[k]);
+      let i = 0;
+      while (i < Math.max(a.length, c.length) && a[i] === c[i]) i++;
       out.api_first_difference = { line: i + 1, api: (a[i] ?? '').slice(0, 60), csv: (c[i] ?? '').slice(0, 60), api_lines: a.length, csv_lines: c.length };
     }
   }
   return csvText;
 }
 
-export async function runSensors(sources, { inputsDir, offline = false, fredKey = process.env.FRED_API_KEY || '', fredApiFrom = '9999-12-31', today = new Date().toISOString().slice(0, 10) } = {}) {
+export async function runSensors(sources, { inputsDir, offline = false, fredKey = process.env.FRED_API_KEY || '', fredApiFrom = '9999-12-31', fredParity = {}, downloadFn = download, today = new Date().toISOString().slice(0, 10) } = {}) {
   const results = [];
   for (const src of sources) {
     const url = sourceUrl(src);
@@ -132,17 +180,19 @@ export async function runSensors(sources, { inputsDir, offline = false, fredKey 
         if (!existsSync(file)) throw new Error('offline mode and no archived copy');
         text = readFileSync(file, 'utf8');
       } else if (src.transport === 'fred' && fredKey) {
-        text = await fetchFred(src, url, fredKey, today >= fredApiFrom, out);
-        writeText(file, text);
+        out.api_attempted = true;
+        const evidence = fredParity?.[src.id];
+        out.api_cutover_blocked = fredApiGate(src, { today, useFrom: fredApiFrom, evidence });
+        text = await fetchFred(src, url, fredKey, !out.api_cutover_blocked, out, { downloadFn, today, evidence });
       } else {
-        text = await download(url);
-        writeText(file, text);
+        text = await downloadFn(url);
       }
       out.sha256 = sha256(text);
       out.observations = src.transport === 'bis' ? parseBisCsv(text) : parseFredCsv(text);
       out.ok = out.observations.length > 0;
       out.last = out.ok ? out.observations[out.observations.length - 1] : null;
       if (!out.ok) out.error = 'no usable observations';
+      else if (!offline) writeText(file, text); // Never replace an archive with an invalid response.
     } catch (err) {
       out.ok = false;
       out.error = scrub(err.message || err, fredKey).slice(0, 200);

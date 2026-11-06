@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { readJSON, writeJSON, sha256, stableStringify, parseQuarter, round } from '../src/lib/util.js';
 import { runSensors } from '../src/agents/sensors.js';
+import { summarizeFredApi } from '../src/lib/fred-api-policy.js';
 import { checkSources, checkIndexDisagreement, worst } from '../src/agents/integrity.js';
 import { runLiveTrack, runReplay } from '../src/agents/tracks.js';
 import { runSentinels } from '../src/agents/sentinels.js';
@@ -33,20 +34,16 @@ const proposal = readJSON(P('config', 'backstop-proposal.json'));
 
 // ---- Tier 1: sensors and integrity ----
 const fredCfg = readJSON(P('config', 'sources.json')).fred_api || {};
-const sensors = await runSensors(sources, { inputsDir: P('data', 'inputs'), offline, today, fredApiFrom: fredCfg.use_from || '9999-12-31' });
-const fredApi = (() => {
-  const fred = sensors.filter((s) => s.via);
-  if (!fred.length) return { key_present: false, note: 'No FRED API key set; series fetched keyless.' };
-  return {
-    key_present: true,
-    use_from: fredCfg.use_from || null,
-    via_api: fred.filter((s) => s.via === 'fred-api').length,
-    via_csv: fred.filter((s) => s.via !== 'fred-api').length,
-    parity_identical: fred.filter((s) => s.api_parity === 'identical').length,
-    parity_different: fred.filter((s) => s.api_parity === 'different').map((s) => ({ id: s.id, first_difference: s.api_first_difference })),
-    api_errors: fred.filter((s) => s.api_error).map((s) => ({ id: s.id, error: s.api_error })),
-  };
-})();
+// Only evidence written by an earlier live run can unlock the transport change.
+// Corrupt/missing prior output must not block the old route or imply approval.
+let priorParity = {};
+try { priorParity = readJSON(P('data', 'latest.json'), {})?.fred_api?.parity_evidence || {}; } catch { /* fail closed */ }
+const fredKey = process.env.FRED_API_KEY || '';
+const sensors = await runSensors(sources, {
+  inputsDir: P('data', 'inputs'), offline, today, fredKey,
+  fredApiFrom: fredCfg.use_from, fredParity: priorParity,
+});
+const fredApi = summarizeFredApi(sensors, { keyPresent: Boolean(fredKey), offline, useFrom: fredCfg.use_from });
 const byId = Object.fromEntries(sensors.map((s) => [s.id, s]));
 const sourceChecks = checkSources(sensors, today);
 const ruleInputsOk = ['CPI', 'PCE', 'GDP'].every((id) => byId[id]?.ok);

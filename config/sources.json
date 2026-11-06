@@ -1,7 +1,7 @@
 {
   "_about": "Every number the swarm reads. The money authority may not produce the numbers it uses (The People's Money, Ch. 8), so every source here is an outside agency. FRED and the BIS API are used only as transport.",
   "fred_api": {
-    "_about": "When the FRED_API_KEY secret is set, every FRED series is also fetched through the FRED API with that key. Before use_from, the keyless file is still the one used and the two are compared (recorded in latest.json under fred_api). From use_from on, the API is used, with the keyless file only as a recorded fallback. use_from is after the first quarterly reading (Nov 15, 2026), so that reading is untouched.",
+    "_about": "When the FRED_API_KEY secret is set, every FRED series is also fetched through the FRED API with that key. The keyless file remains in use until both use_from (never before Nov 16, 2026) and a successful byte-identical comparison from a prior day for that exact series/start. Comparison evidence is recorded in latest.json under fred_api.parity_evidence. Missing or differing evidence keeps comparison mode. Invalid, empty or failed API responses fall back to CSV and remove prior evidence for that source. The Nov 15 reading and monetary-rule calculations are unchanged.",
     "use_from": "2026-11-16"
   },
   "sources": [
