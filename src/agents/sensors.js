@@ -103,12 +103,16 @@ export const parseBisCsv = (text) => {
 // curl first (present on GitHub runners and respects proxy settings); Node fetch as fallback.
 // One wall-clock budget includes curl, fetch headers AND body, retries, and backoff.
 // Comparison-only calls get a shorter budget so optional API work cannot stall a reading.
-// Normal downloads keep the pre-safeguard patience (three attempts of up to 90 s each, plus backoff),
-// because the November 15 vintage fetch (vintages.js) and every keyless download share this function.
+// Download limits (also used by vintages.js for the dated November 15 inputs):
+//  - each attempt: curl up to perAttemptMs (90 s, as before), then Node fetch up to perAttemptMs
+//    (before the safeguards, fetch had no time limit at all);
+//  - up to `attempts` attempts (3, as before) with backoff of backoffMs × attempt between them (2 s, 4 s, as before);
+//  - one overall cap, timeoutMs, over everything (276 s for normal downloads; 5 s for comparison-only API calls).
+// So a normal download behaves as before when curl answers, and can no longer hang without limit when it doesn't.
 export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000, perAttemptMs = 90000,
-  exec = execFileSync, fetchImpl = globalThis.fetch } = {}) => {
+  backoffMs = 2000, exec = execFileSync, fetchImpl = globalThis.fetch } = {}) => {
   if (!Number.isInteger(attempts) || attempts < 1 || !Number.isFinite(timeoutMs) || timeoutMs <= 0
-      || !Number.isFinite(perAttemptMs) || perAttemptMs <= 0) {
+      || !Number.isFinite(perAttemptMs) || perAttemptMs <= 0 || !Number.isFinite(backoffMs) || backoffMs < 0) {
     throw new Error('Invalid download budget');
   }
   const deadline = Date.now() + timeoutMs;
@@ -136,7 +140,7 @@ export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000
       controller.abort(); // Also close unconsumed error response bodies before a retry.
     }
     if (attempt < attempts && remaining() > 0) {
-      await new Promise((r) => setTimeout(r, Math.min(2000 * attempt, remaining())));
+      await new Promise((r) => setTimeout(r, Math.min(backoffMs * attempt, remaining())));
     }
   }
   const reason = remaining() <= 0 ? `timeout after ${timeoutMs}ms` : String(lastErr?.message || lastErr).split('\n')[0];
@@ -170,6 +174,14 @@ async function fetchFred(src, url, key, useApi, out, { downloadFn, today, eviden
   }
   return csvText;
 }
+
+// The per-source record saved in data/latest.json. A refused download's fingerprint is kept here as a
+// diagnostic (rejected_sha256); it never becomes the input fingerprint the ledger seals.
+export const sourceRecord = (s) => ({
+  id: s.id, series: s.series, agency: s.agency, title: s.title, url: s.url, file: s.file,
+  sha256: s.sha256 ?? null, last: s.last ?? null, ok: s.ok, error: s.error ?? null,
+  ...(s.rejected_sha256 ? { rejected_sha256: s.rejected_sha256 } : {}),
+});
 
 export async function runSensors(sources, { inputsDir, offline = false, fredKey = process.env.FRED_API_KEY || '', fredApiFrom = '9999-12-31', fredParity = {}, downloadFn = download, today = new Date().toISOString().slice(0, 10) } = {}) {
   const results = [];

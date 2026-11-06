@@ -22,7 +22,9 @@ The summary includes API errors even if both routes fail before a `via` value ca
 
 ## Download limits
 
-Normal downloads have one 90-second wall-clock budget covering curl, Node fetch headers and body, retries and backoff. Comparison downloads have one five-second budget. Error response streams are aborted before retrying. An authoritative API attempt followed by a separate CSV fallback can therefore take approximately 180 seconds per source, not 90 seconds for both routes together. These are per-source limits, not a whole-workflow deadline.
+Download limits (review revision, November 6). Normal downloads keep the earlier per-attempt patience: each of up to three attempts gives curl up to 90 seconds and then Node fetch up to 90 seconds, with 2- and 4-second pauses between attempts, all under one overall cap of 276 seconds. Before the safeguards, curl had the same 90-second limit but fetch had none, so a hanging connection could stall a run indefinitely; that can no longer happen. Comparison-only API calls have one five-second cap. Error response streams are aborted before retrying.
+
+Worst cases, per source, when the server hangs rather than refusing: about 276 seconds for a normal download; about 281 seconds in comparison mode (5 + 276); about 552 seconds after the switch if the API hangs and the CSV fallback then hangs too. Across 27 FRED series a total outage could therefore add up to about 2 hours before the switch and about 4 hours after it, inside GitHub's 6-hour job limit but long. A later improvement would stop trying the API for the rest of a run after repeated failures. These are per-source limits, not a whole-workflow deadline.
 
 Curl retains its existing 64 MiB output limit. Native fetch is time-bounded but does not add a response-size cap in this patch. Neither timeout proves availability or handles every upstream outage.
 

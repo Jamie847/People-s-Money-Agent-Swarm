@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { readJSON, writeJSON, sha256, stableStringify, parseQuarter, round } from '../src/lib/util.js';
-import { runSensors } from '../src/agents/sensors.js';
+import { runSensors, sourceRecord } from '../src/agents/sensors.js';
 import { summarizeFredApi } from '../src/lib/fred-api-policy.js';
 import { checkSources, checkIndexDisagreement, worst } from '../src/agents/integrity.js';
 import { runLiveTrack, runReplay } from '../src/agents/tracks.js';
@@ -178,7 +178,7 @@ const latest = {
   packets,
   audit,
   agents,
-  sources: sensors.map((s) => ({ id: s.id, series: s.series, agency: s.agency, title: s.title, url: s.url, file: s.file, sha256: s.sha256 ?? null, last: s.last ?? null, ok: s.ok, error: s.error ?? null })),
+  sources: sensors.map(sourceRecord),
 };
 
 // ---- Tier 7: reporter ----
