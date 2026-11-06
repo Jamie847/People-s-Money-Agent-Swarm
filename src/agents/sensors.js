@@ -103,9 +103,12 @@ export const parseBisCsv = (text) => {
 // curl first (present on GitHub runners and respects proxy settings); Node fetch as fallback.
 // One wall-clock budget includes curl, fetch headers AND body, retries, and backoff.
 // Comparison-only calls get a shorter budget so optional API work cannot stall a reading.
-export const download = async (url, { attempts = 3, timeoutMs = 90000,
+// Normal downloads keep the pre-safeguard patience (three attempts of up to 90 s each, plus backoff),
+// because the November 15 vintage fetch (vintages.js) and every keyless download share this function.
+export const download = async (url, { attempts = 3, timeoutMs = 3 * 90000 + 6000, perAttemptMs = 90000,
   exec = execFileSync, fetchImpl = globalThis.fetch } = {}) => {
-  if (!Number.isInteger(attempts) || attempts < 1 || !Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+  if (!Number.isInteger(attempts) || attempts < 1 || !Number.isFinite(timeoutMs) || timeoutMs <= 0
+      || !Number.isFinite(perAttemptMs) || perAttemptMs <= 0) {
     throw new Error('Invalid download budget');
   }
   const deadline = Date.now() + timeoutMs;
@@ -114,7 +117,7 @@ export const download = async (url, { attempts = 3, timeoutMs = 90000,
   for (let attempt = 1; attempt <= attempts && remaining() > 0; attempt++) {
     tried++;
     try {
-      const budget = Math.max(1, remaining());
+      const budget = Math.max(1, Math.min(remaining(), perAttemptMs));
       return exec('curl', ['-sS', '-f', '-L', '-m', String(budget / 1000), url], {
         encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
         timeout: budget, killSignal: 'SIGKILL',
@@ -122,7 +125,7 @@ export const download = async (url, { attempts = 3, timeoutMs = 90000,
     } catch (err) { lastErr = err; }
     if (!remaining()) break;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), remaining());
+    const timer = setTimeout(() => controller.abort(), Math.min(remaining(), perAttemptMs));
     try {
       const res = await fetchImpl(url, { signal: controller.signal });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -174,6 +177,7 @@ export async function runSensors(sources, { inputsDir, offline = false, fredKey 
     const url = sourceUrl(src);
     const file = join(inputsDir, `${src.id}.csv`);
     const out = { id: src.id, series: src.series, agency: src.agency, title: src.title, role: src.role, freq: src.freq, historical: !!src.historical, units: src.units, url, file: `data/inputs/${src.id}.csv` };
+    let digest = null;
     try {
       let text;
       if (offline) {
@@ -187,16 +191,21 @@ export async function runSensors(sources, { inputsDir, offline = false, fredKey 
       } else {
         text = await downloadFn(url);
       }
-      out.sha256 = sha256(text);
+      digest = sha256(text);
       out.observations = src.transport === 'bis' ? parseBisCsv(text) : parseFredCsv(text);
       out.ok = out.observations.length > 0;
       out.last = out.ok ? out.observations[out.observations.length - 1] : null;
       if (!out.ok) out.error = 'no usable observations';
-      else if (!offline) writeText(file, text); // Never replace an archive with an invalid response.
+      // Never replace an archive with an invalid response, and only fingerprint what is archived:
+      // the ledger records out.sha256 and the auditor compares it with the file on disk.
+      if (offline) out.sha256 = digest;
+      else if (out.ok) { writeText(file, text); out.sha256 = digest; }
+      else out.rejected_sha256 = digest;
     } catch (err) {
       out.ok = false;
       out.error = scrub(err.message || err, fredKey).slice(0, 200);
       out.observations = [];
+      if (digest) { if (offline) out.sha256 = digest; else out.rejected_sha256 = digest; }
     }
     results.push(out);
   }
