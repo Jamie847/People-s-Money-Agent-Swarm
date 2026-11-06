@@ -4,11 +4,11 @@
   "disclaimer": "Unofficial shadow run of a candidate design described in The People's Money (Jamie Murray, 2026). It is not the design's formal 18-month rehearsal, executes nothing, and publishes no national issuance figure. Each live reading after the starting quarter uses the rule's inputs exactly as published on its computation date (the starting quarter's prices were read at launch; see interpretation 8); all data are fetched through the St. Louis Fed's FRED/ALFRED; the replay and the sentinels use current (revised) data. Whether the rule would keep prices stable has not been tested. Not financial advice.",
   "run": {
     "date": "2026-11-06",
-    "started_at": "2026-11-06T03:34:04.556Z",
-    "finished_at": "2026-11-06T03:34:23.527Z",
+    "started_at": "2026-11-06T13:20:33.343Z",
+    "finished_at": "2026-11-06T13:20:51.838Z",
     "mode": "live",
-    "ledger_seq": 21,
-    "ledger_hash": "6cfcb41bbb2c501d542cfd282e5d24b1afa30ee7e16a7d934f9ba49a998f01f1"
+    "ledger_seq": 22,
+    "ledger_hash": "f3c16aadbb46e2df661ac4efcbea36dbfe4e8b0b2802b59b6a404095c96e8867"
   },
   "fred_api": {
     "key_present": true,
@@ -261,9 +261,9 @@
         "series": "SOFR",
         "start": "2021-07-01",
         "checked_on": "2026-11-06",
-        "observations": 1334,
-        "api_sha256": "c17cd83d7bd26b37c4edc53e250256d6ba30acde9ec1571a4c79e8a85c3f8be3",
-        "csv_sha256": "938455ccecfc922107e9c93c4c55a441f9513222d421b756906d22b64d7a30c0"
+        "observations": 1335,
+        "api_sha256": "3b07f7e997bdaa10d075a9116e8524cee750a95766e06116788300706cf3f77f",
+        "csv_sha256": "f79e0233b8b088c8825ae4cd768eeffaf835e563b43657d9f7828c4136ac9c29"
       },
       "IORB": {
         "schema": 2,
@@ -2537,7 +2537,7 @@
         "id": "SOFR",
         "check": "fresh",
         "status": "ok",
-        "detail": "Latest 2026-11-04; 1334 observations; sha256 938455ccecfc…"
+        "detail": "Latest 2026-11-05; 1335 observations; sha256 f79e0233b8b0…"
       },
       {
         "id": "IORB",
@@ -11461,12 +11461,12 @@
           "id": "SOFR",
           "title": "Secured Overnight Financing Rate (overnight cost of borrowing cash against Treasuries)",
           "agency": "Federal Reserve Bank of New York",
-          "as_of": "2026-11-04",
-          "latest": 3.94,
+          "as_of": "2026-11-05",
+          "latest": 3.92,
           "units": "percent",
           "metric": "spread_vs",
           "metric_label": "spread over the reserve rate, percentage points",
-          "value": 0.04,
+          "value": 0.02,
           "watch": 0.1,
           "stress": 0.25,
           "direction": "up",
@@ -12361,6 +12361,10 @@
             [
               "2026-11-04",
               0.040000000000000036
+            ],
+            [
+              "2026-11-05",
+              0.020000000000000018
             ]
           ]
         },
@@ -19419,9 +19423,9 @@
     }
   },
   "community": {
-    "ran_at": "2026-11-06T03:34:04.112Z",
+    "ran_at": "2026-11-06T13:20:33.030Z",
     "isolated": true,
-    "context_sha256": "3b5ba18020c568d9bfca5b9b986873aa207211270dc3b688be353b6c84abb819",
+    "context_sha256": "d659048c394939752adc5083cedb8590b9185bf165dd0f58805aaafbe4a46775",
     "agents": [
       {
         "id": "purchasing-power-clock",
@@ -19430,7 +19434,7 @@
         "role": "analyst",
         "description": "Shows what a dollar saved at past dates buys today, from the published CPI-U. Facts only, no forecasts. A template for contributors.",
         "homepage": null,
-        "duration_ms": 47,
+        "duration_ms": 61,
         "isolated": true,
         "report": {
           "status": "info",
@@ -19460,7 +19464,7 @@
   },
   "recomputes": [],
   "redteam": {
-    "ran_at": "2026-11-06T03:34:04.504Z",
+    "ran_at": "2026-11-06T13:20:33.280Z",
     "all_caught": true,
     "attacks": [
       {
@@ -19485,7 +19489,7 @@
         "id": "rewrite-entire-ledger",
         "description": "Rewrite history and re-seal EVERY entry so the chain looks perfect",
         "caught": true,
-        "detail": "chain re-sealed perfectly, but 17 witnessed checkpoint(s) expose it"
+        "detail": "chain re-sealed perfectly, but 18 witnessed checkpoint(s) expose it"
       },
       {
         "id": "edit-frozen-reading",
@@ -19627,7 +19631,7 @@
       {
         "name": "ledger-chain",
         "status": "ok",
-        "detail": "22 entries; head 6cfcb41bbb2c501d…"
+        "detail": "23 entries; head f3c16aadbb46e2df…"
       },
       {
         "name": "input-fingerprints",
@@ -20058,10 +20062,10 @@
       "title": "Secured Overnight Financing Rate (overnight cost of borrowing cash against Treasuries)",
       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SOFR&cosd=2021-07-01",
       "file": "data/inputs/SOFR.csv",
-      "sha256": "938455ccecfc922107e9c93c4c55a441f9513222d421b756906d22b64d7a30c0",
+      "sha256": "f79e0233b8b088c8825ae4cd768eeffaf835e563b43657d9f7828c4136ac9c29",
       "last": {
-        "date": "2026-11-04",
-        "value": 3.94
+        "date": "2026-11-05",
+        "value": 3.92
       },
       "ok": true,
       "error": null
@@ -20304,7 +20308,7 @@
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 440,
+      "output_tokens": 476,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -20312,12 +20316,12 @@
       "inference_geo": "global",
       "speed": "standard"
     },
-    "headline": "Quarter 2026-Q2 checked: no price gap, brake off, three calculators agree",
+    "headline": "Quarter 2026-Q2 checked: price gap is zero, no brake needed, three calculators agree",
     "paragraphs": [
-      "This is an unofficial shadow run of \"The People's Money\" issuance rule, called The People's Watch. Nothing is executed. No money is issued, and no real rule is changed. We only record what the rule would have done.",
-      "For the latest quarter, 2026-Q2, the price gap is 0. Think of it like a thermostat set to a target: the room is exactly at the set point, so the heater does not need to act. The brake, which would slow issuance if prices ran too hot, is off because it is not needed. The three separate calculators all gave the same answer.",
-      "The allowed path grows 2.47% per year, which is about 0.611% per quarter. The next check, 2026-Q3, is scheduled for 2026-11-15 and uses the July, August and September data. One item is on a watch list: the Treasury securities held in custody for foreign official accounts fell 3.322% over 13 weeks. Reviewers have an open note on it. Overall, the global dollar readings are on watch, while domestic and plumbing readings are calm.",
-      "These are records of past and current readings, not predictions. Historical replays show the gap grew large in some past periods, but this design has not been tested for whether it would keep prices stable. That test has not been run."
+      "This is an unofficial shadow run of The People's Money issuance rule, run under the name The People's Watch. Nothing is executed. No money is issued, and no real decision depends on these results. Think of it as a practice drill that checks what the rule would have done.",
+      "For the latest quarter, 2026-Q2, the price gap is zero. The gap is how far prices have drifted from where the rule wants them, a little like a room's temperature compared with the thermostat setting. Here the room is exactly on target. The brake, a tool that slows issuance when prices run hot, is off because it is not needed. The three separate calculators all agree on this result. The allowed growth path is 2.47% per year, which is about 0.611% per quarter.",
+      "Market and money-flow checks are mostly calm. Stress and financial-conditions gauges sit below their normal levels. One item, a measure of Treasury securities held in custody for foreign official accounts, is marked as a watch and has an open human review. The next computation, for 2026-Q3, is set for 2026-11-15, using July, August, and September data.",
+      "These results are only a snapshot. The tests of whether this design would keep prices stable have not been run, so no claim is made that it works. Past replays of the rule show large gaps during earlier periods, and that history is a reason for caution, not confidence."
     ]
   },
   "head_to_head": {
@@ -20897,7 +20901,7 @@
       "ai_per_month_usd": 0.01,
       "ai_tokens_last_run": {
         "input": 1845,
-        "output": 440
+        "output": 476
       },
       "compute": "GitHub Actions runs public projects free.",
       "not_estimated": "Running a full money authority (payments, custody, audits, staff) has not been estimated. The book lists those costs in Chapter 9: interest on Stabilization Bills when the brake is on, custody fees, the cost of the switch, possibly dearer credit, and any losses on emergency loans."
