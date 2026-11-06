@@ -38,6 +38,10 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: Download today's inputs for the sandboxed agents (not committed)
+        continue-on-error: true
+        run: node scripts/fetch-inputs.js
+
       - name: Community agents (sandboxed — no secrets, no network, read-only)
         run: node scripts/community.js --isolate
 

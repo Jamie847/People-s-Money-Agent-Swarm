@@ -6,6 +6,10 @@ Copy this folder to start your own agent (see community/README.md).
 import json, sys
 
 ctx = json.load(sys.stdin)
+if "CPI" not in ctx.get("inputs", {}):
+    # The raw FRED files are not published, so a copy of the repo may not have them. Say so; don't crash.
+    print(json.dumps({"status": "info", "headline": "CPI data not available in this copy of the record", "findings": []}))
+    sys.exit(0)
 cpi = ctx["inputs"]["CPI"]["observations"]          # [[date, value], ...] monthly, seasonally adjusted
 by_date = dict(cpi)
 last_date, last_value = cpi[-1]
