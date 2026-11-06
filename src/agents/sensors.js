@@ -225,6 +225,7 @@ export const sourceRecord = (s) => ({
 });
 
 export async function runSensors(sources, { inputsDir, offline = false, fredKey = process.env.FRED_API_KEY || '', fredApiFrom = '9999-12-31', fredParity = {}, downloadFn = download, today = new Date().toISOString().slice(0, 10) } = {}) {
+  if (!validDate(today)) throw new Error(`invalid run date ${JSON.stringify(today)}`); // never fetch or save under a bad date
   const results = [];
   for (const src of sources) {
     const url = sourceUrl(src);

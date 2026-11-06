@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { readJSON, writeJSON, sha256, stableStringify, parseQuarter, round } from '../src/lib/util.js';
 import { runSensors, sourceRecord } from '../src/agents/sensors.js';
-import { summarizeFredApi } from '../src/lib/fred-api-policy.js';
+import { summarizeFredApi, validDate } from '../src/lib/fred-api-policy.js';
 import { checkSources, checkIndexDisagreement, worst } from '../src/agents/integrity.js';
 import { runLiveTrack, runReplay } from '../src/agents/tracks.js';
 import { runSentinels } from '../src/agents/sentinels.js';
@@ -25,6 +25,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const P = (...p) => join(root, ...p);
 const offline = process.argv.includes('--offline');
 const today = process.env.SWARM_TODAY || new Date().toISOString().slice(0, 10);
+// A malformed override must stop the run before anything is fetched or saved (it would otherwise skip
+// date-based safeguards such as the strict file check from Nov 16).
+if (!validDate(today)) { console.error(`Invalid run date ${JSON.stringify(today)}: SWARM_TODAY must be a real date as YYYY-MM-DD.`); process.exit(2); }
 const startedAt = new Date().toISOString();
 
 const rule = readJSON(P('config', 'rule.json'));
