@@ -91,6 +91,32 @@ test('the scan catches observations in any shape, in any allowed file (dot\'s ex
   }
 });
 
+// Review round 2 (dot): extra script in the page, fake proof content, split arrays.
+test('the scan catches an extra script in the page, fake proof contents and series split into small lists', (t) => {
+  const setJson = (out, f, mutate) => { const p = join(out, 'data', f); const o = JSON.parse(readFileSync(p, 'utf8')); mutate(o); writeFileSync(p, JSON.stringify(o)); };
+  const proof = (out) => join(out, 'data', 'checkpoints', readdirSync(join(out, 'data', 'checkpoints')).find((n) => n.endsWith('.ots')));
+  const cases = {
+    'extra script with observations': (out) => { const p = join(out, 'index.html'); writeFileSync(p, readFileSync(p, 'utf8').replace('</body>', '<script>var s=[1.1,1.2,1.3];</script></body>')); },
+    'extra markup in the page': (out) => { const p = join(out, 'index.html'); writeFileSync(p, readFileSync(p, 'utf8').replace('</body>', '<div data-x="1"></div></body>')); },
+    'table appended to a real proof': (out) => { const p = proof(out); writeFileSync(p, Buffer.concat([readFileSync(p), Buffer.from('\n2020-01-01,1.1\n2020-02-01,1.2\n2020-03-01,1.3\n')])); },
+    'text appended to a real proof': (out) => { const p = proof(out); writeFileSync(p, Buffer.concat([readFileSync(p), Buffer.from('CPIAUCSL 321.25 322.50 323.75 324.00')])); },
+    'oversized proof': (out) => { const p = proof(out); writeFileSync(p, Buffer.concat([readFileSync(p), Buffer.alloc(20000)])); },
+    'series split into 13 one-point lists': (out) => setJson(out, 'redteam.json', (o) => { o.parts = Array.from({ length: 13 }, (_, i) => [i + 0.5]); }),
+    'series split into two halves': (out) => setJson(out, 'community.json', (o) => { o.a = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7]; o.b = [1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4]; }),
+    'pairs split across records': (out) => setJson(out, 'packets.json', (o) => { for (let i = 0; i < 13; i++) o.push({ p: [[`2025-${String((i % 12) + 1).padStart(2, '0')}-01`, i]] }); }),
+    'date keys split across records': (out) => setJson(out, 'redteam.json', (o) => { o.m1 = Object.fromEntries(Array.from({ length: 7 }, (_, i) => [`2020-0${i + 1}-01`, i])); o.m2 = Object.fromEntries(Array.from({ length: 7 }, (_, i) => [`2021-0${i + 1}-01`, i])); }),
+    'reading inputs longer than allowed': (out) => setJson(out, 'live-history.json', (o) => { o[0].inputs.gdp_levels = Array.from({ length: 30 }, (_, i) => i); }),
+  };
+  for (const [name, inject] of Object.entries(cases)) {
+    const root = fixtureRoot(t);
+    const out = join(root, '_site');
+    buildSite({ root, out });
+    assert.deepEqual(scanSite(out, { shellRoot: root }), [], `clean before: ${name}`);
+    inject(out);
+    assert.ok(scanSite(out, { shellRoot: root }).length > 0, name);
+  }
+});
+
 test('the scan reads the record inlined in index.html, not just the JSON files', (t) => {
   const root = fixtureRoot(t, (r, latest) => { latest.sentinels.domestic.readings[0].history = [['2026-01-01', 1.5], ['2026-02-01', 1.6]]; });
   const out = join(root, '_site');

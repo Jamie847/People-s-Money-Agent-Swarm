@@ -94,7 +94,11 @@ jobs:
       # Same rules as the dashboard check, applied to everything about to be committed. From Nov 16, 2026 a
       # failure stops the run here, so nothing is saved or published that day; before that it only warns.
       - name: Check what is about to be saved (enforced from Nov 16)
-        run: node scripts/check-commit.js
+        # Even if the check itself crashes, it must never stop a save before Nov 16, 2026.
+        run: |
+          if node scripts/check-commit.js; then exit 0; fi
+          if [[ "$(date -u +%F)" < "2026-11-16" ]]; then echo "::warning::Pre-save check did not pass; not enforced until 2026-11-16"; exit 0; fi
+          exit 1
 
       - name: Seal results into the repository
         id: seal
@@ -104,7 +108,7 @@ jobs:
           git config user.name "peoples-watch[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
-          git commit -m "Daily run $(date -u +%F)" || echo "Nothing to commit"
+          git commit -m "Daily run $(date -u +%F)" -- data || echo "Nothing to commit"
           git pull --rebase origin main
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -116,7 +120,11 @@ jobs:
         run: |
           node scripts/witness.js wayback "${{ steps.seal.outputs.sha }}"
           git add data/witnesses.json
-          git commit -m "Witness: archive copy of checkpoint" || exit 0
+          # Same pre-save check before this second save (enforced from Nov 16, 2026).
+          if ! node scripts/check-commit.js; then
+            if [[ "$(date -u +%F)" < "2026-11-16" ]]; then echo "::warning::Pre-save check did not pass; not enforced until 2026-11-16"; else exit 1; fi
+          fi
+          git commit -m "Witness: archive copy of checkpoint" -- data/witnesses.json || exit 0
           git pull --rebase origin main
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
 

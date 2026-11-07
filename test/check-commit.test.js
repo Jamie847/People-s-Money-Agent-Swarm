@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, cpSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, cpSync, writeFileSync, readFileSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -56,6 +56,64 @@ test('prohibited content warns before Nov 16 and stops the save from Nov 16', (t
     assert.equal(after.status, 1, `${name}: blocks from ${GATE_FROM}`);
     assert.match(after.stderr, /Pre-save check FAILED: nothing will be saved/, name);
   }
+});
+
+// Review round 2 (dot): the real newsletter output blocked Nov 16; a null checkpoint crashed the check on Nov 15;
+// a file staged outside data/ bypassed it; FRED content under the BIS file name was skipped.
+test('the real monthly newsletter draft passes the enforced check (separate commit allowance)', (t) => {
+  const r = repo(t);
+  for (const d of ['src', 'scripts', 'config', 'dashboard', 'newsletter']) cpSync(join(ROOT, d), join(r, d), { recursive: true });
+  const nl = spawnSync(process.execPath, [join(r, 'scripts', 'newsletter.js'), '--auto'], { cwd: r, env: { ...process.env, SWARM_TODAY: '2026-11-16', ANTHROPIC_API_KEY: '' }, encoding: 'utf8' });
+  assert.equal(nl.status, 0, nl.stderr);
+  assert.ok(filesToCommit(r).includes('data/newsletter/2026-11.json'));
+  assert.deepEqual(checkCommit(r), []);
+  assert.equal(run(r, '2026-11-16').status, 0);
+  // But a newsletter draft with unexpected fields or a hidden table still fails.
+  writeFileSync(join(r, 'data', 'newsletter', '2026-12.json'), JSON.stringify({ month: '2026-12', html: '<pre>2020-01-01,1\n2020-02-01,2\n2020-03-01,3</pre>', series: [] }));
+  assert.ok(checkCommit(r).length >= 2);
+});
+
+test('a malformed or unexpected value never crashes the check: warning before Nov 16, block from Nov 16', (t) => {
+  const breaks = {
+    'null checkpoint': (r) => { const f = readdirSync(join(r, 'data', 'checkpoints')).find((n) => n.endsWith('.json')); writeFileSync(join(r, 'data', 'checkpoints', f), 'null'); },
+    'array checkpoint': (r) => { const f = readdirSync(join(r, 'data', 'checkpoints')).find((n) => n.endsWith('.json')); writeFileSync(join(r, 'data', 'checkpoints', f), '[1]'); },
+    'number as a ledger line': (r) => { const p = join(r, 'data', 'ledger.jsonl'); writeFileSync(p, readFileSync(p, 'utf8') + '123\n'); },
+    'fingerprints as a string': (r) => { const p = join(r, 'data', 'ledger.jsonl'); writeFileSync(p, readFileSync(p, 'utf8') + JSON.stringify({ seq: 1, inputs_sha256: 'x' }) + '\n'); },
+    'null record': (r) => writeFileSync(join(r, 'data', 'latest.json'), 'null'),
+    'broken JSON': (r) => writeFileSync(join(r, 'data', 'redteam.json'), '{"a":'),
+    'reading inputs with the wrong shape': (r) => { const p = join(r, 'data', 'live-history.json'); const o = JSON.parse(readFileSync(p, 'utf8')); o[0].inputs = { base: null, gdp_levels: 'x' }; writeFileSync(p, JSON.stringify(o)); },
+  };
+  for (const [name, brk] of Object.entries(breaks)) {
+    const r = repo(t);
+    brk(r);
+    const before = run(r, '2026-11-15');
+    assert.equal(before.status, 0, `${name}: never fails before Nov 16 (${before.stderr})`);
+    const after = run(r, '2026-11-16');
+    assert.equal(after.status, 1, `${name}: blocks from Nov 16`);
+  }
+});
+
+test('a file already staged outside data/ fails the check; FRED content under the BIS file name fails', (t) => {
+  const a = repo(t);
+  writeFileSync(join(a, 'notes.csv'), 'observation_date,CPIAUCSL\n2026-08-01,321.25\n');
+  execFileSync('git', ['add', 'notes.csv'], { cwd: a });
+  assert.ok(checkCommit(a).some((p) => p.includes('staged outside data/: notes.csv')));
+  const b = repo(t);
+  writeFileSync(join(b, 'data', 'inputs', 'OFFSHORE_CREDIT.csv'), 'observation_date,CPIAUCSL\n2026-08-01,321.25\n');
+  assert.ok(checkCommit(b).some((p) => p.includes('not the BIS file layout')));
+  const c = repo(t);
+  const bis = join(c, 'data', 'inputs', 'OFFSHORE_CREDIT.csv');
+  writeFileSync(bis, readFileSync(bis, 'utf8') + '2020-01-01,1\n');
+  assert.ok(checkCommit(c).some((p) => p.includes('unexpected rows in the BIS file')));
+});
+
+test('the workflow commits only data/, guards the check against crashes before Nov 16, and checks the witness save', () => {
+  const wf = readFileSync(join(ROOT, '.github', 'workflows', 'swarm.yml'), 'utf8');
+  assert.match(wf, /git commit -m "Daily run \$\(date -u \+%F\)" -- data /);
+  assert.match(wf, /git commit -m "Witness: archive copy of checkpoint" -- data\/witnesses\.json/);
+  const witness = wf.slice(wf.indexOf('Witness 3'), wf.indexOf('Open GitHub issues'));
+  assert.ok(witness.indexOf('node scripts/check-commit.js') > 0 && witness.indexOf('node scripts/check-commit.js') < witness.indexOf('git commit'));
+  assert.equal((wf.match(/< "2026-11-16" \]\]/g) || []).length, 2);
 });
 
 test('the pre-save check rejects a malformed run date', (t) => {
