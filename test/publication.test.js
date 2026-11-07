@@ -61,6 +61,36 @@ test('the scan fails on a raw file, a CSV payload, an observation history or a l
   }
 });
 
+// Review (dot, Nov 6 late): the first scan missed several shapes. Each must now fail.
+test('the scan catches observations in any shape, in any allowed file (dot\'s examples and more)', (t) => {
+  const thirteen = Array.from({ length: 13 }, (_, i) => i);
+  const month = (i) => `2025-${String((i % 12) + 1).padStart(2, '0')}-01`;
+  const setJson = (out, f, mutate) => { const p = join(out, 'data', f); const o = JSON.parse(readFileSync(p, 'utf8')); mutate(o); writeFileSync(p, JSON.stringify(o)); };
+  const cases = {
+    '13 observations as numeric strings': (out) => setJson(out, 'redteam.json', (o) => { o.x = thirteen.map((i) => String(1.5 + i)); }),
+    'date-keyed observation map': (out) => setJson(out, 'community.json', (o) => { o.m = Object.fromEntries(thirteen.map((i) => [month(i) + (i >= 12 ? 'x' : ''), i])); o.m['2026-01-01'] = 1; }),
+    'quarter-keyed map': (out) => setJson(out, 'packets.json', (o) => { o.push({ q: Object.fromEntries(thirteen.map((i) => [`${2000 + i}-Q1`, i])) }); }),
+    'CSV inside a JSON string (no FRED header)': (out) => setJson(out, 'packets.json', (o) => { o.push({ note: 'date,value\n2020-01-01,1.1\n2020-02-01,1.2\n2020-03-01,1.3' }); }),
+    'semicolon table inside a JSON string': (out) => setJson(out, 'redteam.json', (o) => { o.t = '2020-Q1; 1.1\n2020-Q2; 1.2\n2020-Q3; 1.3'; }),
+    'records with a period and a numeric string': (out) => setJson(out, 'community.json', (o) => { o.r = thirteen.map((i) => ({ period: month(i), v: String(i) })); }),
+    'numeric history in a text file under checkpoints': (out) => writeFileSync(join(out, 'data', 'checkpoints', 'notes.txt'), thirteen.map((i) => `${month(i)},${i}`).join('\n')),
+    'text disguised as a timestamp proof': (out) => writeFileSync(join(out, 'data', 'checkpoints', '000001-2026-11-04.json.ots'), '2020-01-01,1\n2020-02-01,2\n'),
+    'extra field in a checkpoint': (out) => { const f = readdirSync(join(out, 'data', 'checkpoints')).find((n) => n.endsWith('.json')); const p = join(out, 'data', 'checkpoints', f); const o = JSON.parse(readFileSync(p, 'utf8')); o.cpi = [1, 2]; writeFileSync(p, JSON.stringify(o)); },
+    'extra field in an allowed derived series': (out) => setJson(out, 'latest.json', (o) => { o.head_to_head.price_series[0].cpi_level = 258.8; }),
+    'allowed derived series over its limit': (out) => setJson(out, 'latest.json', (o) => { o.head_to_head.costs = Array.from({ length: 41 }, (_, i) => ({ year: 1990 + i, inflation_on_cash_b: i })); }),
+    'unexpected ledger field': (out) => { const p = join(out, 'data', 'ledger.jsonl'); writeFileSync(p, readFileSync(p, 'utf8') + JSON.stringify({ seq: 999, cpi: 1 }) + '\n'); },
+    'inlined record differs from latest.json': (out) => { const p = join(out, 'index.html'); writeFileSync(p, readFileSync(p, 'utf8').replace('window.SWARM_DATA = {', 'window.SWARM_DATA = {"extra":{"note":"x"},')); },
+  };
+  for (const [name, inject] of Object.entries(cases)) {
+    const root = fixtureRoot(t);
+    const out = join(root, '_site');
+    buildSite({ root, out });
+    assert.deepEqual(scanSite(out), [], `clean before: ${name}`);
+    inject(out);
+    assert.ok(scanSite(out).length > 0, name);
+  }
+});
+
 test('the scan reads the record inlined in index.html, not just the JSON files', (t) => {
   const root = fixtureRoot(t, (r, latest) => { latest.sentinels.domestic.readings[0].history = [['2026-01-01', 1.5], ['2026-02-01', 1.6]]; });
   const out = join(root, '_site');

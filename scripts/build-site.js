@@ -12,9 +12,27 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Public record files the dashboard links to. Everything else in data/ stays out (inputs, internal state).
 export const DATA_ALLOWLIST = ['latest.json', 'live-history.json', 'ledger.jsonl', 'witnesses.json', 'community.json',
   'redteam.json', 'packets.json', 'checkpoints'];
-// Small input arrays still published inside the frozen readings, pending FRED's answer on derived results
-// (3 monthly CPI/PCE values per quarter and up to 11 annual GDP levels). Anything longer is a series and fails.
+// Lists longer than this that look like a data series fail, unless they are one of the named derived series below.
 export const MAX_SERIES_POINTS = 12;
+// Derived series that are still published, pending FRED's answer on derived results. Each is named by its
+// place in the record, with a maximum length and the only fields its rows may have. Anything else fails.
+export const DERIVED_SERIES = {
+  'data/latest.json': [
+    { path: '.replays[].rows', max: 200, keys: ['quarter', 'trend_growth_pct', 'gap_lp', 'allowance_pct', 'allowance_raw_pct', 'brake', 'path_index'] },
+    { path: '.head_to_head.price_series', max: 40, keys: ['year', 'through', 'actual', 'fed_target_path', 'rule_target'] },
+    { path: '.head_to_head.money', max: 40, keys: ['year', 'fed_base_growth_pct', 'rule_allowed_pct', 'friedman_k_pct', 'pop_plus_productivity_pct'] },
+    { path: '.head_to_head.costs', max: 40, keys: ['year', 'interest_to_banks_estimate_b', 'inflation_on_cash_b'] },
+  ],
+};
+// Witness records are one row per checkpoint (fingerprints and receipts), not data; named so they aren't
+// mistaken for a series. Their nested receipts are still scanned.
+const WITNESS_ROWS = { path: '.checkpoints', max: 100000, keys: ['file', 'ledger_seq', 'ledger_entry_hash', 'run_date', 'bitcoin', 'sigstore', 'wayback'], nested: true };
+DERIVED_SERIES['data/witnesses.json'] = [WITNESS_ROWS];
+DERIVED_SERIES['index.html (inlined record)'] = [...DERIVED_SERIES['data/latest.json'], { ...WITNESS_ROWS, path: '.witnesses.checkpoints' }];
+const LEDGER_KEYS = new Set(['seq', 'run_date', 'started_at', 'mode', 'inputs_sha256', 'rule_sha256', 'live_history_sha256', 'latest_quarter',
+  'latest_outputs_sha256', 'brake_phase', 'global_dollar', 'domestic', 'plumbing', 'packets', 'community_sha256', 'redteam_sha256', 'prev_hash', 'hash']);
+const CHECKPOINT_KEYS = new Set(['what', 'repository', 'ledger_file', 'ledger_entries', 'ledger_seq', 'ledger_entry_hash', 'ledger_file_sha256', 'run_date', 'how_to_verify']);
+const OTS_MAGIC = Buffer.from('\x00OpenTimestamps\x00\x00Proof\x00', 'latin1');
 
 export function buildSite({ root = ROOT, out = join(ROOT, '_site') } = {}) {
   const tpl = readFileSync(join(root, 'dashboard', 'index.html'), 'utf8');
@@ -42,42 +60,101 @@ export function buildSite({ root = ROOT, out = join(ROOT, '_site') } = {}) {
   return { html };
 }
 
-const D = /^\d{4}-\d{2}(-\d{2})?$/;
-const isPoint = (x) => typeof x === 'number'
-  || (Array.isArray(x) && x.length === 2 && typeof x[0] === 'string' && D.test(x[0]) && typeof x[1] === 'number')
-  || (x && typeof x === 'object' && !Array.isArray(x) && ('date' in x || 'd' in x) && (typeof x.value === 'number' || typeof x.v === 'number'));
+const NUM = (x) => (typeof x === 'number' && Number.isFinite(x)) || (typeof x === 'string' && /^\s*[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?\s*$/i.test(x));
+const DATEISH = (x) => typeof x === 'string' && /^\s*(\d{4}(-\d{1,2}(-\d{1,2})?)?|\d{4}-?Q[1-4]|\d{4}-?M\d{1,2}|\d{1,2}\/\d{1,2}\/\d{2,4})\s*$/i.test(x);
+const TIME_KEYS = new Set(['date', 'd', 't', 'x', 'year', 'quarter', 'month', 'period', 'through', 'as_of', 'observation_date', 'time']);
+// One observation, in any common shape: a number or numeric string, a [date, value] pair, or a record with a
+// time field and a numeric field.
+const isPoint = (x) => {
+  if (NUM(x)) return true;
+  if (Array.isArray(x)) return x.length === 2 && (DATEISH(x[0]) || NUM(x[0])) && NUM(x[1]);
+  if (x && typeof x === 'object') {
+    const entries = Object.entries(x);
+    const timed = entries.some(([k, v]) => TIME_KEYS.has(k) || DATEISH(v));
+    return timed && entries.some(([k, v]) => !TIME_KEYS.has(k) && NUM(v));
+  }
+  return false;
+};
+// Text that carries a table of dated values (CSV, TSV, or similar), however it is wrapped.
+const tableRows = (s) => s.split(/\r?\n/).filter((l) => /^\s*"?(\d{4}(-\d{1,2}){0,2}|\d{4}-?Q[1-4]|\d{1,2}\/\d{1,2}\/\d{2,4})"?\s*[,;\t|:]\s*"?[+-]?(\d|\.\d)/.test(l)).length;
+const textProblem = (s) => (/observation_date|realtime_start|realtime_end/i.test(s) ? 'raw FRED field names' : tableRows(s) >= 3 ? `table of ${tableRows(s)} dated values` : null);
 
 // Returns a list of problems; empty means the output is clean.
 export function scanSite(out) {
   const problems = [];
   const walk = (dir) => readdirSync(dir).flatMap((n) => { const p = join(dir, n); return statSync(p).isDirectory() ? walk(p) : [p]; });
-  const allowed = new Set(['index.html', '.nojekyll']);
   const scanJson = (obj, where, path = '') => {
+    const norm = path.replace(/\[\d+\]/g, '[]');
+    if (typeof obj === 'string') { const tp = textProblem(obj); if (tp) problems.push(`${where}: ${tp} in a text value at ${path || '(root)'}`); return; }
     if (Array.isArray(obj)) {
+      const named = (DERIVED_SERIES[where] || []).find((s) => s.path === norm);
+      if (named) {
+        if (obj.length > named.max) problems.push(`${where}: ${norm} has ${obj.length} rows (limit ${named.max})`);
+        obj.forEach((row, i) => {
+          if (!row || typeof row !== 'object' || Array.isArray(row)) { problems.push(`${where}: ${norm}[${i}] is not a row`); return; }
+          for (const [k, v] of Object.entries(row)) {
+            if (!named.keys.includes(k)) problems.push(`${where}: unexpected field "${k}" in ${norm}[${i}]`);
+            if (v !== null && typeof v === 'object') {
+              if (named.nested) scanJson(v, where, `${path}[${i}].${k}`);
+              else problems.push(`${where}: nested data in ${norm}[${i}].${k}`);
+            } else if (typeof v === 'string') scanJson(v, where, `${path}[${i}].${k}`);
+          }
+        });
+        return;
+      }
       if (obj.length > MAX_SERIES_POINTS && obj.filter(isPoint).length >= 0.8 * obj.length) problems.push(`${where}: series of ${obj.length} data points at ${path || '(root)'}`);
       obj.forEach((v, i) => scanJson(v, where, `${path}[${i}]`));
-    } else if (obj && typeof obj === 'object') {
+      return;
+    }
+    if (obj && typeof obj === 'object') {
+      const keys = Object.keys(obj);
+      if (keys.length > MAX_SERIES_POINTS && keys.filter(DATEISH).length >= 0.8 * keys.length) problems.push(`${where}: date-keyed series of ${keys.length} values at ${path || '(root)'}`);
       for (const [k, v] of Object.entries(obj)) {
         if (k === 'history' && Array.isArray(v) && v.some(isPoint)) problems.push(`${where}: observation history at ${path}.${k}`);
         scanJson(v, where, `${path}.${k}`);
       }
     }
   };
+  const parse = (text, rel) => { try { return JSON.parse(text); } catch { problems.push(`unreadable JSON: ${rel}`); return undefined; } };
   for (const file of walk(out)) {
     const rel = relative(out, file).split(sep).join('/');
-    const top = rel.startsWith('data/') ? rel.slice(5).split('/')[0] : rel;
-    if (!(allowed.has(rel) || (rel.startsWith('data/') && DATA_ALLOWLIST.includes(top)))) { problems.push(`not on the allowlist: ${rel}`); continue; }
-    if (/\.csv$/i.test(rel)) problems.push(`raw data file: ${rel}`);
-    if (/\.(ots)$/i.test(rel)) continue;
+    if (rel === '.nojekyll') { if (statSync(file).size) problems.push('.nojekyll is not empty'); continue; }
+    const cp = rel.match(/^data\/checkpoints\/(\d{6}-\d{4}-\d{2}-\d{2}\.json)(\.ots(\.bak)?)?$/);
+    if (cp && cp[2]) { // Bitcoin timestamp proofs: binary, must really be OpenTimestamps files
+      if (!readFileSync(file).subarray(0, OTS_MAGIC.length).equals(OTS_MAGIC)) problems.push(`not an OpenTimestamps proof: ${rel}`);
+      continue;
+    }
+    const isData = cp || (rel.startsWith('data/') && !rel.slice(5).includes('/') && DATA_ALLOWLIST.includes(rel.slice(5)));
+    if (!(rel === 'index.html' || isData)) { problems.push(`not on the allowlist: ${rel}`); continue; }
     const text = readFileSync(file, 'utf8');
-    if (/observation_date,|^DATE,/m.test(text)) problems.push(`raw CSV content in ${rel}`);
-    if (rel.endsWith('.json')) { try { scanJson(JSON.parse(text), rel); } catch { problems.push(`unreadable JSON: ${rel}`); } }
-    if (rel.endsWith('.jsonl')) text.split('\n').filter(Boolean).forEach((l, i) => { try { scanJson(JSON.parse(l), `${rel}:${i + 1}`); } catch { problems.push(`unreadable line ${i + 1} in ${rel}`); } });
     if (rel === 'index.html') {
       const m = text.match(/window\.SWARM_DATA = ([\s\S]*?);<\/script>/);
-      if (!m) problems.push('index.html: inlined record not found');
-      else { try { scanJson(JSON.parse(m[1]), 'index.html (inlined record)'); } catch { problems.push('index.html: inlined record unreadable'); } }
+      const rest = m ? text.replace(m[0], '') : text;
+      const tp = textProblem(rest); if (tp) problems.push(`index.html: ${tp} in the page itself`);
+      if (!m) { problems.push('index.html: inlined record not found'); continue; }
+      const inl = parse(m[1], 'index.html (inlined record)');
+      if (inl === undefined) continue;
+      scanJson(inl, 'index.html (inlined record)');
+      // The inlined record must be exactly the published latest.json plus witnesses.json, nothing more.
+      try {
+        const expect = JSON.parse(readFileSync(join(out, 'data', 'latest.json'), 'utf8'));
+        expect.witnesses = existsSync(join(out, 'data', 'witnesses.json')) ? JSON.parse(readFileSync(join(out, 'data', 'witnesses.json'), 'utf8')) : { checkpoints: [] };
+        if (JSON.stringify(inl) !== JSON.stringify(expect)) problems.push('index.html: inlined record differs from data/latest.json + witnesses.json');
+      } catch { problems.push('index.html: cannot compare the inlined record with data/latest.json'); }
+      continue;
     }
+    if (rel.endsWith('.jsonl')) {
+      text.split('\n').filter(Boolean).forEach((l, i) => {
+        const e = parse(l, `${rel}:${i + 1}`); if (e === undefined) return;
+        for (const k of Object.keys(e)) if (!LEDGER_KEYS.has(k)) problems.push(`${rel}:${i + 1}: unexpected ledger field "${k}"`);
+        for (const [id, h] of Object.entries(e.inputs_sha256 || {})) if (h !== null && !/^[a-f0-9]{64}$/.test(h)) problems.push(`${rel}:${i + 1}: inputs_sha256.${id} is not a fingerprint`);
+        scanJson(e, `${rel}:${i + 1}`);
+      });
+      continue;
+    }
+    const obj = parse(text, rel); if (obj === undefined) continue;
+    if (cp) for (const k of Object.keys(obj)) if (!CHECKPOINT_KEYS.has(k)) problems.push(`${rel}: unexpected checkpoint field "${k}"`);
+    scanJson(obj, rel);
   }
   return problems;
 }

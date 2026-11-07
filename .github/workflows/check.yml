@@ -20,6 +20,9 @@ jobs:
           node-version: 22
       - name: Tests and audit of the committed record
         run: npm run check
+      - name: Publication check (what the dashboard would publish)
+        run: node scripts/build-site.js _site_check
+
       - name: Recompute the latest live quarter independently (Python)
         # Exit 3 means the FRED files are not in the repo (FRED's terms); the daily run recomputes with them.
         run: |
