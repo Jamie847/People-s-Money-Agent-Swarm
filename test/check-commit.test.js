@@ -54,7 +54,7 @@ test('prohibited content warns before Nov 16 and stops the save from Nov 16', (t
     assert.match(before.stdout, /::warning::Pre-save check/, name);
     const after = run(r, GATE_FROM);
     assert.equal(after.status, 1, `${name}: blocks from ${GATE_FROM}`);
-    assert.match(after.stderr, /Pre-save check FAILED: nothing will be saved/, name);
+    assert.match(after.stderr, /Pre-save check FAILED: this save is stopped/, name);
   }
 });
 
@@ -114,6 +114,40 @@ test('the workflow commits only data/, guards the check against crashes before N
   const witness = wf.slice(wf.indexOf('Witness 3'), wf.indexOf('Open GitHub issues'));
   assert.ok(witness.indexOf('node scripts/check-commit.js') > 0 && witness.indexOf('node scripts/check-commit.js') < witness.indexOf('git commit'));
   assert.equal((wf.match(/< "2026-11-16" \]\]/g) || []).length, 2);
+});
+
+// Review round 3 (dot): observations split across short text entries, community findings, a newsletter table.
+test('values split across community findings, short texts or a newsletter table are counted together and fail', (t) => {
+  const month = (i) => `2025-${String((i % 12) + 1).padStart(2, '0')}`;
+  const agent = (id, findings, headline = 'ok') => ({ id, name: id, report: { status: 'info', headline, findings } });
+  const setCommunity = (r, agents) => { const p = join(r, 'data', 'community.json'); const o = JSON.parse(readFileSync(p, 'utf8')); o.agents = [...o.agents, ...agents]; writeFileSync(p, JSON.stringify(o)); };
+  const cases = {
+    'two agents, 7 dated findings each (date in label, value apart)': (r) => setCommunity(r, [0, 1].map((a) => agent(`a${a}`, Array.from({ length: 7 }, (_, i) => ({ label: `CPI ${month(i + 7 * a)}`, value: `${320 + i}` }))))),
+    'date in the label, number in the note': (r) => setCommunity(r, [agent('n', Array.from({ length: 12 }, (_, i) => ({ label: month(i), note: `index ${300 + i}` }))), agent('m', [{ label: '2024-01', note: 'level 299.1' }])]),
+    '13 agents with one dated value each in the headline': (r) => setCommunity(r, Array.from({ length: 13 }, (_, i) => agent(`h${i}`, [], `${month(i)}: ${1 + i / 10}`))),
+    'newsletter HTML table': (r) => { mkdirSync(join(r, 'data', 'newsletter'), { recursive: true }); writeFileSync(join(r, 'data', 'newsletter', '2026-11.json'), JSON.stringify({ month: '2026-11', title: 't', html: '<table>' + Array.from({ length: 13 }, (_, i) => `<tr><td>${month(i)}-01</td><td>${(1 + i / 10).toFixed(1)}</td></tr>`).join('') + '</table>' })); },
+  };
+  for (const [name, plant] of Object.entries(cases)) {
+    const r = repo(t);
+    plant(r);
+    assert.ok(checkCommit(r).some((p) => /dated or listed values spread/.test(p)), name);
+  }
+});
+
+test('ordinary notices with dates and counts do not trip the budget', (t) => {
+  const r = repo(t);
+  const p = join(r, 'data', 'new-packets.json');
+  writeFileSync(p, JSON.stringify(Array.from({ length: 27 }, (_, i) => ({ what_happened: `Latest S${i} observation is 2026-11-0${(i % 9) + 1} (${11 + i} days old)`, evidence: { detail: `Latest 2026-09-01; ${300 + i} observations` } }))));
+  assert.deepEqual(checkCommit(r), []);
+});
+
+test('the workflow stops the dashboard update and fails the run if the witness save check fails', () => {
+  const wf = readFileSync(join(ROOT, '.github', 'workflows', 'swarm.yml'), 'utf8');
+  assert.match(wf, /echo "WITNESS_SAVE_CHECK_FAILED=1" >> "\$GITHUB_ENV"; exit 1/);
+  const stop = wf.indexOf('- name: Stop if the witness save check failed'); const build = wf.indexOf('- name: Build dashboard');
+  assert.ok(stop > 0 && stop < build);
+  assert.match(wf.slice(stop, build), /if: env\.WITNESS_SAVE_CHECK_FAILED == '1'[\s\S]*exit 1/);
+  assert.match(wf, /deploy:\n\s+needs: run/); // deploy only runs when the run job succeeds
 });
 
 test('the pre-save check rejects a malformed run date', (t) => {

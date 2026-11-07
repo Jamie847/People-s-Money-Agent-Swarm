@@ -96,6 +96,12 @@ const isPoint = (x) => {
 };
 // Text that carries a table of dated values (CSV, TSV, or similar), however it is wrapped.
 const tableRows = (s) => s.replace(/<[^>]*>/g, '\n').split(/\r?\n/).filter((l) => /^\s*"?(\d{4}(-\d{1,2}){0,2}|\d{4}-?Q[1-4]|\d{1,2}\/\d{1,2}\/\d{2,4})"?\s*[,;\t|:]\s*"?[+-]?(\d|\.\d)/.test(l)).length;
+// A date followed closely by a number, in prose, tables or HTML cells ("2020-01: 1.2", "<td>2020-Q1</td><td>1.2</td>").
+// Not values: a count or an age ("344 observations", "11 days old"), a bracketed number after a date, and an index
+// base such as "2006=100".
+const PAIR_RE = /(?<![\w.\/-])(\d{4}-\d{1,2}(?:-\d{1,2})?|\d{4}-?Q[1-4]|\d{4}(?=\s*[:|\t]))(?![\w\/-])\s*[:=,;|\t]?\s*(?:\|\s*)*[+-]?\$?\d+(?:\.\d+)?(?![\d-])(?!\s*(?:observations?|days?|weeks?|months?|years?|quarters?|old)\b)/g;
+const textPairs = (s) => [...s.replace(/<[^>]*>/g, ' | ').matchAll(PAIR_RE)].length;
+const DATE_TOKEN = /(?<![\w-])(\d{4}-\d{1,2}(-\d{1,2})?|\d{4}-?Q[1-4])(?![\w-])/;
 const textProblem = (s) => (/observation_date|realtime_start|realtime_end/i.test(s) ? 'raw FRED field names' : tableRows(s) >= 3 ? `table of ${tableRows(s)} dated values` : null);
 
 // Returns a list of problems; empty means the output is clean.
@@ -104,7 +110,7 @@ const textProblem = (s) => (/observation_date|realtime_start|realtime_end/i.test
 export function scanSite(out, { extraFiles = [], bisFiles = [], shellRoot = null } = {}) {
   const problems = [];
   const counts = new Map(); // per file: observation points and date keys outside named structures (catches split series)
-  const tally = (where, kind, n) => { const c = counts.get(where) || { points: 0, dateKeys: 0 }; c[kind] += n; counts.set(where, c); };
+  const tally = (where, kind, n) => { const c = counts.get(where) || { points: 0, dateKeys: 0, textPairs: 0, datedFindings: 0 }; c[kind] += n; counts.set(where, c); };
   const strictPoint = (x) => VAL(x) || (Array.isArray(x) && x.length === 2 && (DATEISH(x[0]) || NUM(x[0])) && NUM(x[1]))
     || (x && typeof x === 'object' && !Array.isArray(x) && Object.keys(x).length <= 3 && Object.keys(x).some((k) => TIME_KEYS.has(k)) && Object.entries(x).some(([k, v]) => !TIME_KEYS.has(k) && NUM(v)));
   const checkInputs = (obj, where, path) => {
@@ -125,7 +131,7 @@ export function scanSite(out, { extraFiles = [], bisFiles = [], shellRoot = null
   const scanJson = (obj, where, path = '') => {
     const norm = path.replace(/\[\d+\]/g, '[]');
     if (READING_INPUTS.paths[where] === norm) { checkInputs(obj, where, path); return; }
-    if (typeof obj === 'string') { const tp = textProblem(obj); if (tp) problems.push(`${where}: ${tp} in a text value at ${path || '(root)'}`); return; }
+    if (typeof obj === 'string') { const tp = textProblem(obj); if (tp) problems.push(`${where}: ${tp} in a text value at ${path || '(root)'}`); tally(where, 'textPairs', textPairs(obj)); return; }
     if (Array.isArray(obj)) {
       const named = (DERIVED_SERIES[where] || []).find((s) => s.path === norm);
       if (named) {
@@ -144,6 +150,11 @@ export function scanSite(out, { extraFiles = [], bisFiles = [], shellRoot = null
       }
       if (obj.length > MAX_SERIES_POINTS && obj.filter(isPoint).length >= 0.8 * obj.length) problems.push(`${where}: series of ${obj.length} data points at ${path || '(root)'}`);
       tally(where, 'points', obj.filter(strictPoint).length);
+      // Community agent findings that pair a date with a number, wherever the two sit in the finding.
+      if (norm === '.agents[].report.findings') tally(where, 'datedFindings', obj.filter((f) => {
+        const s = f && typeof f === 'object' ? Object.values(f).filter((v) => typeof v === 'string' || typeof v === 'number').join(' ') : String(f);
+        return DATE_TOKEN.test(s) && /\d+(\.\d+)?/.test(s.replace(new RegExp(DATE_TOKEN.source, 'g'), ' '));
+      }).length);
       obj.forEach((v, i) => scanJson(v, where, `${path}[${i}]`));
       return;
     }
@@ -225,10 +236,11 @@ export function scanSite(out, { extraFiles = [], bisFiles = [], shellRoot = null
     const rel = relative(out, file).split(sep).join('/');
     try { checkFile(file, rel); } catch (err) { problems.push(`could not check ${rel}: ${String(err && err.message || err).slice(0, 120)}`); }
   }
-  // Split series: many small lists (or date-keyed maps) in one file that together form a series.
+  // Split series: values spread across small lists, date-keyed records, text entries or community findings in one
+  // file are counted together against one budget.
   for (const [where, c] of counts) {
-    if (c.points > MAX_SERIES_POINTS) problems.push(`${where}: ${c.points} data points spread across small lists (limit ${MAX_SERIES_POINTS} outside named series)`);
-    if (c.dateKeys > MAX_SERIES_POINTS) problems.push(`${where}: ${c.dateKeys} date keys spread across records (limit ${MAX_SERIES_POINTS})`);
+    const total = c.points + c.dateKeys + c.textPairs + c.datedFindings;
+    if (total > MAX_SERIES_POINTS) problems.push(`${where}: ${total} dated or listed values spread across the file (${c.points} in small lists, ${c.dateKeys} date keys, ${c.textPairs} in text, ${c.datedFindings} in findings; limit ${MAX_SERIES_POINTS} outside named series)`);
   }
   return problems;
 }

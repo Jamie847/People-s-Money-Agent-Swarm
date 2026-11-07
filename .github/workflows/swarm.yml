@@ -122,7 +122,8 @@ jobs:
           git add data/witnesses.json
           # Same pre-save check before this second save (enforced from Nov 16, 2026).
           if ! node scripts/check-commit.js; then
-            if [[ "$(date -u +%F)" < "2026-11-16" ]]; then echo "::warning::Pre-save check did not pass; not enforced until 2026-11-16"; else exit 1; fi
+            if [[ "$(date -u +%F)" < "2026-11-16" ]]; then echo "::warning::Pre-save check did not pass; not enforced until 2026-11-16"
+            else echo "WITNESS_SAVE_CHECK_FAILED=1" >> "$GITHUB_ENV"; exit 1; fi
           fi
           git commit -m "Witness: archive copy of checkpoint" -- data/witnesses.json || exit 0
           git pull --rebase origin main
@@ -144,6 +145,14 @@ jobs:
           gh issue create --label newsletter --title "Newsletter draft ready: ${MONTH}" --body "The monthly issue for ${MONTH} was drafted from this month's sealed record: [data/newsletter/${MONTH}.json](https://github.com/${GITHUB_REPOSITORY}/blob/main/data/newsletter/${MONTH}.json).
 
           It is loaded into beehiiv as a **draft**. Nothing is sent automatically: a person reads it, edits if needed, and presses send. Close this issue once it has gone out."
+
+      # The day's record was already saved by the first save; if the witness copy's check failed, don't update
+      # the dashboard and mark the run failed so a person looks at it.
+      - name: Stop if the witness save check failed
+        if: env.WITNESS_SAVE_CHECK_FAILED == '1'
+        run: |
+          echo "::error::The witness copy's pre-save check failed. The day's record was saved; the witness copy and the dashboard update were not."
+          exit 1
 
       - name: Build dashboard
         run: node scripts/build-site.js

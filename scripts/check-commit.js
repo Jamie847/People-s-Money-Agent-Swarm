@@ -54,7 +54,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (!problems.length) { console.log(`Pre-save check passed (${enforced ? 'enforced' : `warning only until ${GATE_FROM}`}).`); process.exit(0); }
   const list = problems.slice(0, 30).map((p) => `- ${p}`).join('\n');
   if (enforced) {
-    console.error(`Pre-save check FAILED: nothing will be saved or published today.\n${list}\nA reading due today is recomputed by the next run from the same dated snapshot if FRED's archive still serves it; if not, the code falls back to current revised data and says so in the record.`);
+    console.error(`Pre-save check FAILED: this save is stopped (for the first daily save, nothing is saved or published today; for the witness copy, the day's record is already saved but the witness copy and dashboard update are skipped).\n${list}\nA reading due today is recomputed by the next run from the same dated snapshot if FRED's archive still serves it; if not, the code falls back to current revised data and says so in the record.`);
     process.exit(1);
   }
   for (const p of problems.slice(0, 30)) console.log(`::warning::Pre-save check (not enforced until ${GATE_FROM}): ${p}`);
