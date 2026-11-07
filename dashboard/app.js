@@ -215,7 +215,7 @@
       s += '<div class="card watch-card"><div class="row"><div class="title">' + esc(r.title) + '</div>' + pill(r.status) + '</div>';
       s += '<div class="val">' + n(r.value, 2) + '</div><div class="meta">' + esc(r.metric_label) + ' · as of ' + esc(r.as_of) + (r.watch != null ? ' · watch ' + r.watch + ', stress ' + r.stress : '') + '</div>';
       var cal = r.calibration ? '<p class="meta" style="margin:4px 0 0"><strong>How often these levels were reached</strong> (since ' + esc(r.calibration.since.slice(0, 4)) + ', ' + r.calibration.readings + ' readings): watch or worse ' + n(r.calibration.watch_rate_pct, 1) + '%, stress ' + n(r.calibration.stress_rate_pct, 1) + '%' + (r.calibration.stress_periods.length ? ' (stress in ' + esc(r.calibration.stress_periods.join(', ')) + ')' : '') + '.</p>' : '';
-      s += '<div class="chart">' + spark(r.history, color) + '</div><p class="meta" style="margin:4px 0 0">' + esc(r.note) + ' Source: ' + esc(r.agency) + '.</p>' + cal + '</div>';
+      s += (r.history && r.history.length > 1 ? '<div class="chart">' + spark(r.history, color) + '</div>' : '') + '<p class="meta" style="margin:4px 0 0">' + esc(r.note) + ' Source: ' + esc(r.agency) + '.</p>' + cal + '</div>';
     });
     return s + '</div>';
   }

@@ -67,6 +67,8 @@ FRED replied to our request (November 2026) that its terms don't allow keeping d
 
 To check a run yourself, `recompute.py --fetch` downloads the same series from FRED for your own use. A dated ALFRED snapshot (used for each live reading) is fixed, so its fingerprint should match the record exactly; the latest files match until FRED adds or revises data. The plan is to move to the agencies' own sources (BLS, BEA, Treasury, Federal Reserve) where their terms allow a full public archive. The BIS file is still kept.
 
+The dashboard site publishes only an explicit allowlist of record files (`scripts/build-site.js`), never the raw inputs, and the sentinel cards no longer carry history charts. Every build scans its own output and fails, so nothing is uploaded, if it finds a raw file, CSV content, an observation history or any series longer than 12 points. Each frozen reading still lists the few input numbers it used (3 monthly price-index values per quarter and up to 11 annual GDP levels) so it can be rechecked; we have asked FRED how its terms treat these and other derived results.
+
 ## Run it
 
 ```bash

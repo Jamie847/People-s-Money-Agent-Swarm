@@ -98,7 +98,7 @@ export function runSentinels(sensorById, cfgGroup, ctx) {
       status,
       note: cfg.note,
       calibration: cfg.calibration ?? null,
-      history: thin(cfg.metric === 'spread_vs' ? spreadSeries(s.observations, ctx.byId?.[cfg.other]) : s.observations),
+      // No history series is published: FRED's terms don't allow republishing its downloaded data (Nov 6, 2026).
     });
   }
   const rank = { stress: 3, watch: 2, calm: 1, context: 0, unavailable: 0 };
