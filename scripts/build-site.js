@@ -80,7 +80,8 @@ const tableRows = (s) => s.split(/\r?\n/).filter((l) => /^\s*"?(\d{4}(-\d{1,2}){
 const textProblem = (s) => (/observation_date|realtime_start|realtime_end/i.test(s) ? 'raw FRED field names' : tableRows(s) >= 3 ? `table of ${tableRows(s)} dated values` : null);
 
 // Returns a list of problems; empty means the output is clean.
-export function scanSite(out) {
+// extraFiles: more files that may be present (scanned like JSON); skipFiles: allowed and not scanned.
+export function scanSite(out, { extraFiles = [], skipFiles = [] } = {}) {
   const problems = [];
   const walk = (dir) => readdirSync(dir).flatMap((n) => { const p = join(dir, n); return statSync(p).isDirectory() ? walk(p) : [p]; });
   const scanJson = (obj, where, path = '') => {
@@ -124,7 +125,8 @@ export function scanSite(out) {
       if (!readFileSync(file).subarray(0, OTS_MAGIC.length).equals(OTS_MAGIC)) problems.push(`not an OpenTimestamps proof: ${rel}`);
       continue;
     }
-    const isData = cp || (rel.startsWith('data/') && !rel.slice(5).includes('/') && DATA_ALLOWLIST.includes(rel.slice(5)));
+    if (skipFiles.includes(rel)) continue;
+    const isData = cp || extraFiles.includes(rel) || (rel.startsWith('data/') && !rel.slice(5).includes('/') && DATA_ALLOWLIST.includes(rel.slice(5)));
     if (!(rel === 'index.html' || isData)) { problems.push(`not on the allowlist: ${rel}`); continue; }
     const text = readFileSync(file, 'utf8');
     if (rel === 'index.html') {

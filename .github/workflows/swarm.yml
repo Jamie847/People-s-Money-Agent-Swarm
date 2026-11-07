@@ -91,6 +91,11 @@ jobs:
         if: steps.attest.outcome == 'success'
         run: node scripts/witness.js attest "${{ steps.attest.outputs.bundle-path }}" "${{ steps.attest.outputs.attestation-url }}"
 
+      # Same rules as the dashboard check, applied to everything about to be committed. From Nov 16, 2026 a
+      # failure stops the run here, so nothing is saved or published that day; before that it only warns.
+      - name: Check what is about to be saved (enforced from Nov 16)
+        run: node scripts/check-commit.js
+
       - name: Seal results into the repository
         id: seal
         env:
